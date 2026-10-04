@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>故障注入案例时间轴 — Fault Injection Timeline</title>
+  <link rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      background: #f5f7fa;
+      color: #243447;
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px clamp(16px, 4vw, 48px);
+      background: #fff;
+      border-bottom: 1px solid #e1e7ef;
+      box-shadow: 0 2px 10px rgba(26, 52, 82, .06);
+    }
+    .brand { min-width: 0; }
+    .eyebrow {
+      margin-bottom: 4px;
+      color: #3973b9;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+    h1 { margin: 0; font-size: clamp(1.05rem, 2vw, 1.4rem); line-height: 1.25; }
+    .actions { display: flex; align-items: center; gap: 8px; }
+    #search-wrap { position: relative; }
+    #search-box {
+      width: min(30vw, 320px);
+      min-width: 190px;
+      padding: 9px 54px 9px 13px;
+      border: 1px solid #cfd9e5;
+      border-radius: 7px;
+      background: #fff;
+      color: #243447;
+      font: inherit;
+      font-size: .88rem;
+      outline: none;
+    }
+    #search-box:focus { border-color: #3973b9; box-shadow: 0 0 0 3px rgba(57, 115, 185, .14); }
+    #search-count { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); color: #718096; font-size: .73rem; pointer-events: none; }
+    #search-results {
+      position: absolute;
+      z-index: 30;
+      top: calc(100% + 6px);
+      right: 0;
+      display: none;
+      width: min(380px, 82vw);
+      max-height: 52vh;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid #d9e1eb;
+      border-radius: 7px;
+      box-shadow: 0 8px 24px rgba(24, 48, 80, .16);
+    }
+    #search-results.open { display: block; }
+    .sr-item { padding: 10px 12px; border-bottom: 1px solid #edf1f5; cursor: pointer; font-size: .84rem; line-height: 1.4; }
+    .sr-item:last-child { border-bottom: 0; }
+    .sr-item:hover { background: #f1f6fb; }
+    .sr-date { margin-right: 8px; color: #3973b9; font-size: .74rem; font-variant-numeric: tabular-nums; }
+    .sr-empty { padding: 14px; color: #718096; text-align: center; font-size: .84rem; }
+    .tool-btn {
+      padding: 9px 12px;
+      border: 1px solid #cfd9e5;
+      border-radius: 7px;
+      background: #fff;
+      color: #243447;
+      cursor: pointer;
+      font: inherit;
+      font-size: .84rem;
+      font-weight: 600;
+    }
+    .tool-btn:hover { border-color: #3973b9; background: #f1f6fb; }
+    main { padding: 16px clamp(10px, 2.5vw, 32px) 0; }
+    #timeline-embed {
+      width: 100%;
+      height: min(760px, calc(100vh - 122px));
+      min-height: 560px;
+      background: #fff;
+      border: 1px solid #e1e7ef;
+      box-shadow: 0 4px 18px rgba(26, 52, 82, .08);
+    }
+    footer { padding: 9px 14px 12px; color: #718096; text-align: center; font-size: .75rem; }
+    @media (max-width: 760px) {
+      .page-header { align-items: stretch; flex-direction: column; gap: 10px; padding: 13px 14px; }
+      .actions { width: 100%; }
+      #search-wrap { flex: 1; }
+      #search-box { width: 100%; min-width: 0; }
+      main { padding: 10px 8px 0; }
+      #timeline-embed { height: 680px; min-height: 520px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="brand">
+      <div class="eyebrow">FAULT INJECTION · TIMELINE</div>
+      <h1 id="page-heading">故障注入案例时间轴</h1>
+    </div>
+    <div class="actions">
+      <div id="search-wrap">
+        <input id="search-box" type="search" autocomplete="off" placeholder="🔍 搜索芯片型号 / 攻击方法…" aria-label="搜索事件">
+        <span id="search-count" aria-live="polite"></span>
+        <div id="search-results" role="listbox"></div>
+      </div>
+      <button id="lang-toggle" class="tool-btn" type="button" aria-label="切换语言">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="timeline-embed"></div>
+  </main>
+  <footer id="ftr">仅供安全研究与教育用途</footer>
+
+  <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+  <script src="timeline-data.js?v=20261004"></script>
+  <script>
+    const UI = {
+      zh: {
+        heading: "故障注入案例时间轴",
+        ftr: "仅供安全研究与教育用途",
+        button: "EN",
+        aria: "切换语言",
+        placeholder: "🔍 搜索芯片型号 / 攻击方法…",
+        empty: "没有匹配的事件",
+        count: n => n + " 个匹配"
+      },
+      en: {
+        heading: "Fault Injection Case Timeline",
+        ftr: "For security research & education",
+        button: "中文",
+        aria: "Switch language",
+        placeholder: "🔍 Search chip / technique…",
+        empty: "No matching events",
+        count: n => n + " match" + (n === 1 ? "" : "es")
+      }
+    };
+
+    let lang = "zh";
+    let timeline;
+    const heading = document.getElementById("page-heading");
+    const footer = document.getElementById("ftr");
+    const langButton = document.getElementById("lang-toggle");
+    const searchBox = document.getElementById("search-box");
+    const searchCount = document.getElementById("search-count");
+    const searchResults = document.getElementById("search-results");
+    const searchWrap = document.getElementById("search-wrap");
+
+    function buildTLData(language) {
+      const events = TIMELINE_EVENTS.map((event, index) => {
+        const item = {
+          unique_id: "ev-" + index,
+          start_date: event.start,
+          text: {
+            headline: event[language].headline,
+            text: event[language].text
+          }
+        };
+        if (event.end) item.end_date = event.end;
+        if (event.media) item.media = event.media;
+        return item;
+      });
+      return {
+        title: { text: TIMELINE_TITLE[language] },
+        events
+      };
+    }
+
+    function renderTimeline() {
+      timeline = new TL.Timeline("timeline-embed", buildTLData(lang), {
+        scale_factor: 2,
+        initial_zoom: 4,
+        start_at_end: false,
+        timenav_height_percentage: 40,
+        marker_height_min: 44,
+        language: lang === "zh" ? "zh-cn" : "en"
+      });
+    }
+
+    function matchingEvents(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return TIMELINE_EVENTS.map((event, index) => ({ event, index })).filter(({ event }) => {
+        const text = [event.zh.headline, event.zh.text, event.en.headline, event.en.text].join(" ");
+        return text.toLowerCase().includes(q);
+      });
+    }
+
+    function formatDate(date) {
+      return date.year + (date.month ? "-" + String(date.month).padStart(2, "0") : "");
+    }
+
+    function renderSearch() {
+      const query = searchBox.value;
+      const matches = matchingEvents(query);
+      searchCount.textContent = query.trim() ? UI[lang].count(matches.length) : "";
+      if (!query.trim()) {
+        searchResults.classList.remove("open");
+        searchResults.innerHTML = "";
+        return;
+      }
+      searchResults.classList.add("open");
+      if (!matches.length) {
+        searchResults.innerHTML = "<div class=\"sr-empty\">" + UI[lang].empty + "</div>";
+        return;
+      }
+      searchResults.innerHTML = "";
+      matches.forEach(({ event, index }) => {
+        const item = document.createElement("div");
+        item.className = "sr-item";
+        item.setAttribute("role", "option");
+        const date = document.createElement("span");
+        date.className = "sr-date";
+        date.textContent = formatDate(event.start);
+        item.appendChild(date);
+        item.appendChild(document.createTextNode(event[lang].headline));
+        item.addEventListener("click", () => {
+          searchResults.classList.remove("open");
+          if (timeline && typeof timeline.goToId === "function") timeline.goToId("ev-" + index);
+        });
+        searchResults.appendChild(item);
+      });
+    }
+
+    searchBox.addEventListener("input", renderSearch);
+    searchBox.addEventListener("focus", renderSearch);
+    searchBox.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        const first = matchingEvents(searchBox.value)[0];
+        if (first && timeline && typeof timeline.goToId === "function") {
+          searchResults.classList.remove("open");
+          timeline.goToId("ev-" + first.index);
+        }
+      } else if (event.key === "Escape") {
+        searchResults.classList.remove("open");
+      }
+    });
+    document.addEventListener("click", event => {
+      if (!searchWrap.contains(event.target)) searchResults.classList.remove("open");
+    });
+    langButton.addEventListener("click", () => {
+      lang = lang === "zh" ? "en" : "zh";
+      const ui = UI[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      heading.textContent = ui.heading;
+      footer.textContent = ui.ftr;
+      langButton.textContent = ui.button;
+      langButton.setAttribute("aria-label", ui.aria);
+      searchBox.placeholder = ui.placeholder;
+      renderTimeline();
+      renderSearch();
+    });
+
+    renderTimeline();
+  </script>
+</body>
+</html>
