@@ -3,542 +3,2369 @@
 // 注意: JS 字符串统一使用双引号, HTML 属性统一使用单引号
 
 const TIMELINE_TITLE = {
-  zh: {
-    headline: "⚡ 芯片故障注入攻击简史",
-    text: "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 75 个标志性事件：从 Bellcore 故障密码分析的理论奠基，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p>"
+  "zh": {
+    "headline": "⚡ 芯片故障注入攻击简史",
+    "text": "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 168 个公开案例：从 Bellcore 故障密码分析的早期理论工作，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p><p>本站案例内容由 AI 总结生成，可能存在错误或遗漏，欢迎大家一起补充、纠错和维护。</p>"
   },
-  en: {
-    headline: "⚡ A Brief History of Fault Injection Attacks",
-    text: "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 75 landmark events from 1996 to 2026: from the theoretical foundations of Bellcore fault cryptanalysis to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p>"
+  "en": {
+    "headline": "⚡ A Brief History of Fault Injection Attacks",
+    "text": "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 168 publicly documented cases from 1996 to 2026: from early Bellcore fault-cryptanalysis research to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p><p>Entries on this site are AI-generated summaries and may contain errors or omissions — corrections and contributions are welcome.</p>"
   }
 };
 
 const TIMELINE_EVENTS = [
   {
-    start: { year: 1996, month: 11 },
-    zh: { headline: "防篡改的警示 — Anderson & Kuhn",
-          text: "上世纪 90 年代，银行与军方广泛部署宣称“防篡改”的智能卡与加密模块。剑桥大学的 Ross Anderson 与 Markus Kuhn 在第二届 USENIX 电子商务研讨会上发表这篇获奖论文，系统回顾了当时已知的攻击手段：电压与时钟毛刺、微探针探测、芯片开封与总线窃听，并指出大多数商用防篡改芯片都能被预算仅数千美元的实验室攻破。该论文获得最佳论文奖，被视为硬件安全评估领域的开山之作，也直接催生了此后十年的故障攻击研究热潮。<br><a href='https://www.usenix.org/conference/2nd-usenix-workshop-electronic-commerce/tamper-resistance-cautionary-note' target='_blank'>论文</a>" },
-    en: { headline: "Tamper Resistance — A Cautionary Note",
-          text: "In the 1990s, banks and militaries deployed smartcards and crypto modules advertised as “tamper-proof”. At the 2nd USENIX Workshop on Electronic Commerce, Cambridge researchers Ross Anderson and Markus Kuhn surveyed the state of the art: voltage and clock glitches, microprobing, decapsulation and bus snooping — showing that most commercial tamper-resistant chips could be broken with lab equipment costing only a few thousand dollars. The paper won best-paper award, is considered a founding work of hardware security evaluation, and directly inspired the fault-attack research wave that followed.<br><a href='https://www.usenix.org/conference/2nd-usenix-workshop-electronic-commerce/tamper-resistance-cautionary-note' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 1997, month: 5 },
-    zh: { headline: "Bellcore 攻击：RSA-CRT 故障密码分析",
-          text: "EUROCRYPT 1997。Bellcore 的 Boneh、DeMillo 与 Lipton 证明了一个震惊密码学界的结果：RSA 用中国剩余定理（CRT）加速签名时，只需让芯片在运算中发生<b>一次</b>随机故障，攻击者拿到错误签名后计算 gcd(S′ᵉ − m, N) 即可分解模数、恢复私钥。论文本身是纯理论模型，没有攻击真实芯片，但它首次指出“硬件错误”可以成为密码分析武器，迫使此后所有 RSA-CRT 实现加入签名结果自检（或 Shamir 校验等对策），开创了故障密码分析（fault cryptanalysis）这一全新领域。<br><a href='https://crypto.stanford.edu/~dabo/abstracts/faults.html' target='_blank'>论文</a>" },
-    en: { headline: "The Bellcore Attack on RSA-CRT",
-          text: "EUROCRYPT 1997. Boneh, DeMillo and Lipton of Bellcore proved a result that shocked the cryptographic community: when RSA signing is accelerated with the Chinese Remainder Theorem, a <b>single</b> random hardware fault during the computation lets an attacker factor the modulus and recover the private key by computing gcd(S′ᵉ − m, N) from the faulty signature. The paper was a purely theoretical model — no real chip was attacked — but it was the first to show that hardware errors themselves can be a cryptanalytic weapon. It forced all subsequent RSA-CRT implementations to verify signatures before output, and founded the field of fault cryptanalysis.<br><a href='https://crypto.stanford.edu/~dabo/abstracts/faults.html' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 1997, month: 8 },
-    zh: { headline: "差分故障分析 (DFA) 攻破 DES",
-          text: "CRYPTO 1997，紧随 Bellcore 攻击之后。Biham 与 Shamir 提出差分故障分析（Differential Fault Analysis）：对同一明文分别获取正确密文与故障密文，通过两者在末几轮的差分传播逐段恢复 DES 子密钥 —— 几十条故障密文即可恢复完整密钥。DFA 把故障模型从公钥算法扩展到对称密码，成为此后二十多年分组密码故障攻击的范式，AES、ECC 的同类攻击均由此发端。<br><a href='https://link.springer.com/chapter/10.1007/BFb0052259' target='_blank'>论文</a>" },
-    en: { headline: "Differential Fault Analysis of DES",
-          text: "CRYPTO 1997, hot on the heels of the Bellcore attack. Biham and Shamir introduced Differential Fault Analysis (DFA): obtain a correct and a faulty ciphertext of the same plaintext, then trace the differential propagation through the final rounds to recover DES subkeys piece by piece — a few dozen faulty ciphertexts suffice for the full key. DFA extended the fault model from public-key to symmetric ciphers and became the paradigm for block-cipher fault attacks for the next two decades; similar attacks on AES and ECC all descend from it.<br><a href='https://link.springer.com/chapter/10.1007/BFb0052259' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 1999, month: 5 },
-    zh: { headline: "智能卡处理器防篡改设计原则",
-          text: "USENIX 智能卡技术研讨会。Kömmerling 与 Kuhn 在真实智能卡处理器上系统演示了实战攻击：向 Vcc、时钟或复位线注入毛刺以跳过指令或破坏比较，用紫外光擦除熔丝位，以及半侵入式微探针读取总线。论文同时给出防御方的设计建议（随机化时序、环境传感器、多层金属屏蔽等），是“低成本攻击实验室”方法论的经典文献，直接塑造了此后智能卡安全认证（Common Criteria EAL 高等级的物理攻击评估）的测试方式。<br><a href='https://www.usenix.org/conference/usenix-workshop-smartcard-technology/design-principles-tamper-resistant-smartcard' target='_blank'>论文</a>" },
-    en: { headline: "Design Principles for Tamper-Resistant Smartcard Processors",
-          text: "USENIX Workshop on Smartcard Technology. Kömmerling and Kuhn systematically demonstrated real attacks on production smartcard processors: glitching Vcc, clock or reset lines to skip instructions or corrupt comparisons, erasing fuse bits with UV light, and semi-invasive microprobing of on-chip buses. The paper also gave defenders concrete design advice (randomized timing, environmental sensors, metal shield layers). It is the classic reference of the “low-budget attack lab” and directly shaped how smartcard certifications (high-EAL Common Criteria physical attack evaluation) are performed to this day.<br><a href='https://www.usenix.org/conference/usenix-workshop-smartcard-technology/design-principles-tamper-resistant-smartcard' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2000, month: 8 },
-    zh: { headline: "DFA 扩展到椭圆曲线密码 (ECC)",
-          text: "CRYPTO 2000。Biehl、Meyer 与 Müller 将差分故障分析引入椭圆曲线密码：在标量乘法过程中注入故障（例如让点离开预定曲线、或翻转中间值符号位），可从错误结果中逐比特恢复秘密标量。该工作奠定了 ECC 实现的故障攻击与防护研究基础，后来演变为“无效曲线攻击”等一整类针对 ECDSA/ECDH 实现的物理威胁，也是硬件钱包与安全芯片设计中必须考虑的场景。<br><a href='https://link.springer.com/chapter/10.1007/3-540-44598-6_8' target='_blank'>论文</a>" },
-    en: { headline: "Differential Fault Attacks on ECC",
-          text: "CRYPTO 2000. Biehl, Meyer and Müller brought differential fault analysis to elliptic-curve cryptography: injecting faults during scalar multiplication (e.g., pushing a point off the intended curve or flipping sign bits of intermediates) recovers the secret scalar bit by bit from erroneous results. The work founded fault-attack research on ECC implementations and later evolved into a whole family of physical threats against ECDSA/ECDH — including invalid-curve attacks — that designers of hardware wallets and secure elements must defend against.<br><a href='https://link.springer.com/chapter/10.1007/3-540-44598-6_8' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2002, month: 8 },
-    zh: { headline: "光故障注入攻击诞生",
-          text: "CHES 2002。Skorobogatov 与 Anderson 证明了一件出乎意料的事：把芯片开封后，一支普通<b>相机闪光灯</b>就能让 SRAM 比特翻转，一支改装激光笔就能对单个晶体管定点置位/复位 —— 而此前业界认为光注入需要价值数十万美元的激光台。实验在真实智能卡 MCU 上实现单比特精度的故障控制，把光/激光故障注入的门槛拉到百元级，迫使芯片厂商引入顶层金属屏蔽、光传感器等对策。激光 FI 日后成为实验室高精度攻击（以及 2024 年 RP2350 攻破）的主力手段。<br><a href='https://www.cl.cam.ac.uk/~sps32/ches02-optofault.pdf' target='_blank'>论文</a>" },
-    en: { headline: "Optical Fault Induction Attacks",
-          text: "CHES 2002. Skorobogatov and Anderson showed something unexpected: once a chip is decapsulated, an ordinary <b>camera flash</b> flips SRAM bits, and a modified laser pointer can set/reset individual transistors — until then the industry believed optical injection required laser stations costing hundreds of thousands of dollars. They achieved single-bit precision fault control on real smartcard MCUs, dropping the cost of optical FI to under $100 and forcing vendors to adopt top-metal shields and light sensors. Laser FI later became the go-to technique for high-precision lab attacks (and for the 2024 RP2350 break).<br><a href='https://www.cl.cam.ac.uk/~sps32/ches02-optofault.pdf' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2002, month: 8 },
-    zh: { headline: "Bellcore 攻击在真实智能卡上实现",
-          text: "CHES 2002。英飞凌的 Aumüller、Bier、Fischer、Hofreiter 与 Seifert 首次把 1997 年的理论攻击搬到真实硬件：在智能卡 IC 执行 RSA-CRT 时用电压尖峰注入故障，成功从错误签名中分解出私钥。论文同时实测了多种软件/硬件对策的有效性，指出“签名前自检”这一最常见对策在双重故障下仍会失效 —— 理论攻击与工程现实之间的鸿沟就此打通。<br><a href='https://eprint.iacr.org/2002/073.pdf' target='_blank'>论文</a>" },
-    en: { headline: "Bellcore Attack on a Real Smartcard",
-          text: "CHES 2002. Infineon's Aumüller, Bier, Fischer, Hofreiter and Seifert brought the 1997 theoretical attack to real hardware for the first time: inducing faults with voltage spikes while a smartcard IC computed RSA-CRT, they successfully factored the private key out of faulty signatures. The paper also evaluated several software/hardware countermeasures in practice, showing that the most common one — verifying before output — still falls to double faults. The gap between theoretical attack and engineering reality was closed.<br><a href='https://eprint.iacr.org/2002/073.pdf' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2003, month: 9 },
-    zh: { headline: "AES 的差分故障攻击",
-          text: "CHES 2003。Piret 与 Quisquater 提出针对 SPN（代换-置换网络）结构的通用 DFA 并应用于 AES 与 Khazad：在倒数第二轮 MixColumns 前注入单字节故障，理论上仅 2 条正确/故障密文对即可大幅缩小密钥空间，约 250 条故障密文可在分钟级恢复完整 AES-128 密钥。此后绝大多数 AES 故障攻击（包括激光、EMFI 载体上的实战版本）都建立在该模型之上，也推动了感染式计数器、冗余校验等防护研究。<br><a href='https://link.springer.com/chapter/10.1007/978-3-540-45238-6_7' target='_blank'>论文</a>" },
-    en: { headline: "DFA Comes to AES",
-          text: "CHES 2003. Piret and Quisquater proposed a generic DFA against SPN (substitution-permutation network) ciphers and applied it to AES and Khazad: injecting a single-byte fault just before the MixColumns of the penultimate round, as few as 2 correct/faulty ciphertext pairs dramatically shrink the key space, and ~250 faulty ciphertexts recover a full AES-128 key in minutes. Nearly all later AES fault attacks — including practical laser and EMFI versions — build on this model, and it motivated research on infection-based and redundancy countermeasures.<br><a href='https://link.springer.com/chapter/10.1007/978-3-540-45238-6_7' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2004, month: 9 },
-    zh: { headline: "《故障攻击巫师学徒指南》",
-          text: "FDTC 2004（期刊版发表于 Proceedings of the IEEE 2006 年 2 月）。Bar-El、Choukri、Naccache、Tunstall 与 Whelan 写出该领域引用最广的综述：系统分类了故障注入手段（电压、时钟、温度、光照、粒子束）与故障模型（瞬态/永久、单比特/多比特），梳理了 DFA、安全错误攻击（safe-error）、碰撞故障攻击等分析技术，并给出对策全景。FDTC 研讨会本身也正是在这一时期（2004 年起）成为故障攻击领域的专属顶级会议。<br><a href='https://eprint.iacr.org/2004/100' target='_blank'>论文</a>" },
-    en: { headline: "The Sorcerer's Apprentice Guide to Fault Attacks",
-          text: "FDTC 2004 (journal version in Proceedings of the IEEE, Feb 2006). Bar-El, Choukri, Naccache, Tunstall and Whelan wrote the most-cited survey of the field: a systematic taxonomy of injection methods (voltage, clock, temperature, light, particle beams) and fault models (transient/permanent, single-/multi-bit), plus DFA, safe-error and collision fault-analysis techniques and a panorama of countermeasures. The FDTC workshop itself, founded in this era (2004), became the field's dedicated premier venue.<br><a href='https://eprint.iacr.org/2004/100' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2005, month: 4 },
-    zh: { headline: "半侵入式攻击体系化",
-          text: "Skorobogatov 的剑桥博士论文/技术报告 UCAM-CL-TR-630。所谓“半侵入式”：开封芯片（发烟硝酸去封装）但不接触钝化层，即可实施光故障注入、光探测（读出总线数据）、背面成像等攻击 —— 威力接近完全侵入式的微探针攻击，但设备成本从百万美元级降到一万美元左右、且不再依赖稀有工艺。该报告成为硬件安全实验室的建设蓝本，也解释了为何此后二十年大部分物理攻击研究都走半侵入路线。<br><a href='https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-630.html' target='_blank'>报告</a>" },
-    en: { headline: "Semi-invasive Attacks Systematized",
-          text: "Skorobogatov's Cambridge PhD thesis / technical report UCAM-CL-TR-630. “Semi-invasive” means decapsulating the chip (fuming nitric acid) without penetrating the passivation layer — enabling optical fault injection, optical probing (reading bus data with light) and backside imaging at a cost of roughly $10k instead of the million-dollar FIB workstations of fully invasive attacks. The report became the blueprint for hardware security labs worldwide and explains why most physical-attack research of the following two decades took the semi-invasive route.<br><a href='https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-630.html' target='_blank'>Report</a>" }
-  },
-  {
-    start: { year: 2007, month: 9 },
-    zh: { headline: "无效故障分析 (Ineffective Fault Analysis)",
-          text: "CHES 2007。Clavier 提出了一个反直觉的观点：即便注入的故障<b>没有</b>改变输出，攻击者只要观察到“这次故障无效”这一事实，就已经获得了关于秘密的信息。无效故障分析（IFA）不要求故障成功，因此许多只检测“输出是否出错”的对策对它无效。这一思想后来在 2018 年的 SIFA 中与统计方法结合，成为能击穿掩码防护的强力攻击。<br><a href='https://iacr.org/workshops/ches/ches2007/presentations/S5T2-Clavier.pdf' target='_blank'>论文</a>" },
-    en: { headline: "Ineffective Fault Analysis",
-          text: "CHES 2007. Clavier made a counter-intuitive point: even when an injected fault does <b>not</b> change the output, merely observing that “this fault was ineffective” leaks information about the secret. Ineffective Fault Analysis (IFA) does not require faults to succeed, so countermeasures that only check whether the output is wrong are useless against it. The idea was later combined with statistics in SIFA (2018), yielding an attack powerful enough to break masked implementations.<br><a href='https://iacr.org/workshops/ches/ches2007/presentations/S5T2-Clavier.pdf' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2007, month: 10 },
-    zh: { headline: "首次电磁故障注入 (EMFI)",
-          text: "Austrochip 2007。Schmidt 与 Hutter 用火花隙线圈产生强电磁脉冲，对运行 RSA-CRT 的 8 位单片机注入故障，并与光注入手段对比；更关键的是他们演示了“双重故障”攻击 —— 同时让计算与结果校验双双出错，绕过了“签名前自检”这一标准对策。这是电磁故障注入（EMFI）首次公开发表：无需开封、无需接触芯片内部，仅把探头贴近封装表面即可局部注入故障，为日后 EMFI 攻破汽车 ECU 与特斯拉网关埋下伏笔。<br><a href='https://www.semanticscholar.org/paper/Optical-and-EM-Fault-Attacks-on-CRT-based-RSA-%3A-Schmidt-Hutter/a56abd8e15a6de83784fbc1f9d476453e15f4da5' target='_blank'>论文</a>" },
-    en: { headline: "First Electromagnetic Fault Injection",
-          text: "Austrochip 2007. Schmidt and Hutter used a spark-gap coil to generate strong EM pulses, faulting RSA-CRT on an 8-bit microcontroller, and compared it with optical injection. Crucially, they demonstrated double-fault attacks — corrupting both the computation and the result check — bypassing the standard verify-before-output countermeasure. It was the first published EMFI: no decapsulation and no internal contact, a probe held against the package surface induces localized faults — foreshadowing EMFI's later use against automotive ECUs and the Tesla gateway.<br><a href='https://www.semanticscholar.org/paper/Optical-and-EM-Fault-Attacks-on-CRT-based-RSA-%3A-Schmidt-Hutter/a56abd8e15a6de83784fbc1f9d476453e15f4da5' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2009, month: 9 },
-    zh: { headline: "激光 DFA 实战 AES：“紫色威胁”",
-          text: "FDTC 2009。Schmidt 与 Herbst 用廉价的紫外/紫色激光器在真实 8 位单片机上对 AES 实施光故障 DFA，精确地在目标轮次注入单字节故障，完整复现了 Piret–Quisquater 理论攻击，把 AES 密钥从芯片里“照”了出来。论文标题“紫色威胁”（A Threat in Violet）一语双关：低成本紫光激光让 AES 故障攻击从理论变成了几百欧元设备就能完成的现实。" },
-    en: { headline: "Optical Fault Attacks on AES: A Threat in Violet",
-          text: "FDTC 2009. Schmidt and Herbst used a cheap UV/violet laser to perform optical DFA against AES on a real 8-bit microcontroller, injecting single-byte faults precisely at the target round and fully realizing the Piret–Quisquater theoretical attack — literally “shining” the AES key out of the chip. The title's “Threat in Violet” was a double entendre: AES fault attacks went from theory to a few hundred euros' worth of equipment." }
-  },
-  {
-    start: { year: 2009, month: 9 },
-    zh: { headline: "欠压故障攻击登上通用 CPU",
-          text: "FDTC 2009。Barenghi、Bertoni、Parrinello 与 Pelosi 把故障注入的对象从专用智能卡扩展到通用处理器：对运行纯软件 RSA 的 ARM9 应用处理器缓慢降低供电电压（underfeeding），使其在临界电压下产生计算错误，且故障高度可复现。这证明了即使没有任何硬件密码模块，跑在普通 CPU 上的软件实现同样会被供电操控击垮 —— 十年后 CLKSCREW、Plundervolt 等“软件欠压攻击”的思想源头正在于此。<br><a href='https://dl.acm.org/doi/abs/10.1109/FDTC.2009.30' target='_blank'>论文</a>" },
-    en: { headline: "Low-Voltage Fault Attacks Reach Full CPUs",
-          text: "FDTC 2009. Barenghi, Bertoni, Parrinello and Pelosi extended fault injection from dedicated smartcards to general-purpose processors: slowly underfeeding an ARM9 application processor running pure-software RSA pushed it into a critical-voltage regime where computation errors appeared — highly reproducibly. It proved that even without any hardware crypto module, software on an ordinary CPU can be broken by power-supply manipulation. This was the intellectual ancestor of the software undervolting attacks — CLKSCREW, Plundervolt — a decade later.<br><a href='https://dl.acm.org/doi/abs/10.1109/FDTC.2009.30' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2011, month: 9 },
-    zh: { headline: "时钟毛刺故障模型的黑盒刻画",
-          text: "FDTC 2011。Balasch、Gierlichs 与 Verbauwhede（KU Leuven）对 8 位 AVR 单片机做了系统的黑盒实验：在不预设内部结构的前提下，用不同宽度/位置的时钟毛刺诱导故障，归纳出“指令跳过”“指令损坏”等故障模型，并给出故障成功率随参数变化的完整图谱。这篇论文成为指令跳过模型的标准参考 —— 后来绕过签名校验、密码比较的实战毛刺攻击，几乎都是在该故障模型的框架下描述的。<br><a href='https://ieeexplore.ieee.org/document/6076473' target='_blank'>论文</a>" },
-    en: { headline: "Clock-Glitch Fault Models on 8-bit MCUs",
-          text: "FDTC 2011. Balasch, Gierlichs and Verbauwhede (KU Leuven) ran systematic black-box experiments on 8-bit AVR MCUs: without assuming any internal structure, they induced faults with clock glitches of varying width and position, distilled fault models such as “instruction skip” and “instruction corruption”, and mapped success rates across the parameter space. The paper became the standard reference for instruction-skip models — nearly every later practical glitch that bypasses a signature check or password comparison is described in its framework.<br><a href='https://ieeexplore.ieee.org/document/6076473' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2012, month: 9 },
-    zh: { headline: "衬底偏压注入 (BBI) 问世",
-          text: "YACC 2012。Maurine、Tobich、Ordas 与 Liardet 提出体偏压注入（Body Bias Injection）：从芯片背面（衬底）注入电压脉冲，直接调制晶体管的阈值电压，从而诱导时序违例型故障。BBI 不需要对准某个具体模块，对正面有金属屏蔽层的芯片尤其有效，且可与 EMFI 共用部分设备。这一“第三条物理注入路线”后来被 Colin O'Flynn 低成本化（CARDIS 2020），并进入主流 FI 实验室的武器库。<br><a href='https://hal-lirmm.ccsd.cnrs.fr/file/index/docid/762035/filename/YAFIT_by_FBBI_YACC12.pdf' target='_blank'>论文</a>" },
-    en: { headline: "Body Bias Injection (BBI) Introduced",
-          text: "YACC 2012. Maurine, Tobich, Ordas and Liardet proposed Body Bias Injection: injecting a voltage pulse into the silicon substrate from the chip's backside directly modulates transistor threshold voltages, inducing timing-violation faults. BBI needs no aiming at a specific block, works especially well on chips with front-side metal shields, and can share much of an EMFI setup. This “third physical injection route” was later made low-cost by Colin O'Flynn (CARDIS 2020) and entered the arsenal of mainstream FI labs.<br><a href='https://hal-lirmm.ccsd.cnrs.fr/file/index/docid/762035/filename/YAFIT_by_FBBI_YACC12.pdf' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2012, month: 9 },
-    zh: { headline: "微线圈 EMFI 精确定位攻击 AES",
-          text: "FDTC 2012。Dehbaoui、Dutertre、Robisson 与 Tria（EMSE/CEA）把 EMFI 从“粗放干扰”升级为“定点打击”：用毫米级微线圈探头贴近芯片表面扫描，分别在 FPGA 硬件 AES 与软件 AES 中注入可利用故障并恢复密钥，全程无需开封。该工作确立了 EMFI 作为实用攻击技术的地位 —— 定位精度接近激光、成本和复杂度却低得多，此后汽车 ECU 攻击（BAM BAM、特斯拉网关）沿用的正是这套方法。<br><a href='https://hal-emse.ccsd.cnrs.fr/emse-00742639v1/file/HAL_FDTC2012_Electromagnetic_Transient_Faults_Injection_on_a_hardware_and_software_implementations_of_AES.pdf' target='_blank'>论文</a>" },
-    en: { headline: "Localized EMFI on AES with a Micro-Coil",
-          text: "FDTC 2012. Dehbaoui, Dutertre, Robisson and Tria (EMSE/CEA) upgraded EMFI from “blunt interference” to “precision strike”: scanning a millimetre-scale micro-coil probe across the chip surface, they injected exploitable faults into both FPGA hardware AES and software AES and recovered the keys — all without decapsulation. This established EMFI as a practical attack technique with near-laser spatial precision at far lower cost and complexity; the automotive ECU attacks that followed (BAM BAM, the Tesla gateway) use exactly this playbook.<br><a href='https://hal-emse.ccsd.cnrs.fr/emse-00742639v1/file/HAL_FDTC2012_Electromagnetic_Transient_Faults_Injection_on_a_hardware_and_software_implementations_of_AES.pdf' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2013, month: 8 },
-    zh: { headline: "统计故障攻击 (SFA)：只需错误密文",
-          text: "FDTC 2013。Fuhr、Jaulmes、Lomné 与 Thillard（法国 ANSSI）放松了 DFA 最强的假设：不再需要正确/故障密文对，仅凭<b>一批错误密文</b>的统计分布即可恢复 AES 密钥。这意味着攻击者可以毛刺整个加密过程、只收集输出，完全无需知道哪一条是“正确的”，在真实设备的盲打场景（如安全芯片批量攻击）中大幅降低了门槛，也为后来的 SIFA 等统计类攻击铺路。<br><a href='https://ieeexplore.ieee.org/document/6623561' target='_blank'>论文</a>" },
-    en: { headline: "Statistical Fault Attacks: Faulty Ciphertexts Only",
-          text: "FDTC 2013. Fuhr, Jaulmes, Lomné and Thillard (ANSSI) relaxed DFA's strongest assumption: no correct/faulty ciphertext pair is needed — the statistical distribution of a batch of <b>faulty ciphertexts alone</b> recovers the AES key. An attacker can glitch the entire encryption process, collecting only outputs, without ever knowing which one is “correct” — dramatically lowering the bar in blind scenarios such as mass attacks on secure chips, and paving the way for statistical attacks like SIFA.<br><a href='https://ieeexplore.ieee.org/document/6623561' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2013, month: 8 },
-    zh: { headline: "EMFI 故障模型扩展到 32 位单片机",
-          text: "FDTC 2013。Moro、Dehbaoui、Heydemann、Robisson 与 Encrenaz 把 EMFI 研究推向现代架构：在 ARM Cortex-M3 上系统刻画电磁脉冲引发的故障行为，通过反汇编级分析将故障归因于 Flash 读取通路的损坏（取指数据被篡改），而非此前猜测的流水线或寄存器堆。这一“取指篡改”模型直接解释了后来大量“毛刺绕过校验”的实战案例，也成为 Cortex-M 系列 FI 研究的基础参考文献。<br><a href='https://arxiv.org/abs/1402.6421' target='_blank'>论文</a>" },
-    en: { headline: "EMFI Fault Model on 32-bit MCUs",
-          text: "FDTC 2013. Moro, Dehbaoui, Heydemann, Robisson and Encrenaz pushed EMFI research onto modern architectures: systematically characterizing EM-pulse-induced faults on an ARM Cortex-M3, disassembly-level analysis attributed them to corruption of the flash read path (fetched instructions/data being tampered), rather than the pipeline or register file as previously assumed. This “fetch corruption” model directly explains many later “glitch past the check” exploits and became a foundational reference for Cortex-M FI research.<br><a href='https://arxiv.org/abs/1402.6421' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2016, month: 8 },
-    zh: { headline: "电压毛刺直接劫持 ARM 程序计数器",
-          text: "FDTC 2016。Riscure 的 Timmers、Spruyt 与 Witteman 演示了故障注入的“终极形态”：不再满足于让某次比较出错，而是用电压毛刺篡改取指数据，直接控制 ARM 应用处理器的程序计数器（PC），把故障转化为任意代码执行。这意味着 FI 从“绕过单个检查”升级为完整的漏洞利用原语 —— 同年他们在 Black Hat Europe 演示了绕过安全启动，次年又用 KERNELFAULT 拿下 Linux 内核。<br><a href='https://ieeexplore.ieee.org/document/7774479' target='_blank'>论文</a>" },
-    en: { headline: "Controlling PC on ARM Using Fault Injection",
-          text: "FDTC 2016. Riscure's Timmers, Spruyt and Witteman demonstrated fault injection's “final form”: rather than making a single comparison fail, voltage glitches corrupt fetched instructions to directly control the program counter of an ARM application processor — turning a fault into arbitrary code execution. FI thus graduated from “bypass one check” to a full exploitation primitive. The same team demoed a secure-boot bypass at Black Hat Europe that year and pwned the Linux kernel with KERNELFAULT the next.<br><a href='https://ieeexplore.ieee.org/document/7774479' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2017, month: 8 },
-    zh: { headline: "CLKSCREW：首个纯软件故障攻击",
-          text: "USENIX Security 2017（同年 12 月登陆 Black Hat Europe）。哥伦比亚大学 Tang、Sethumadhavan 与 Stolfo 把故障注入从物理实验室搬进纯软件世界：在 Nexus 6（骁龙 SoC）上用内核驱动滥用 DVFS 动态调压调频，把 CPU 核心推到安全工作点之外（超频+欠压），使 ARM TrustZone 内的执行出错 —— 成功提取 TrustZone 中的 AES 密钥，并加载自签名的可信应用。全程无需物理接触，云端/恶意应用场景即可触发，迫使 ARM 与 SoC 厂商封锁危险的频率-电压组合。<br><a href='https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/tang' target='_blank'>论文</a>" },
-    en: { headline: "CLKSCREW: Software-Driven Fault Attack",
-          text: "USENIX Security 2017 (also at Black Hat Europe that December). Columbia's Tang, Sethumadhavan and Stolfo moved fault injection out of the physical lab into pure software: from a kernel driver on a Nexus 6 (Snapdragon SoC) they abused DVFS to push the CPU core outside its safe operating point (overclock + undervolt), faulting execution inside ARM TrustZone — extracting AES keys from the secure world and loading self-signed trusted apps. No physical access required, so cloud or malicious-app scenarios become realistic; ARM and SoC vendors were forced to blacklist dangerous frequency-voltage pairs.<br><a href='https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/tang' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2017, month: 9 },
-    zh: { headline: "激光故障注入绕过手机安全启动",
-          text: "FDTC 2017（扩展版 TCHES 2018）。Vasselle 与 Thiebeauld 首次对商用智能手机 SoC 实施激光故障注入：在启动链签名校验的关键指令上定点注入，绕过 Android 安全启动加载任意镜像。该工作证明即便不开封就完全无法操作的现代 BGA 封装手机芯片，在开封+激光台面前依然脆弱，也把“FI 攻击移动设备启动链”从黑客社区经验变成了可复现的学术成果。" },
-    en: { headline: "Laser FI Bypasses Smartphone Secure Boot",
-          text: "FDTC 2017 (extended in TCHES 2018). Vasselle and Thiebeauld performed the first laser fault injection on a commercial smartphone SoC: precisely targeting the signature-verification instructions of the boot chain to bypass Android secure boot and load arbitrary images. It showed that even modern BGA-packaged phone chips — untouchable without decapsulation — remain vulnerable once exposed to a laser bench, and turned “FI against mobile boot chains” from hacker folklore into reproducible academic results." }
-  },
-  {
-    start: { year: 2018, month: 9 },
-    zh: { headline: "SIFA：统计无效故障攻击",
-          text: "CHES 2018 / TCHES 2018(3)。Dobraunig、Eichlseder、Korak、Mangard、Mendel 与 Primas 将“无效故障”（2007 年 Clavier 的思想）与统计密钥排序结合成 SIFA：利用故障是否生效的概率偏差逐比特筛选密钥，可击穿掩码（masking）实现与大多数只防“错误输出”的故障对策，且对故障精度要求极低。SIFA 被认为是当时对防护最完善的 AES 实现威胁最大的攻击之一，直接推动了新一轮防护研究。<br><a href='https://tches.iacr.org/index.php/TCHES/article/view/7286' target='_blank'>论文</a>" },
-    en: { headline: "SIFA: Statistical Ineffective Fault Attacks",
-          text: "CHES 2018 / TCHES 2018(3). Dobraunig, Eichlseder, Korak, Mangard, Mendel and Primas fused “ineffective faults” (Clavier's 2007 idea) with statistical key ranking into SIFA: exploiting the bias in whether faults take effect to sieve the key bit by bit, it breaks masked implementations and most countermeasures that only guard against wrong outputs — and needs very low fault precision. SIFA was considered one of the most dangerous attacks against even the best-protected AES implementations of its time, sparking a new round of countermeasure research.<br><a href='https://tches.iacr.org/index.php/TCHES/article/view/7286' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2019, month: 3 },
-    zh: { headline: "塑造毛刺：任意波形电压注入",
-          text: "TCHES 2019 / CHES 2019。Bozzato、Focardi 与 Palmarini 挑战了“毛刺越陡越好”的直觉：用廉价的任意波形发生器精确塑造电压毛刺的波形（幅度、宽度、边沿、振铃），成功率显著优于传统 crowbar 短路法。他们在 ST、TI、瑞萨等 6 款 MCU 上绕过受保护的串行引导加载器并提取固件。该工作说明 FI 的“参数空间”远比社区惯例大，也直接推动了 Riscure/Keysight 等商用任意波形毛刺设备的普及。<br><a href='https://tches.iacr.org/index.php/TCHES/article/view/7390' target='_blank'>论文</a>" },
-    en: { headline: "Shaping the Glitch",
-          text: "TCHES 2019 / CHES 2019. Bozzato, Focardi and Palmarini challenged the “steeper is better” intuition: shaping voltage glitches with a cheap arbitrary waveform generator (amplitude, width, edges, ringing) yields markedly higher success rates than the traditional crowbar short. They bypassed protected serial bootloaders and extracted firmware on six MCUs from ST, TI and Renesas. The work showed the FI parameter space is far larger than community practice assumed and directly pushed the adoption of commercial arbitrary-waveform glitchers from Riscure/Keysight.<br><a href='https://tches.iacr.org/index.php/TCHES/article/view/7390' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2019, month: 11 },
-    zh: { headline: "VoltJockey：软件欠压攻破 TrustZone",
-          text: "ACM CCS 2019。Qiu、Wang、Lyu 与 Qu 在 CLKSCREW 之后进一步证明：利用多核 ARM 平台的 DVFS 接口，纯软件即可精确控制欠压注入时机，在商用手机/平板（如 Nexus 6 同代平台）上对 TrustZone 可信执行环境注入故障，提取密钥、加载恶意 TA。与 CLKSCREW 相比其可控性与通用性更强，再次说明“节能管理接口”本身就是一个攻击面。<br><a href='https://www.semanticscholar.org/paper/VoltJockey%3A-Breaching-TrustZone-by-Voltage-over-Qiu-Wang/edee1b82c5aa9c639c91f1e78f24a72464f07e96' target='_blank'>论文</a>" },
-    en: { headline: "VoltJockey: Breaching TrustZone via Software",
-          text: "ACM CCS 2019. Qiu, Wang, Lyu and Qu pushed further than CLKSCREW: using the DVFS interfaces of multi-core ARM platforms, pure software precisely times undervolting faults against TrustZone on commodity phones/tablets, extracting keys and loading malicious trusted apps. With better controllability and generality than its predecessor, VoltJockey reinforced the lesson that power-management interfaces are themselves an attack surface.<br><a href='https://www.semanticscholar.org/paper/VoltJockey%3A-Breaching-TrustZone-by-Voltage-over-Qiu-Wang/edee1b82c5aa9c639c91f1e78f24a72464f07e96' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2019, month: 12 },
-    zh: { headline: "Plundervolt：软件欠压击碎 Intel SGX",
-          text: "2019 年 12 月披露，IEEE S&P 2020 正式发表（CVE-2019-11157）。Murdock、Oswald、Garcia、Van Bulck、Gruss 与 Piessens 发现 Intel 留给超频玩家的 MSR 0x150 电压调节接口可被滥用：从软件对 CPU 封装内欠压，使 SGX 飞地内的计算翻转比特 —— 提取 AES-NI 密钥、攻破 RSA 实现，甚至在飞地内制造内存安全漏洞。由于 SGX 的安全承诺正是“连操作系统/云厂商都不可信”，这一攻击动摇了整个 Intel TEE 的信任模型；Intel 最终通过微码更新默认禁用该接口，并被学术界视为“软件定义电压攻击”的标志性事件。<br><a href='https://plundervolt.com' target='_blank'>网站</a>" },
-    en: { headline: "Plundervolt: Software Undervolting Breaks SGX",
-          text: "Disclosed December 2019, formally published at IEEE S&P 2020 (CVE-2019-11157). Murdock, Oswald, Garcia, Van Bulck, Gruss and Piessens found that Intel's overclocking MSR 0x150 voltage interface could be abused: undervolting the CPU package from software flips bits inside SGX enclave computations — extracting AES-NI keys, breaking RSA implementations, even inducing memory-safety bugs inside enclaves. Since SGX's whole promise is “don't even trust the OS or cloud provider”, the attack shook Intel's entire TEE trust model. Intel disabled the interface via microcode update; the work is regarded as the landmark of “software-defined voltage attacks”.<br><a href='https://plundervolt.com' target='_blank'>Site</a>" }
-  },
-  {
-    start: { year: 2020, month: 8 },
-    zh: { headline: "V0LTpwn：软件攻击 x86 完整性",
-          text: "USENIX Security 2020。Kenjar、Frassetto、Gens、Franz 与 Sadeghi 把欠压攻击的目标从 SGX 机密性扩展到整个 x86 的<b>完整性</b>：通过 MSR 欠压让普通（非飞地）代码出错，包括内核态执行与 Hypervisor，首次证明软件触发的 FI 可以威胁到 SGX 之外的系统根基。这意味着“CPU 计算一定正确”这一所有软件安全的隐含假设，在软件可控的电压面前不再成立。<br><a href='https://www.usenix.org/system/files/sec20-kenjar.pdf' target='_blank'>论文</a>" },
-    en: { headline: "V0LTpwn: Attacking x86 Integrity from Software",
-          text: "USENIX Security 2020. Kenjar, Frassetto, Gens, Franz and Sadeghi extended undervolting attacks from SGX confidentiality to x86 <b>integrity</b> as a whole: MSR undervolting faults ordinary non-enclave code, including kernel-mode execution and hypervisors — the first demonstration that software-triggered FI threatens the system foundation beyond SGX. In other words, the implicit assumption of all software security — that the CPU computes correctly — no longer holds when voltage is software-controllable.<br><a href='https://www.usenix.org/system/files/sec20-kenjar.pdf' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2020, month: 11 },
-    zh: { headline: "低成本 BBI 攻击 WLCSP 封装芯片",
-          text: "CARDIS 2020。Colin O'Flynn 把 2012 年提出的体偏压注入拉到“创客级”成本：无需 X 光或激光台，用自制廉价装置对晶圆级封装（WLCSP）的 STM32F415 从背面衬底注入偏压脉冲，成功诱导可利用故障。论文同时开源了工装与方法，证明 BBI 可以绕开正面金属屏蔽，是对抗“有屏蔽层”的安全 MCU 的平民化路线。<br><a href='https://eprint.iacr.org/2020/1228.pdf' target='_blank'>论文</a>" },
-    en: { headline: "Low-Cost Body Biasing Injection on WLCSP",
-          text: "CARDIS 2020. Colin O'Flynn brought body bias injection (proposed in 2012) down to maker-level cost: with no X-ray or laser bench, a homebuilt cheap rig injected bias pulses through the backside substrate of a wafer-level chip-scale packaged STM32F415, inducing exploitable faults. The paper open-sourced the jig and methodology, showing BBI bypasses front-side metal shields — a democratized route against shielded secure MCUs.<br><a href='https://eprint.iacr.org/2020/1228.pdf' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2021, month: 8 },
-    zh: { headline: "VoltPillager：硬件 SVID 攻击复活 Plundervolt",
-          text: "USENIX Security 2021。Intel 用微码锁死 MSR 欠压接口防住了 Plundervolt —— Chen、Vasilakis、Murdock 等人随即换了一条路：在 CPU 与电压调节器之间的 SVID 总线上挂一块约 30 美元的 Teensy，伪造调压指令对 Coffee Lake 平台实施硬件欠压，重新攻破 SGX 并提取飞地密钥。论文结论耐人寻味：只要电压调节接口存在，单靠软件补丁无法根治这类攻击 —— 防御需要硬件级改动。<br><a href='https://www.usenix.org/conference/usenixsecurity21/presentation/chen-zitai' target='_blank'>论文</a>" },
-    en: { headline: "VoltPillager: $30 Hardware Revives SGX Undervolting",
-          text: "USENIX Security 2021. Intel locked down the MSR undervolting interface with microcode to stop Plundervolt — Chen, Vasilakis, Murdock et al. simply took another route: a ~$30 Teensy on the SVID bus between CPU and voltage regulator forges voltage commands to undervolt Coffee Lake platforms in hardware, re-breaking SGX and extracting enclave keys. The sobering conclusion: as long as a voltage-control interface exists, software patches alone cannot eradicate this class of attacks — defense requires hardware-level changes.<br><a href='https://www.usenix.org/conference/usenixsecurity21/presentation/chen-zitai' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2021, month: 11 },
-    zh: { headline: "One Glitch to Rule Them All：攻破 AMD SEV",
-          text: "ACM CCS 2021。Buhren、Jacob、Krachenfels 与 Seifert（TU 柏林）对 AMD 安全处理器（PSP，Zen 1–3 全系列）的启动 ROM 签名校验实施一次电压毛刺，即在 PSP 上获得代码执行 —— 进而解密 SEV/SEV-ES/SEV-SNP 保护的虚拟机内存、提取 VCEK 背书密钥并伪造远程证明，彻底打破 AMD 加密虚拟化跨三代的安全承诺。由于 PSP 启动 ROM 无法通过固件更新修复，该攻击对当时在售的所有 Zen 平台构成长期威胁，也直接启发了 2023 年 faulTPM 与 2025 年特斯拉攻击。<br><a href='https://arxiv.org/abs/2108.04575' target='_blank'>论文</a>" },
-    en: { headline: "One Glitch to Rule Them All: Breaking AMD SEV",
-          text: "ACM CCS 2021. Buhren, Jacob, Krachenfels and Seifert (TU Berlin) hit the AMD Secure Processor's (PSP) boot-ROM signature check with a single voltage glitch to gain code execution on the PSP across Zen 1–3 — then decrypted SEV/SEV-ES/SEV-SNP virtual machine memory, extracted VCEK endorsement keys and forged remote attestation, breaking three generations of AMD's encrypted virtualization. Because the PSP boot ROM cannot be patched by firmware updates, the attack posed a long-term threat to every Zen platform on sale, and directly inspired faulTPM (2023) and the Tesla attacks (2025).<br><a href='https://arxiv.org/abs/2108.04575' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2023, month: 8 },
-    zh: { headline: "µ-Glitch：多重毛刺击破 TrustZone-M 防护",
-          text: "USENIX Security 2023。Saß、Mitev 与 Sadeghi 指出现有 FI 对策的一个致命盲区：重复校验、冗余执行等防护几乎全部假设“单次故障”。他们的 µ-Glitch 平台以纳秒精度连续注入多次协调的电压故障，在 STM32 TrustZone-M MCU 上同时击穿冗余比较与隔离机制。结论：只防单故障的对策在多重毛刺面前形同虚设，防护设计必须重新考虑多故障模型。（其 Black Hat USA 2022 版本已先行展示。）<br><a href='https://www.usenix.org/conference/usenixsecurity23/presentation/sass' target='_blank'>论文</a>" },
-    en: { headline: "µ-Glitch: Multi-Glitching TrustZone-M Protections",
-          text: "USENIX Security 2023. Saß, Mitev and Sadeghi exposed a fatal blind spot of existing FI countermeasures: redundant checks and duplicated execution almost all assume a single fault. Their µ-Glitch platform injects multiple coordinated voltage faults with nanosecond precision, defeating both redundancy comparisons and isolation on STM32 TrustZone-M MCUs at once. Conclusion: single-fault countermeasures crumble under multi-glitching; protection design must reconsider multi-fault models. (An earlier version was shown at Black Hat USA 2022.)<br><a href='https://www.usenix.org/conference/usenixsecurity23/presentation/sass' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2011, month: 8 },
-    zh: { headline: "Xbox 360 Reset Glitch Hack (RGH)",
-          text: "黑客 GliGli 与 Tiros 发布的传奇主机越狱（社区发布而非会议议题）：Xbox 360 的 IBM Xenon CPU 在启动时用 memcmp 比对引导加载器哈希，攻击者通过 CPLD 在比对的精确瞬间向 CPU 注入慢时钟/复位脉冲，使比较指令出错、永远返回“相等”—— 微软的签名链就此断裂，所有版本主机都能运行未签名代码。RGH 后来演进出 RGH2/RGH3 等纯时序方案，成为游戏机故障注入破解的代名词，也把“glitch memcmp”这一套路推广到整个硬件黑客社区。<br><a href='https://free60.org/Hacks/Reset_Glitch_Hack' target='_blank'>free60 wiki</a>" },
-    en: { headline: "Xbox 360 Reset Glitch Hack (RGH)",
-          text: "A legendary console jailbreak released by hackers GliGli and Tiros (a scene release, not a conference talk): the Xbox 360's IBM Xenon CPU compares bootloader hashes with memcmp during boot; a CPLD injects a slow-clock/reset pulse at the precise instant of the comparison, faulting the instruction so it always returns “equal” — Microsoft's signature chain snaps and unsigned code runs on every console revision. RGH evolved into the timing-only RGH2/RGH3 and became synonymous with fault-injection console hacking, popularizing the “glitch the memcmp” pattern across the hardware hacking community.<br><a href='https://free60.org/Hacks/Reset_Glitch_Hack' target='_blank'>free60 wiki</a>" }
-  },
-  {
-    start: { year: 2015, month: 8 },
-    zh: { headline: "ChipWhisperer：毛刺攻击平民化",
-          text: "DEF CON 23。Colin O'Flynn 发布开源的 ChipWhisperer 平台：一块几百美元的 FPGA 板即可精确产生电压/时钟毛刺并同步采集功耗波形。现场演示绕过 MCU 密码校验、提取密钥，把过去属于顶级实验室的故障注入与侧信道分析带进普通黑客的桌面。ChipWhisperer 此后成为事实上的行业标准教学/研究平台（大量论文与会议议题基于它），O'Flynn 本人也持续产出 BBI、车规 ECU 攻击等后续成果。<br><a href='https://www.youtube.com/watch?v=BHqrA8lzz2o' target='_blank'>演讲录像</a>" },
-    en: { headline: "ChipWhisperer: Glitching Made Easy",
-          text: "DEF CON 23. Colin O'Flynn released the open-source ChipWhisperer platform: a few-hundred-dollar FPGA board that produces precise voltage/clock glitches and captures synchronized power traces. Live demos bypassed MCU password checks and extracted keys, bringing fault injection and side-channel analysis — formerly the domain of top labs — to ordinary hackers' desks. ChipWhisperer has since become the de-facto standard teaching/research platform (countless papers and talks build on it), and O'Flynn went on to produce BBI and automotive ECU attacks.<br><a href='https://www.youtube.com/watch?v=BHqrA8lzz2o' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2016, month: 11 },
-    zh: { headline: "电压毛刺绕过安全启动 — Raelize",
-          text: "Black Hat Europe 2016。Raelize 团队（Niek Timmers、Albert Spruyt、Cristofaro Mune，多为 Riscure 背景）在 Black Hat 舞台上演示：ARM 嵌入式 SoC 校验启动镜像签名的瞬间注入一次电压毛刺，签名验证即告失效，任意固件得以启动。这是“安全启动可被 FI 绕过”第一次在主流安全会议上系统性公开演示，直接挑战了“ secure boot 一旦启用便高枕无忧”的行业假设，也奠定了 Raelize 此后近十年一系列 FI 议题的基调。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" },
-    en: { headline: "Bypassing Secure Boot using Fault Injection",
-          text: "Black Hat Europe 2016. The Raelize team (Niek Timmers, Albert Spruyt, Cristofaro Mune, mostly Riscure veterans) demonstrated on the Black Hat stage: a single voltage glitch injected while an ARM embedded SoC verifies the boot image signature breaks the verification, booting arbitrary firmware. It was the first systematic public demonstration at a major security conference that secure boot can be defeated by FI, directly challenging the industry assumption that “enabled secure boot = done”, and setting the tone for Raelize's decade-long series of FI talks.<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" }
-  },
-  {
-    start: { year: 2017, month: 2 },
-    zh: { headline: "攻破 NXP LPC 代码读取保护",
-          text: "REcon Brussels 2017。Chris Gerlinsky 针对 NXP LPC 系列 MCU 的 CRP（Code Read Protection）：引导程序在上电时读取 CRP 等级值，在读取瞬间注入电压毛刺可把合法等级损坏成“无效值”，而芯片固件对无效值的处理竟是<b>静默关闭保护</b>—— 随后用调试器即可完整 dump 固件。这是“毛刺配置读取”套路的经典案例：保护机制的默认值/错误处理路径往往才是真正的软肋。<br><a href='https://www.youtube.com/watch?v=YNpJ3c1GJoc' target='_blank'>演讲录像</a>" },
-    en: { headline: "Breaking Code Read Protection on NXP LPC MCUs",
-          text: "REcon Brussels 2017. Chris Gerlinsky targeted the CRP (Code Read Protection) of NXP LPC MCUs: the bootloader reads the CRP level at power-up; a voltage glitch at that instant corrupts a valid level into an <b>invalid</b> one — and the firmware's handling of invalid values was to silently disable protection. A debugger then dumps the entire firmware. A classic of the “glitch the config read” pattern: the error-handling path of a protection mechanism is often the real weak spot.<br><a href='https://www.youtube.com/watch?v=YNpJ3c1GJoc' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2017, month: 7 },
-    zh: { headline: "破解比特币硬件钱包",
-          text: "DEF CON 25。Josh Datko 与 Chris Quartier 把目光投向保管私钥的硬件钱包：对钱包内 STM32F2 单片机实施电压毛刺，绕过其 RDP 读保护读取固件与敏感数据。这是针对加密货币硬件钱包的首次公开 FI 演示，预告了次年 35C3 上轰动行业的 wallet.fail，也促使钱包厂商开始认真评估物理攻击场景（此前多数设计只防远程攻击）。<br><a href='https://www.youtube.com/watch?v=hAtoRrxFBWs' target='_blank'>演讲录像</a>" },
-    en: { headline: "Breaking Bitcoin Hardware Wallets",
-          text: "DEF CON 25. Josh Datko and Chris Quartier turned to the devices guarding crypto private keys: voltage-glitching the STM32F2 inside hardware wallets to bypass RDP readout protection and read firmware and sensitive data. It was the first public FI demonstration against cryptocurrency hardware wallets, previewing the next year's sensational wallet.fail at 35C3, and pushed wallet vendors to finally take physical-attack scenarios seriously (most designs until then only defended against remote attacks).<br><a href='https://www.youtube.com/watch?v=hAtoRrxFBWs' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2017, month: 9 },
-    zh: { headline: "KERNELFAULT：毛刺拿下 Linux 内核",
-          text: "hardwear.io 2017。Raelize 回答了一个尖锐问题：如果软件完全没有漏洞，还能被攻破吗？答案是能 —— 在系统启动早期、从外部 SDRAM 读取数据的瞬间注入电压毛刺，即可篡改传入内核的指令/数据，从普通用户态一路提升到内核权限。该议题把 FI 的威胁模型从“嵌入式裸机”扩展到完整 Linux 系统，说明物理层攻击可以无视软件层的全部加固。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" },
-    en: { headline: "KERNELFAULT: Pwning Linux via FI",
-          text: "hardwear.io 2017. Raelize answered a sharp question: if the software has zero bugs, can it still be pwned? Yes — inject a voltage glitch while the system reads from external SDRAM during early boot, and instructions/data flowing into the kernel get corrupted, escalating from unprivileged userland to kernel privileges. The talk expanded FI's threat model from bare-metal embedded to full Linux systems, showing physical-layer attacks ignore all software-layer hardening.<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" }
-  },
-  {
-    start: { year: 2018, month: 6 },
-    zh: { headline: "Glitching the Switch：任天堂 Switch 启动 ROM",
-          text: "OpenChaos（CCC 科隆）2018。在 Fusée Gelée 软件漏洞震惊 Switch 社区的同一年，安全研究者探讨了另一条路线：对 NVIDIA Tegra X1 启动 ROM 实施电压毛刺注入，试图在硬件层面绕过签名校验。议题记录了毛刺时序搜索、目标点位定位的完整过程，与软件漏洞互为补充，展示了现代游戏机 SoC 在 FI 面前的两条战线。<br><a href='https://media.ccc.de/v/c4.openchaos.2018.06.glitching-the-switch' target='_blank'>演讲录像</a>" },
-    en: { headline: "Glitching the Switch (Tegra X1 Boot ROM)",
-          text: "OpenChaos (CCC Cologne) 2018. In the same year the Fusée Gelée software exploit stunned the Switch scene, researchers explored the other route: voltage fault injection against the NVIDIA Tegra X1 boot ROM to bypass signature checks at the hardware level. The talk documents the full process of glitch-timing search and target localization, complementing the software exploit and illustrating the two fronts — software and physical — on which modern console SoCs can be attacked.<br><a href='https://media.ccc.de/v/c4.openchaos.2018.06.glitching-the-switch' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2018, month: 12 },
-    zh: { headline: "wallet.fail：硬件钱包的至暗时刻",
-          text: "35C3（第 35 届混沌通信大会）。Thomas Roth、Josh Datko 与 Dmitry Nedospasov 的这场演讲成为硬件安全史上最出圈的事件之一：对 Ledger Nano S、Ledger Blue 与 Trezor One 的 STM32 主控实施电压毛刺，绕过读保护提取助记词种子与 PIN；还现场用射频侧信道嗅探 Ledger Blue 输入的 PIN。演讲迫使两大钱包厂商紧急发布固件更新与安全声明，让“硬件钱包≠绝对安全”成为公众认知，也直接推高了整个行业的物理防护标准。<br><a href='https://media.ccc.de/v/35c3-9563-wallet_fail' target='_blank'>演讲录像</a>" },
-    en: { headline: "wallet.fail — 35C3",
-          text: "35th Chaos Communication Congress. The talk by Thomas Roth, Josh Datko and Dmitry Nedospasov became one of the most famous hardware-security events ever: voltage-glitching the STM32 MCUs of the Ledger Nano S, Ledger Blue and Trezor One to bypass readout protection and extract seed phrases and PINs — plus a live RF side-channel sniffing of PIN entry on the Ledger Blue. It forced both major wallet vendors into emergency firmware updates and security statements, made “hardware wallet ≠ absolute security” public knowledge, and permanently raised the industry's physical-protection bar.<br><a href='https://media.ccc.de/v/35c3-9563-wallet_fail' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2019, month: 11 },
-    zh: { headline: "毛刺数据传输 → 任意代码执行",
-          text: "POC 2019（首尔）。Raelize 把 KERNELFAULT 的思想一般化并推向极致：不再依赖具体系统调用或内存布局，只需毛刺总线上任意一次数据传输，即可把取到的指令篡改成攻击者需要的形态，在启动阶段实现稳定的任意代码执行。议题同时论证：由于攻击发生在物理层，补丁、栈保护、签名校验等一切纯软件缓解措施都无法根治 —— 只有硬件级对策（如在线存储加密、冗余校验）才有效。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" },
-    en: { headline: "FI Turns Data Transfers into Arbitrary Execution",
-          text: "POC 2019 (Seoul). Raelize generalized and perfected the KERNELFAULT idea: without relying on specific syscalls or memory layouts, glitching any single bus data transfer corrupts a fetched instruction into whatever the attacker needs, yielding reliable arbitrary code execution during boot. The talk also argued that since the attack happens at the physical layer, patches, stack protections and signature checks — any purely software mitigation — cannot fix it; only hardware-level countermeasures (inline memory encryption, redundant checks) help.<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" }
-  },
-  {
-    start: { year: 2019, month: 12 },
-    zh: { headline: "Fatal Fury on ESP32：永久攻陷",
-          text: "Black Hat Europe 2019。LimitedResults（Karim M. Abdellatif）发表“Pwn the ESP32 Forever”系列成果：ESP32（V1 硅片）上电读取 eFuse 安全配置的瞬间注入电源毛刺，即可绕过 Secure Boot 与 Flash Encryption 两道防线，从量产芯片中提取出本���熔丝保护的密钥。由于 eFuse 属一次性烧录、启动 ROM 无法更新，该漏洞<b>不可通过软件修复</b>，乐鑫最终被迫推出硬件加固的 ESP32-V3 修订版 —— 这是 FI 攻击直接改变芯片厂商产品线的标志性案例。" },
-    en: { headline: "Fatal Fury on ESP32 — Black Hat Europe",
-          text: "Black Hat Europe 2019. LimitedResults (Karim M. Abdellatif) presented the “Pwn the ESP32 Forever” work: power-glitching the ESP32 (V1 silicon) at the exact moment it reads eFuse security configuration at power-up defeats both Secure Boot and Flash Encryption, extracting keys that were supposed to be fused in production chips. Because eFuses are one-time-programmable and the boot ROM cannot be updated, the flaw was <b>unfixable in software</b> — Espressif eventually shipped a hardware-hardened ESP32-V3 revision. A landmark case of FI directly changing a chip vendor's product line." }
-  },
-  {
-    start: { year: 2022, month: 8 },
-    zh: { headline: "Glitched on Earth by Humans：黑盒击穿星链终端",
-          text: "Black Hat USA 2022（并登陆 DEF CON 30）。KU Leuven 的 Lennert Wouters 对 SpaceX 星链用户终端做了完全黑盒的安全评估：在不了解定制意法半导体 SoC 内部结构的情况下，用一块约 25 美元的 RP2040 自制 modchip 短接内核电源轨，在启动 ROM 校验签名的瞬间毛刺，获得终端上的任意代码执行。SpaceX 随后发布安全更新并公开致谢。这是低成本 FI 装备挑战航天级定制芯片的标志性案例，标题戏仿了马斯克“在火星上被人类看到”的豪言。<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-Wouters-Glitched-On-Earth.pdf' target='_blank'>演讲幻灯</a>" },
-    en: { headline: "Glitched on Earth by Humans (SpaceX Starlink)",
-          text: "Black Hat USA 2022 (also at DEF CON 30). Lennert Wouters (KU Leuven) ran a fully black-box evaluation of the SpaceX Starlink user terminal: with no knowledge of the custom STMicroelectronics SoC internals, a ~$25 RP2040-based modchip shorts the core voltage rail to glitch the boot ROM's signature check, yielding arbitrary code execution on the terminal. SpaceX shipped a security update and publicly thanked him. A landmark of low-cost FI gear challenging aerospace-grade custom silicon — the title lampoons Musk's “visible from Mars” ambitions.<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-Wouters-Glitched-On-Earth.pdf' target='_blank'>Slides</a>" }
-  },
-  {
-    start: { year: 2022, month: 8 },
-    zh: { headline: "Unlimited Results：再破加固版 ESP32-V3",
-          text: "Black Hat USA 2022。乐鑫为修复“Fatal Fury”推出的 ESP32-V3 号称具备故障注入防护 —— Abdellatif、Hériveaux 与 Thillard（LimitedResults / Ledger Donjon）用电压毛刺与 EMFI 组合攻击实现了对程序计数器的精确控制，在加固硅片上再次攻破固件加密并提取受保护内容。结论相当直白：V3 的对策提高了门槛，但对坚持且有装备的攻击者仍然不够。攻防双方的下一次交锋（WOOT 2024 的 PC 控制学术化研究）随即到来。<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-ABDELLATIF-Unlimited-Results-Breaking-Firmware-Encryption.pdf' target='_blank'>演讲幻灯</a>" },
-    en: { headline: "Unlimited Results: Breaking ESP32-V3",
-          text: "Black Hat USA 2022. Espressif's ESP32-V3 — released to fix “Fatal Fury” — advertised fault-injection resistance; Abdellatif, Hériveaux and Thillard (LimitedResults / Ledger Donjon) combined voltage glitching with EMFI to achieve precise program-counter control, breaking firmware encryption on the hardened silicon and extracting protected content again. The blunt conclusion: V3's countermeasures raised the bar but were still insufficient against persistent, well-equipped attackers. The next round of the arms race — the WOOT 2024 academic study of PC control — followed shortly.<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-ABDELLATIF-Unlimited-Results-Breaking-Firmware-Encryption.pdf' target='_blank'>Slides</a>" }
-  },
-  {
-    start: { year: 2022, month: 6 },
-    zh: { headline: "毛刺 OTP 数据传输绕过 SoC 安全配置",
-          text: "hardwear.io USA 2022。Raelize 揭示了安全配置链条上一个常被忽视的环节：OTP/eFuse 里存的安全设置本身可能完好无损，但在从 OTP 传送到使用点的<b>途中</b>被电压毛刺篡改 —— 安全启动锁定、调试端口禁用等设置在“运输路上”就被掉包。这一“攻其传输”的思路与此前“攻其读取”（LPC CRP）、“攻其比较”（Xbox RGH）形成完整的方法论家族。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" },
-    en: { headline: "Breaking SoC Security by Glitching OTP Data Transfers",
-          text: "hardwear.io USA 2022. Raelize exposed an often-overlooked link in the security-configuration chain: the OTP/eFuse contents themselves may be perfectly intact, yet get corrupted by a voltage glitch <b>in transit</b> from OTP storage to the point of use — secure-boot lockouts and debug-port disables are swapped out “on the road”. This “attack the transfer” idea completes a methodological family alongside “attack the read” (LPC CRP) and “attack the compare” (Xbox RGH).<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" }
-  },
-  {
-    start: { year: 2023, month: 11 },
-    zh: { headline: "faulTPM：榨干 AMD fTPM 的全部秘密",
-          text: "ACM CCS 2023。Jacob、Werling、Buhren 与 Seifert 把 2021 年攻破 AMD PSP 的电压毛刺技术对准了其上运行的固件 TPM（fTPM）：在 Zen 2/3 平台上毛刺 PSP 获得代码执行后，提取 fTPM 的背书密钥与存储密钥（CVE-2023-20589）。后果极其严重：Windows BitLocker 磁盘加密、TPM 远程证明等一切信任 fTPM 的机制全部失效 —— 而受影响设备无需开封、现场数小时即可被完整克隆身份。研究再次证明：集成式安全方案一旦失守，失守的是整个信任链。<br><a href='https://arxiv.org/abs/2304.14717' target='_blank'>论文</a>" },
-    en: { headline: "faulTPM: Exposing AMD fTPMs' Deepest Secrets",
-          text: "ACM CCS 2023. Jacob, Werling, Buhren and Seifert aimed the 2021 AMD PSP voltage-glitch technique at the firmware TPM (fTPM) running on it: after glitching the PSP on Zen 2/3 platforms for code execution, they extracted the fTPM's endorsement and storage keys (CVE-2023-20589). The consequences are severe: everything trusting the fTPM — Windows BitLocker disk encryption, TPM remote attestation — collapses, and an affected machine's identity can be fully cloned in hours on-site without decapsulation. Once more: when an integrated security solution falls, the entire chain of trust falls with it.<br><a href='https://arxiv.org/abs/2304.14717' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2024, month: 8 },
-    zh: { headline: "WOOT 2024：故障注入计算控制 ESP32-V3 程序计数器",
-          text: "USENIX WOOT 2024。Delvaux、Mune、Romero 与 Timmers 首次在带有故障注入防护的 ESP32-V3 上同时绕过 Secure Boot 与 Flash Encryption：先篡改加密 Flash 中的内容，使启动加载器签名 CRC 的 32 位结果变成任意值，再用一次电磁毛刺把该值装入 CPU 的程序计数器（PC），跳入 ROM Download Mode，进而执行任意代码并读取未加密 Flash。论文还记录了厂商通报 AR2023-005 与 CVE-2023-35818，确认问题属于硬件缺陷。<br><a href='https://www.usenix.org/conference/woot24/presentation/delvaux' target='_blank'>论文与演讲</a>" },
-    en: { headline: "WOOT 2024: Program-Counter Control on ESP32-V3",
-          text: "USENIX WOOT 2024. Delvaux, Mune, Romero and Timmers were the first to bypass both Secure Boot and Flash Encryption on the fault-injection-hardened ESP32-V3: they altered encrypted flash so the bootloader-signature CRC produced an attacker-chosen 32-bit value, then used a single EM glitch to load that value into the CPU program counter and jump into ROM Download Mode for arbitrary code execution and access to plaintext flash. The paper records Espressif advisory AR2023-005 and CVE-2023-35818, confirming a hardware flaw that requires a new revision.<br><a href='https://www.usenix.org/conference/woot24/presentation/delvaux' target='_blank'>Paper and talk</a>" }
-  },
-  {
-    start: { year: 2024, month: 8 },
-    zh: { headline: "ACE up the Sleeve：EMFI 攻入 iPhone 15 USB-C 控制器",
-          text: "DEF CON 32 / 38C3。stacksmashing（Thomas Roth）瞄准苹果首次随 iPhone 15 搭载的 ACE3 USB-C 端口控制器：先逆向其私有架构拿到 JTAG 调试能力，再用精确定时的电磁故障注入（EMFI）毛刺绕过固件认证，让芯片运行被篡改的固件 —— 从而获得对 iPhone 15 硬件前所未有的深度内省能力，也为研究苹果生态的物理安全打开了新入口。议题展示了“逆向+EMFI”组合对闭源定制芯片的杀伤力。<br><a href='https://media.defcon.org/DEF%20CON%2032/DEF%20CON%2032%20presentations/DEF%20CON%2032%20-%20stacksmashing%20-%20ACE%20up%20the%20Sleeve%20From%20getting%20JTAG%20on%20the%20iPhone%2015%20to%20hacking%20into%20Apples%20new%20USB-C%20Controller.pdf' target='_blank'>演讲幻灯</a>" },
-    en: { headline: "ACE up the Sleeve: Hacking Apple's USB-C Controller",
-          text: "DEF CON 32 / 38C3. stacksmashing (Thomas Roth) targeted Apple's ACE3 USB-C port controller, debuting in the iPhone 15: first reverse-engineering its proprietary architecture to gain JTAG, then using precisely-timed EMFI to glitch past firmware authentication and run patched firmware — gaining unprecedented hardware introspection on the iPhone 15 and opening a new entry point for physical security research on Apple's ecosystem. The talk showcases the killing power of combining reverse engineering with EMFI against closed-source custom silicon.<br><a href='https://media.defcon.org/DEF%20CON%2032/DEF%20CON%2032%20presentations/DEF%20CON%2032%20-%20stacksmashing%20-%20ACE%20up%20the%20Sleeve%20From%20getting%20JTAG%20on%20the%20iPhone%2015%20to%20hacking%20into%20Apples%20new%20USB-C%20Controller.pdf' target='_blank'>Slides</a>" }
-  },
-  {
-    start: { year: 2024, month: 8 },
-    zh: { headline: "RP2350 挑战赛：激光 FI 攻破树莓派新安全架构",
-          text: "DEF CON 32。树莓派为新一代 RP2350 微控制器的安全架构（签名启动、OTP、冗余检测等一整套防护）悬赏约 2 万美元公开征集攻破者，并把奖金挑战赛搬到 DEF CON。安全公司 IOActive 的研究者使用激光故障注入完成了攻破，拿走了奖金。这是罕见的“厂商主动邀请 FI 攻击”案例：与其相信设计文档，不如让最强的攻击者实测 —— 也再次证明激光 FI 仍是高精度攻击的王者。<br><a href='https://ioactive.com/' target='_blank'>IOActive</a>" },
-    en: { headline: "RP2350 Hacking Challenge Won with Laser FI",
-          text: "DEF CON 32. Raspberry Pi put a ~$20k bounty on breaking its new RP2350 microcontroller's security architecture (signed boot, OTP, redundancy detection — a full stack of protections) and brought the challenge to DEF CON. Researchers at IOActive completed the break using laser fault injection and collected the bounty. A rare case of a vendor actively inviting FI attacks — trusting the strongest attackers' measurements over design documents — and once again proof that laser FI remains king of high-precision attacks.<br><a href='https://ioactive.com/' target='_blank'>IOActive</a>" }
-  },
-  {
-    start: { year: 2025, month: 5 },
-    zh: { headline: "setresuid(⚡)：毛刺 Google TV Streamer 提权",
-          text: "hardwear.io NL 2025。Raelize 把 FI 提权 playbook 应用到最新消费级 Android 硬件：在 Google TV Streamer（Amlogic 平台）上已有 adb shell 的前提下，在权限检查（setresuid 等系统调用路径）执行的精确瞬间注入电压毛刺，让权限判断出错，从受限 shell 直接提权到 root。议题标题的 ⚡ 一语双关 —— 十年过去，从 2016 年 Black Hat 的安全启动到今天的流媒体盒子，FI 对现代消费电子依然一招致命。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" },
-    en: { headline: "setresuid(⚡): Glitching Google's TV Streamer",
-          text: "hardwear.io NL 2025. Raelize applied the FI privilege-escalation playbook to the latest consumer Android hardware: from an adb shell on a Google TV Streamer (Amlogic platform), a voltage glitch at the precise moment of a privilege check (the setresuid syscall path) corrupts the decision, jumping straight from restricted shell to root. The ⚡ in the title is a double entendre — a decade on, from Black Hat 2016's secure boot to today's streaming boxes, FI remains a one-shot kill against modern consumer electronics.<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" }
-  },
-  {
-    start: { year: 2025, month: 6 },
-    zh: { headline: "EL3vated Privileges：从 root 毛刺到 ARM EL3",
-          text: "hardwear.io USA 2025。Raelize 又进一步：在 Google Nest WiFi Pro（高通平台路由器）上，即便攻击者已拿到 Linux root，ARM 的 EL3 安全监控器仍是最后的堡垒 —— 他们用一次定时电压毛刺篡改陷入 EL3 的 SMC 调用处理，完成从 root 到最高异常级别的逃逸，实现对该商用路由器全栈权限的彻底控制。从内核（2017 KERNELFAULT）到 EL3（2025），Raelize 用八年时间把 FI 提权链条推到了 ARM 特权等级的顶端。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" },
-    en: { headline: "EL3vated Privileges: Root to EL3 by Glitching",
-          text: "hardwear.io USA 2025. Raelize went one step further: on the Google Nest WiFi Pro (a Qualcomm router platform), even with Linux root in hand, ARM's EL3 secure monitor remains the final fortress — a timed voltage glitch corrupting SMC call handling into EL3 completed the escape from root to the highest exception level, yielding total stack control of a shipping commercial router. From the kernel (KERNELFAULT, 2017) to EL3 (2025), Raelize spent eight years pushing the FI privilege-escalation chain to the top of ARM's privilege ladder.<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" }
-  },
-  {
-    start: { year: 2017, month: 9 },
-    zh: { headline: "Safety ≠ Security：ASIL-D 车规 MCU 照样被毛刺",
-          text: "FDTC 2017。Riscure 的 Pareja、Wiersma 与 Witteman 做了一个汽车行业不愿面对的实验：对通过 ISO 26262 功能安全认证（QM、ASIL-D1、ASIL-D2 等级）的汽车 MCU 实施电压毛刺与 EMFI。结果触目惊心：安全认证关注的是“随机硬件失效”，而非“攻击者蓄意注入故障”，即便是最高等级 ASIL-D 器件，也有 16–37% 的故障注入成功率。这篇论文是汽车芯片 FI 研究的先声 —— 此后 RH850��AURIX、MPC5xxx 等一个个沦陷，都印证了它的判断。" },
-    en: { headline: "Safety ≠ Security: Glitching ASIL-D Automotive MCUs",
-          text: "FDTC 2017. Riscure's Pareja, Wiersma and Witteman ran the experiment the automotive industry didn't want to see: voltage glitching and EMFI against MCUs certified to ISO 26262 functional safety (QM, ASIL-D1, ASIL-D2). The results were sobering: safety certification addresses random hardware failures, not deliberately injected faults — even the highest-grade ASIL-D devices faulted 16–37% of the time. The paper was the opening shot of automotive FI research; the subsequent falls of RH850, AURIX, MPC5xxx and others all confirmed its verdict." }
-  },
-  {
-    start: { year: 2018, month: 6 },
-    zh: { headline: "故障注入攻击汽车诊断协议",
-          text: "escar USA 2018。Raelize 把目标对准汽车 ECU 的 UDS 诊断服务：维修诊断中的 SecurityAccess 采用“种子-密钥”挑战应答机制保护刷写/读取等高权限功能，而在 ECU 校验密钥响应的瞬间注入电压毛刺，即可让校验恒为通过 —— 无需知道密钥就能解锁诊断功能、读取和篡改固件。这是最早公开的汽车 ECU 故障注入实战之一，把 FI 威胁直接带进了汽车售后与改装场景。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" },
-    en: { headline: "Fault Injection on Automotive Diagnostic Protocols",
-          text: "escar USA 2018. Raelize targeted the UDS diagnostic services of automotive ECUs: SecurityAccess protects high-privilege functions (flashing, reading) with a seed-and-key challenge-response, but a voltage glitch at the moment the ECU verifies the key response makes the check always pass — unlocking diagnostic functions and reading/modifying firmware without ever knowing the key. One of the earliest public automotive ECU FI demonstrations, bringing the FI threat straight into the aftermarket and tuning scene.<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>" }
-  },
-  {
-    start: { year: 2020, month: 11 },
-    zh: { headline: "BAM BAM!!：EMFI 解除车规 ECU 审查锁",
-          text: "escar Europe 2020（ePrint 2020/937）。Colin O'Flynn 攻克了 NXP MPC55xx/MPC56xx 系列（汽车动力/车身主力芯片）臭名昭著的“审查锁”（censorship）：其 BAM 启动模块会比较密码来决定是否锁死调试/读取，O'Flynn 用 EMFI 在密码比较瞬间注入故障，单次成功率仅 1–2%，但配合自动化重试，在一辆 2019 款雪佛兰 Silverado 2500 HD 的<b>原厂未拆改 E41 ECU 上</b>几分钟内完成解锁并 dump 全部 Flash。这是“整车在环、不拆芯片”EMFI 攻击真实量产 ECU 的里程碑。<br><a href='https://eprint.iacr.org/2020/937' target='_blank'>论文</a>" },
-    en: { headline: "BAM BAM!!: EMFI Uncensors a Real Automotive ECU",
-          text: "escar Europe 2020 (ePrint 2020/937). Colin O'Flynn broke the notorious “censorship” lock of the NXP MPC55xx/MPC56xx family (workhorse chips of powertrain/body electronics): the BAM boot module compares a password to decide whether to lock debug/readout, and O'Flynn faulted that comparison with EMFI. Single-attempt success was only 1–2%, but with automated retries he unlocked a <b>stock, unmodified E41 ECU</b> from a 2019 Chevrolet Silverado 2500 HD within minutes and dumped its entire flash. A milestone of in-situ EMFI against a real production ECU — no chip removal, no modification.<br><a href='https://eprint.iacr.org/2020/937' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2022, month: 3 },
-    zh: { headline: "首次公开瑞萨 RH850 电压毛刺攻击",
-          text: "Willem Melching（icanhack.nl）盯上了瑞萨 RH850 —— 汽车电子转向、刹车等安全关键系统的主力 MCU。目标是一块来自 2021 款丰田 RAV4 Prime 电动助力转向（EPS）模块的 RH850/P1M-E（R7F701381）：厂商已禁用串行编程接口，Melching 在芯片内部稳压器的 VCL 引脚上实施 crowbar 电压毛刺，绕过编程器访问保护，完整 dump 固件。这是首个公开的 RH850 故障注入攻击，此后 FEV（2024）、Quarkslab（2026）的工作均沿此路线演进。<br><a href='https://icanhack.nl/blog/' target='_blank'>博客</a>" },
-    en: { headline: "First Public Renesas RH850 Glitch (Toyota EPS)",
-          text: "Willem Melching (icanhack.nl) took on the Renesas RH850 — the workhorse MCU of safety-critical systems like steering and braking. The target: an RH850/P1M-E (R7F701381) from a 2021 Toyota RAV4 Prime electric power steering (EPS) module. With the serial programmer interface disabled by the vendor, Melching crowbar-glitched the VCL pins of the chip's internal voltage regulator, bypassing programmer access protection and dumping the full firmware. The first public RH850 fault injection attack; the later FEV (2024) and Quarkslab (2026) works follow this lineage.<br><a href='https://icanhack.nl/blog/' target='_blank'>Blog</a>" }
-  },
-  {
-    start: { year: 2023, month: 9 },
-    zh: { headline: "EMFI 攻破汽车安全启动加载器",
-          text: "ASRG 2023。Dissecto 的 Weiß 与 Pozzobon 针对汽车网关的核心 —— NXP MPC5748G 的安全启动加载器：用 EMFI 在关键执行点损坏栈指针，让程序计数器（PC）被劫持着“跨过”签名校验代码，实现未授权固件启动。更具方法论意义的是，他们开发了 EFISSA 进化算法自动搜索毛刺参数（位置、强度、时序），把传统需要数周的手工调参压缩到一小时内 —— FI 攻击的“自动化时代”由此开启。" },
-    en: { headline: "Fault Injection Attacks on Secure Automotive Bootloaders",
-          text: "ASRG 2023. Dissecto's Weiß and Pozzobon went after the heart of the automotive gateway — the secure bootloader of the NXP MPC5748G: EMFI corrupts the stack pointer at a critical execution point, hijacking the program counter to “jump over” the signature-check code and boot unauthorized firmware. Methodologically even more significant: their EFISSA evolutionary algorithm automatically searches glitch parameters (position, strength, timing), compressing weeks of manual tuning into under an hour — the beginning of FI's “automation era”." }
-  },
-  {
-    start: { year: 2023, month: 8 },
-    zh: { headline: "Back in the Driver's Seat：电压毛刺特斯拉 Autopilot",
-          text: "Black Hat USA 2023 / 37C3。TU 柏林团队（Werling、Kühnapfel、Jacob、Drokin）把 AMD SEV 攻击的经验搬到了特斯拉上：对 Model 3/Y 自动驾驶计算机（AP3.x，AMD 平台）的安全启动实施电压毛刺，获得 root shell，从报废车辆上提取出硬件唯一认证密钥、车主个人数据与自动驾驶数据，甚至可以免费激活付费功能（如加速提升包）。研究揭示：只要物理接触到车载电脑，特斯拉的“硬件信任根”可以被完全绕过，二手/报废车数据安全亦成问题。<br><a href='https://www.youtube.com/watch?v=AgC9OiFrIPk' target='_blank'>演讲录像</a>" },
-    en: { headline: "Back in the Driver's Seat: Glitching Tesla Autopilot",
-          text: "Black Hat USA 2023 / 37C3. The TU Berlin team (Werling, Kühnapfel, Jacob, Drokin) brought their AMD SEV attack experience to Tesla: voltage-glitching the secure boot of the Model 3/Y Autopilot computer (AP3.x, AMD platform) yields a root shell — extracting hardware-unique authentication keys, owner personal data and Autopilot data from salvage units, and even activating paid features (like acceleration boost) for free. The takeaway: with physical access to the car computer, Tesla's hardware root of trust can be fully bypassed — and the data security of used/salvaged cars is in question too.<br><a href='https://www.youtube.com/watch?v=AgC9OiFrIPk' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2024, month: 2 },
-    zh: { headline: "电压毛刺解锁 RH850/F1L 车身控制器",
-          text: "FEV Secure Lab（Sunny 与 Zari）把 RH850 攻击从研究台推向工程化：目标是车身控制模块（BCM）中的 RH850/F1L，使用仅数百美元的 ChipWhisperer Lite 对 ISOVCL 引脚注入电压毛刺，绕过 16 字节 IDCODE 校验，提取全部 Flash 内容并恢复出诊断安全访问密钥。案例说明：车身控制这种“看似不重要”的 ECU 一旦被 dump，泄露的诊断密钥可能成为横向攻击整车网络的跳板。" },
-    en: { headline: "Unlocking Renesas RH850/F1L with Voltage Glitching",
-          text: "FEV Secure Lab (Sunny & Zari) turned RH850 attacks into engineering practice: targeting the RH850/F1L inside a body control module (BCM), they used a ChipWhisperer Lite costing only a few hundred dollars to glitch the ISOVCL pin, bypassing the 16-byte IDCODE check, extracting all flash contents and recovering diagnostic security-access keys. The lesson: once a “seemingly unimportant” ECU like a BCM is dumped, its leaked diagnostic keys can become a springboard for lateral movement across the vehicle network." }
-  },
-  {
-    start: { year: 2024, month: 8 },
-    zh: { headline: "Ops! It Is JTAG's Fault：攻破 ST SPC58",
-          text: "Black Hat USA 2024。GoGoByte 团队（Li、Shi、Yang、Wu）挑战 ST SPC58 —— 号称具备防毛刺冗余校验的汽车 MCU：其 JTAG 密码会连续比较两次，单次毛刺无法同时骗过。团队设计了自制毛刺适配器精确压制第二次校验，用电压毛刺突破双重比较，最终获得代码执行能力与完整固件访问。议题说明车厂/芯片厂为 FI 专门加的“冗余校验”对策，在精心设计的多次毛刺面前依然可以被系统性击败（与学术界 µ-Glitch 的结论互为印证）。" },
-    en: { headline: "Ops! It Is JTAG's Fault — Black Hat USA 2024",
-          text: "Black Hat USA 2024. The GoGoByte team (Li, Shi, Yang, Wu) took on the ST SPC58 — an automotive MCU advertised with glitch-resistant redundant checks: its JTAG password is compared twice in a row, so a single glitch cannot fool both. The team built a custom glitch adapter that precisely suppresses the second comparison, defeating the double check with voltage glitching and gaining code execution plus full firmware access. The talk shows that “redundant check” countermeasures added specifically against FI can still be systematically defeated by carefully engineered multi-glitches — corroborating the academic µ-Glitch results." }
-  },
-  {
-    start: { year: 2024, month: 10 },
-    zh: { headline: "EMFI 彻底关闭 SPC5606B 审查机制",
-          text: "Van den Herrewegen 与 Adam 在日产 Hands-Free 模块 ECU 的 ST SPC5606B 上发现：与其攻击 BAM 层的密码比较（成功率低），不如攻击更上游 —— SSCM 模块在上电时从 Flash 加载“审查配置”的过程。他们利用上电复位（POR）的功耗侧信道精确定时，用 EMFI 篡改加载中的配置值，一次性<b>永久禁用</b>审查锁。2024 年 10 月通报 NXP/ST（PSIRT）。该案例把 O'Flynn 的 BAM BAM 思路推进一层：打配置加载比打密码比较更致命。" },
-    en: { headline: "Disabling Censorship on SPC5606B via EMFI",
-          text: "Van den Herrewegen and Adam found on a Nissan Hands-Free Module's ST SPC5606B that instead of attacking the low-success-rate BAM password comparison, one can strike further upstream: the SSCM module loads the “censorship configuration” from flash at power-up. Using the power-on-reset power side-channel for precise timing, EMFI corrupts the config value in flight, <b>permanently disabling</b> censorship in one shot. Reported to NXP/ST PSIRT in October 2024. The case advances O'Flynn's BAM BAM playbook one level deeper: hitting config load beats hitting password compare." }
-  },
-  {
-    start: { year: 2025, month: 8 },
-    zh: { headline: "Three Glitches to Rule One Car：击穿特斯拉全车计算机",
-          text: "ACM ASIA CCS 2025。TU 柏林 SecT（Kühnapfel、Werling、Jacob、Seifert）完成了对特斯拉车机的“全满贯”：HW3/HW4 平台的三个核心子系统 —— AMD x86 信息娱乐 SoC（电压毛刺）、FSD 自动驾驶芯片（电压毛刺）、NXP/ST 网关 MCU（EMFI）—— 全部沦陷，且网关上的 EMFI 攻击是持久、非侵入式的。研究强调其普适性：同样的 AMD/英飞凌/NXP/ST 芯片广泛应用于其他车企，攻击手法可直接迁移。标题致敬 2021 年“One Glitch to Rule Them All”。<br><a href='https://dl.acm.org/doi/10.1145/3708821.3710820' target='_blank'>论文</a>" },
-    en: { headline: "Three Glitches to Rule One Car (Tesla)",
-          text: "ACM AsiaCCS 2025. TU Berlin SecT (Kühnapfel, Werling, Jacob, Seifert) completed a “grand slam” of Tesla's car computer: all three core subsystems of the HW3/HW4 platform fell — the AMD x86 infotainment SoC (voltage glitching), the FSD self-driving chip (voltage glitching), and the NXP/ST gateway MCU (a persistent, non-invasive EMFI attack). The paper stresses generality: the same AMD/Infineon/NXP/ST silicon is widely used by other automakers, so the techniques transfer directly. The title pays homage to 2021's “One Glitch to Rule Them All”.<br><a href='https://dl.acm.org/doi/10.1145/3708821.3710820' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2025, month: 8 },
-    zh: { headline: "Watch Your (Lock)Step：毛刺攻入英飞凌 AURIX",
-          text: "Black Hat USA 2025。stacksmashing（Thomas Roth）对阵汽车功能安全的旗帜 —— 英飞凌 AURIX TriCore：其“锁步核”（lockstep，双核同步执行互相校验）机制本是防随机故障的金钟罩，研究展示了如何在复位/调试握手的精确窗口注入电压毛刺，绕过调试密码保护与读保护，从这款广泛用于动力与底盘控制的 TC275 中提取固件与秘密。锁步防得住宇宙射线，防不住蓄意的毛刺 —— 汽车芯片的“安全/防护错位”再次暴露。" },
-    en: { headline: "Watch Your (Lock)Step: Glitching Infineon AURIX",
-          text: "Black Hat USA 2025. stacksmashing (Thomas Roth) faced the flagship of automotive functional safety — the Infineon AURIX TriCore: its lockstep cores (two cores executing in lockstep, cross-checking each other) were designed against random faults, yet the research shows voltage glitches injected in the precise window of the reset/debug handshake bypass debug password and readout protection on the widely-deployed TC275 (powertrain/chassis control), extracting firmware and secrets. Lockstep stops cosmic rays, not deliberate glitches — the safety/security mismatch of automotive silicon is exposed once again." }
-  },
-  {
-    start: { year: 2026, month: 3 },
-    zh: { headline: "Quarkslab：链式触发秒杀 RH850 调试密码",
-          text: "Philippe Azalbert（Quarkslab）把 RH850 攻击打磨到“分钟级”：针对量产车规 ECU 普遍存在的时序抖动问题，他串联 UART 输出与 ADC 采样两个触发源逐级锁定目标指令窗口，结合 ISOVCL 引脚电压毛刺与功耗侧信道，仅用 88 次尝试、不到一分钟即绕过 RH850/F1KM-S4 及量产 ECU 的调试密码（IDCODE）保护。该工作说明：触发信号工程化之后，曾经“玄学”的毛刺时序搜索已经变成可批量复制的标准流程。<br><a href='https://blog.quarkslab.com/' target='_blank'>博客</a>" },
-    en: { headline: "Quarkslab: RH850 Debug Password Falls in a Minute",
-          text: "Philippe Azalbert (Quarkslab) polished RH850 attacks to “minute-grade”: against the timing jitter endemic to production automotive ECUs, he chained two trigger sources — UART output and ADC sampling — to lock onto the target instruction window step by step, combining ISOVCL-pin voltage glitching with power side-channel. The debug password (IDCODE) of the RH850/F1KM-S4 and production ECUs fell in 88 attempts, under a minute. The lesson: once trigger engineering matures, the once-“arcane” glitch timing search becomes a standard, mass-reproducible workflow.<br><a href='https://blog.quarkslab.com/' target='_blank'>Blog</a>" }
-  },
-  {
-    start: { year: 2017, month: 12 },
-    zh: { headline: "Switch Security：Homebrew on the Horizon",
-          text: "34C3 2017。Plutoo、Derrek 与 Naehrwert 公开了 Nintendo Switch 的首个故障注入启动链：对 NVIDIA Tegra X1 的电源实施电压毛刺，泄露密钥与明文固件，为后续 Homebrew 链路奠定基础。演讲没有展开全部毛刺参数，但明确记录了故障注入在真实 Switch 首发破解中的关键作用。<br><a href='https://www.youtube.com/watch?v=Ec4NgWRE8ik' target='_blank'>演讲录像</a>" },
-    en: { headline: "Switch Security: Homebrew on the Horizon",
-          text: "34C3 2017. Plutoo, Derrek and Naehrwert disclosed the Nintendo Switch's first fault-injection boot-chain break: voltage-glitching the NVIDIA Tegra X1 exposed keys and plaintext firmware and laid the groundwork for the Homebrew chain. The talk did not publish every glitch parameter, but it clearly documents FI's role in the original real-world Switch compromise.<br><a href='https://www.youtube.com/watch?v=Ec4NgWRE8ik' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2019, month: 8 },
-    zh: { headline: "MIN()imum Failure：EMFI 攻击 USB 协议栈",
-          text: "USENIX WOOT 2019。Colin O'Flynn 证明无需拆开设备外壳，也能用电磁故障注入攻击 USB 协议栈：向 Trezor 钱包和 SoloKey FIDO2 密钥发送异常的 wLength，使设备回读最多 64 KB 内存，泄露敏感数据。论文还介绍了 PhyWhisperer-USB，用于 USB 解码与周期级毛刺触发。<br><a href='https://www.usenix.org/conference/woot19/presentation/oflynn' target='_blank'>论文与演讲</a>" },
-    en: { headline: "MIN()imum Failure: EMFI Attacks against USB Stacks",
-          text: "USENIX WOOT 2019. Colin O'Flynn showed that an enclosure need not be opened to attack USB stacks with electromagnetic fault injection: malformed wLength values sent to a Trezor wallet and a SoloKey FIDO2 key made the devices read back up to 64 KB of memory, exposing secrets. The paper also introduced PhyWhisperer-USB for USB decoding and cycle-accurate glitch triggering.<br><a href='https://www.usenix.org/conference/woot19/presentation/oflynn' target='_blank'>Paper and talk</a>" }
-  },
-  {
-    start: { year: 2020, month: 12 },
-    zh: { headline: "Debug Resurrection：复活 Nordic nRF52 调试接口",
-          text: "Black Hat Europe 2020。LimitedResults 展示了 nRF52 系列的电压故障注入：在芯片启动和调试配置处理的关键窗口注入毛刺，重新开启已关闭的 SWD 调试接口，再从 Nordic nRF52 读出受保护固件。该案例把“无 BootROM 的 MCU 也能复活调试口”变成了可复现的硬件攻击路线。<br><a href='https://www.youtube.com/watch?v=r8YXOBb2h48' target='_blank'>演讲录像</a>" },
-    en: { headline: "Debug Resurrection on Nordic nRF52 Series",
-          text: "Black Hat Europe 2020. LimitedResults demonstrated voltage fault injection against the nRF52 family: glitching the critical startup/debug-configuration window resurrects a disabled SWD port, allowing protected firmware to be read from Nordic nRF52 devices. It turned “debug-port resurrection” on MCUs without a BootROM into a reproducible hardware-attack path.<br><a href='https://www.youtube.com/watch?v=r8YXOBb2h48' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2021, month: 8 },
-    zh: { headline: "Hacking the Apple AirTags：故障注入提取固件",
-          text: "DEF CON 29，2021 年 8 月。Thomas Roth 使用电压故障注入复活 AirTag 内 Nordic nRF52832 的 SWD 调试接口，提取、分析、修改并写回受保护固件，完成 AirTag 克隆与位置数据伪造研究。它也是 nRF52 调试口复活技术进入消费电子产品的代表案例。<br><a href='https://www.youtube.com/watch?v=paxErRRsrTU' target='_blank'>演讲录像</a>" },
-    en: { headline: "Hacking the Apple AirTags with Fault Injection",
-          text: "DEF CON 29, August 2021. Thomas Roth used voltage fault injection to resurrect the SWD port on the Nordic nRF52832 inside an AirTag, then extracted, analyzed, modified and reflashed its protected firmware for cloning and location-data spoofing research. It is the clearest consumer-device follow-on to the nRF52 debug-resurrection technique.<br><a href='https://www.youtube.com/watch?v=paxErRRsrTU' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2023, month: 8 },
-    zh: { headline: "Oven Repair：故障注入维修三星烤箱",
-          text: "Black Hat USA 2023。Colin O'Flynn 对三星烤箱中的 Toshiba TMP91FW60 主控实施时钟故障注入，并结合功耗侧信道绕过 bootloader 的串口命令认证，执行 RAMCode，最终修改固件以改善加热控制并实时反馈温度。这个案例说明故障注入同样适用于家电维修和固件定制，而不只用于安全启动破解。<br><a href='https://www.youtube.com/watch?v=ugHxUi_Ijso' target='_blank'>演讲录像</a>" },
-    en: { headline: "Oven Repair: The Hardware Hacking Way",
-          text: "Black Hat USA 2023. Colin O'Flynn combined clock fault injection with power side-channel analysis against the Toshiba TMP91FW60 controller in a Samsung oven, bypassed bootloader authentication for serial commands, and executed RAMCode. He then patched the firmware for improved heating control and live temperature feedback — a reminder that FI is useful for appliance repair and customization, not only secure-boot bypasses.<br><a href='https://www.youtube.com/watch?v=ugHxUi_Ijso' target='_blank'>Talk video</a>" }
-  },
-  {
-    start: { year: 2021, month: 7 },
-    zh: { headline: "Security and Trust：闪存擦除抑制攻破安全令牌",
-          text: "TCHES 2021（2021-07-09）。Schink、Wagner、Unterstein 与 Heyszl 对七款开源安全令牌进行实测，首次公开展示 STM32L422 等 MCU 的闪存擦除抑制：在 RDP 降级与 mass-erase 期间注入 EMFI，使调试保护降级而保留原有固件，进而提取令牌中的密钥。该工作是后续 2024 年多厂商系统研究的直接起点。<br><a href='https://doi.org/10.46586/tches.v2021.i3.176-201' target='_blank'>论文</a>" },
-    en: { headline: "Security and Trust: Flash-Erase Suppression on Security Tokens",
-          text: "TCHES 2021 (9 July 2021). Schink, Wagner, Unterstein and Heyszl examined seven open-source security tokens and publicly demonstrated flash-erase suppression on MCUs including the STM32L422: EMFI during the RDP downgrade/mass-erase sequence lowers debug protection while preserving the original firmware, enabling key extraction from the token. This was the direct precursor to the broader multi-vendor study in 2024.<br><a href='https://doi.org/10.46586/tches.v2021.i3.176-201' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2021, month: 8 },
-    zh: { headline: "C8051F34x：毛刺绕过 Silicon Labs 代码保护",
-          text: "2021 年 8 月公开。debug-silicon 对 Silicon Labs C8051F340/C8051F34x 的专有 C2 调试接口进行了协议逆向、功耗分析与 ChipWhisperer 毛刺实验：一次成功的电压毛刺最多可读出 256 字节受保护 Flash，重复执行即可恢复整片代码。研究同时绕过了未授权代码读取限制与 C2 调试器读取限制，披露时间线显示 2021 年 6 月通知厂商、7 月获准公开。<br><a href='https://github.com/debug-silicon/C8051F34x_Glitch' target='_blank'>研究与代码</a>" },
-    en: { headline: "C8051F34x: Glitching Silicon Labs Code Protection",
-          text: "Publicly released in August 2021. debug-silicon reverse-engineered Silicon Labs' proprietary C2 debug interface and used power analysis plus ChipWhisperer glitching against the C8051F340/C8051F34x: each successful voltage glitch exposes up to 256 bytes of protected Flash, so repeated attempts recover the entire code image. The work bypasses both untrusted-code restrictions and external C2-debugger read protection; its disclosure log records vendor notification in June and publication clearance in July 2021.<br><a href='https://github.com/debug-silicon/C8051F34x_Glitch' target='_blank'>Research and code</a>" }
-  },
-  {
-    start: { year: 2024, month: 1 },
-    zh: { headline: "ESP32-C3/C6：故障注入诱发 Boot ROM 缓冲区溢出",
-          text: "Courk's Blog，2024-01-08。针对带 Secure Boot 与 Flash Encryption 的 ESP32-C3/C6，研究者没有重复攻击最初的签名比较，而是用电压毛刺把 Boot ROM 中 memcpy 的长度参数从 0x8 扰乱为 0x208，制造可控栈溢出并改写返回地址。C3 只需控制外部 Flash 的首个 128 字节，C6 还需控制 0x180 偏移附近少量字节，即可执行自定义代码。<br><a href='https://courk.cc/esp32-c3-c6-fault-injection' target='_blank'>研究文章</a>" },
-    en: { headline: "ESP32-C3/C6: Boot-ROM Buffer Overflow via Fault Injection",
-          text: "Courk's Blog, 8 January 2024. Against ESP32-C3/C6 with Secure Boot and Flash Encryption, the researcher avoided the original signature-check attack and instead voltage-glitched the Boot ROM's memcpy length from 0x8 to 0x208, creating a controllable stack overflow and return-address overwrite. Controlling the first 128-byte flash block is enough on C3; C6 additionally needs a few bytes around offset 0x180 to execute custom code.<br><a href='https://courk.cc/esp32-c3-c6-fault-injection' target='_blank'>Research article</a>" }
-  },
-  {
-    start: { year: 2024, month: 3 },
-    zh: { headline: "Unlock the Door：多厂商闪存擦除抑制研究",
-          text: "TCHES 2024（2024-03-12）。Schink 等人把 2021 年安全令牌中的闪存擦除抑制攻击扩展为系统性研究，在 STM32L422、STM32L1、Artery AT32、GigaDevice GD32 等多家 MCU 上量化成功率、设备差异与损伤风险，证明只要 RDP 降级会触发 mass erase，EMFI 就可能在保留固件的同时恢复调试访问。该论文也是后续 STM32L051 与 PicoGlitcher 复现案例的直接理论来源。<br><a href='https://doi.org/10.46586/tches.v2024.i2.88-129' target='_blank'>论文</a>" },
-    en: { headline: "Unlock the Door: A Multi-Vendor Study of Flash-Erase Suppression",
-          text: "TCHES 2024 (12 March 2024). Schink and colleagues expanded the 2021 security-token result into a systematic study: across STM32L422, STM32L1, Artery AT32 and GigaDevice GD32 devices they measured success rates, device variance and damage risk, showing that whenever RDP downgrade triggers a mass erase, EMFI can restore debug access while preserving firmware. The paper is the direct technical origin of later STM32L051 and PicoGlitcher reproductions.<br><a href='https://doi.org/10.46586/tches.v2024.i2.88-129' target='_blank'>Paper</a>" }
-  },
-  {
-    start: { year: 2024, month: 12 },
-    zh: { headline: "STM32F4：PicoGlitcher 复现 RDP 固件读取",
-          text: "2024 年末公开的 PicoGlitcher 实验。Matthias Kesenheimer 在 STM32F401 Black Pill 上针对 USART Bootloader 的 Read Memory（0x11）命令注入 VCAP 电压毛刺，绕过 RDP1 并分块导出 Flash；STM32F40x/F412/F42x 项目随后把这套参数搜索和自动化脚本整理成可复现实验。它把 TCHES 2019 的任意波形研究落成了低成本、可重复的实机流程。<br><a href='https://mkesenheimer.github.io/blog/glitching-the-stm32f4.html' target='_blank'>实验记录</a>" },
-    en: { headline: "STM32F4: Reproducible RDP Dumping with PicoGlitcher",
-          text: "Published in late 2024 as a PicoGlitcher experiment. Matthias Kesenheimer injected VCAP voltage glitches into the USART Bootloader Read Memory (0x11) path of an STM32F401 Black Pill, bypassing RDP1 and dumping Flash in blocks; the STM32F40x/F412/F42x projects then packaged the parameter search and automation for reproduction. It turns the arbitrary-waveform work of TCHES 2019 into a low-cost, repeatable hardware demonstration.<br><a href='https://mkesenheimer.github.io/blog/glitching-the-stm32f4.html' target='_blank'>Experiment write-up</a>" }
-  },
-  {
-    start: { year: 2025, month: 5 },
-    zh: { headline: "STM32L051：不擦除固件的 RDP 降级",
-          text: "SySS 公告 SYSS-2025-033（2025-05-23 首次公开）。针对 STM32L051K8 的 RDP1→RDP0 降级流程，在自动擦除开始前注入电压毛刺，抑制 Flash erase，同时恢复调试读取权限；公告记录了最高约 30% 的成功率，并明确将其归类为 flash-erase suppression attack。6 月发布的实验文章展示了 PicoGlitcher 与 findus 的完整复现。<br><a href='https://blog.syss.com/posts/voltage-glitching-the-stm32l05-microcontroller/' target='_blank'>实验文章</a>" },
-    en: { headline: "STM32L051: RDP Downgrade without Erasing Flash",
-          text: "SySS advisory SYSS-2025-033 (first public disclosure on 23 May 2025). A voltage glitch is injected just before the automatic erase in the STM32L051K8 RDP1→RDP0 downgrade, suppressing Flash erase while restoring debug read access; the advisory reports up to roughly 30% success and classifies it as a flash-erase suppression attack. The June write-up documents a complete PicoGlitcher/findus reproduction.<br><a href='https://blog.syss.com/posts/voltage-glitching-the-stm32l05-microcontroller/' target='_blank'>Experiment write-up</a>" }
-  },
-  {
-    start: { year: 2025, month: 5 },
-    zh: { headline: "nRF54L15：EMFI 绕过硬件毛刺检测器",
-          text: "SySS 公告 SYSS-2025-022（2025-05-23 首次公开）。在 Nordic nRF54L15 启用 TAMPC/Glitch Detector 的情况下，使用 ChipSHOUTER 电磁脉冲与精确扫描位置、脉宽和时序，成功扰动 256 字节 CRC 计算，最高约 2.4% 的实验点产生错误结果。研究证明专用毛刺检测器对 EMFI 仍存在残余风险。<br><a href='https://blog.syss.com/posts/nrf54-emfi/' target='_blank'>实验文章</a>" },
-    en: { headline: "nRF54L15: EMFI Evades the Glitch Detector",
-          text: "SySS advisory SYSS-2025-022 (first public disclosure on 23 May 2025). With Nordic's nRF54L15 TAMPC/glitch detector enabled, a ChipSHOUTER and a scan over probe position, pulse width and timing altered a 256-byte CRC calculation; up to about 2.4% of scanned points produced faulty results. The study shows that a dedicated glitch detector still leaves residual risk against EMFI.<br><a href='https://blog.syss.com/posts/nrf54-emfi/' target='_blank'>Experiment write-up</a>" }
-  },
-  {
-    start: { year: 2026, month: 9 },
-    zh: { headline: "GlitchLab：硬件在环故障注入自动搜索",
-          text: "arXiv 2609.00502（2026-09-01）。Hossain、Mahadevan、Van Woudenberg、Velegalati 与 Bhattacharyya 提出 GlitchLab，把故障注入参数搜索建模为硬件在环优化：RL-Q 用 Q-learning 探索，结构化 bandit 负责发现，SOBAS 根据结构化结果复现故障。在 AES、密码与控制流实验中，方法相较基线减少 2–85 倍尝试次数、26–1,237 倍时间，并显著提高复现率，代表故障注入从手工调参走向自动化闭环。<br><a href='https://arxiv.org/abs/2609.00502' target='_blank'>论文预印本</a>" },
-    en: { headline: "GlitchLab: Hardware-in-the-Loop Fault-Injection Optimization",
-          text: "arXiv 2609.00502 (1 September 2026). Hossain, Mahadevan, Van Woudenberg, Velegalati and Bhattacharyya formulate glitch-parameter search as hardware-in-the-loop optimization: RL-Q explores with Q-learning, a structured bandit discovers candidates, and SOBAS reproduces faults from structured outcomes. Across AES, password and control-flow campaigns, the methods cut attempts by 2–85× and time by 26–1,237× versus baselines, while improving reproduction rates — a shift from manual tuning to closed-loop automated fault injection.<br><a href='https://arxiv.org/abs/2609.00502' target='_blank'>Preprint</a>" }
-  },
+    "start": {
+      "year": 1996,
+      "month": 11
+    },
+    "zh": {
+      "headline": "防篡改的警示 — Anderson & Kuhn",
+      "text": "上世纪 90 年代，银行和政府系统使用智能卡与加密模块。Ross Anderson 与 Markus Kuhn 在第二届 USENIX 电子商务研讨会上发表论文，回顾了电压/时钟毛刺、微探针、芯片开封和总线窃听等攻击，并讨论了低成本实验室对商用防篡改芯片的评估方法。论文获得最佳论文奖，内容涵盖商用防篡改芯片的物理攻击与评估方法。<br><a href='https://www.usenix.org/conference/2nd-usenix-workshop-electronic-commerce/tamper-resistance-cautionary-note' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Tamper Resistance — A Cautionary Note",
+      "text": "In the 1990s, banks and government systems used smartcards and cryptographic modules. At the 2nd USENIX Workshop on Electronic Commerce, Ross Anderson and Markus Kuhn surveyed voltage and clock glitches, microprobing, decapsulation and bus snooping, and discussed how low-cost laboratories could evaluate commercial tamper-resistant chips. The paper received a best-paper award and describes physical-attack evaluation methods for commercial tamper-resistant chips.<br><a href='https://www.usenix.org/conference/2nd-usenix-workshop-electronic-commerce/tamper-resistance-cautionary-note' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 1997,
+      "month": 5
+    },
+    "zh": {
+      "headline": "Bellcore 攻击：RSA-CRT 故障密码分析",
+      "text": "EUROCRYPT 1997。Bellcore 的 Boneh、DeMillo 与 Lipton 证明了一个结果：RSA 用中国剩余定理（CRT）加速签名时，只需让芯片在运算中发生<b>一次</b>随机故障，攻击者拿到错误签名后计算 gcd(S′ᵉ − m, N) 即可分解模数、恢复私钥。论文本身是纯理论模型，没有攻击真实芯片；文中讨论了硬件错误对 RSA-CRT 的影响，以及签名结果自检（如 Shamir 校验）这一类防护。<br><a href='https://crypto.stanford.edu/~dabo/abstracts/faults.html' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "The Bellcore Attack on RSA-CRT",
+      "text": "EUROCRYPT 1997. Boneh, DeMillo and Lipton of Bellcore proved a result: when RSA signing is accelerated with the Chinese Remainder Theorem, a <b>single</b> random hardware fault during the computation lets an attacker factor the modulus and recover the private key by computing gcd(S′ᵉ − m, N) from the faulty signature. The paper was a purely theoretical model — no real chip was attacked — but it showed that hardware errors can be used as a cryptanalytic weapon. The paper discusses RSA-CRT signature verification before output and other countermeasures.<br><a href='https://crypto.stanford.edu/~dabo/abstracts/faults.html' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 1997,
+      "month": 8
+    },
+    "zh": {
+      "headline": "差分故障分析 (DFA)：DES",
+      "text": "CRYPTO 1997。Biham 与 Shamir 提出差分故障分析（Differential Fault Analysis）：对同一明文分别获取正确密文与故障密文，通过两者在末几轮的差分传播逐段恢复 DES 子密钥 —— 几十条故障密文即可恢复完整密钥。论文将故障模型应用到 DES 对称密码，并讨论了向其他分组密码扩展的分析方法。<br><a href='https://link.springer.com/chapter/10.1007/BFb0052259' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Differential Fault Analysis of DES",
+      "text": "CRYPTO 1997. Biham and Shamir introduced Differential Fault Analysis (DFA): obtain a correct and a faulty ciphertext of the same plaintext, then trace the differential propagation through the final rounds to recover DES subkeys piece by piece — a few dozen faulty ciphertexts suffice for the full key. The paper applies the method to DES and outlines extensions to other block ciphers.<br><a href='https://link.springer.com/chapter/10.1007/BFb0052259' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 1999,
+      "month": 5
+    },
+    "zh": {
+      "headline": "智能卡处理器防篡改设计原则",
+      "text": "USENIX 智能卡技术研讨会。Kömmerling 与 Kuhn 在真实智能卡处理器（论文未列出具体料号）上系统演示了攻击：向 Vcc、时钟或复位线注入毛刺以跳过指令或破坏比较，用紫外光擦除熔丝位，以及半侵入式微探针读取总线。论文给出了实验装置、防护设计建议（随机化时序、环境传感器、多层金属屏蔽等），并讨论了智能卡安全认证中的物理攻击评估。<br><a href='https://www.usenix.org/conference/usenix-workshop-smartcard-technology/design-principles-tamper-resistant-smartcard' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Design Principles for Tamper-Resistant Smartcard Processors",
+      "text": "USENIX Workshop on Smartcard Technology. Kömmerling and Kuhn demonstrated attacks on production smartcard processors (the paper does not list a part number): glitching Vcc, clock or reset lines to skip instructions or corrupt comparisons, erasing fuse bits with UV light, and semi-invasive microprobing of on-chip buses. The paper also gave design advice (randomized timing, environmental sensors, metal shield layers). The paper discusses low-cost attack equipment and physical-attack evaluation in smartcard certification.<br><a href='https://www.usenix.org/conference/usenix-workshop-smartcard-technology/design-principles-tamper-resistant-smartcard' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2000,
+      "month": 8
+    },
+    "zh": {
+      "headline": "DFA 扩展到椭圆曲线密码 (ECC)",
+      "text": "CRYPTO 2000。Biehl、Meyer 与 Müller 将差分故障分析引入椭圆曲线密码：在标量乘法过程中注入故障（例如让点离开预定曲线、或翻转中间值符号位），可从错误结果中逐比特恢复秘密标量。论文分析了 ECC 标量乘法中的故障模型，并讨论了 ECDSA/ECDH 实现的物理攻击场景。<br><a href='https://link.springer.com/chapter/10.1007/3-540-44598-6_8' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Differential Fault Attacks on ECC",
+      "text": "CRYPTO 2000. Biehl, Meyer and Müller brought differential fault analysis to elliptic-curve cryptography: injecting faults during scalar multiplication (e.g., pushing a point off the intended curve or flipping sign bits of intermediates) recovers the secret scalar bit by bit from erroneous results. The paper analyzes fault models for ECC scalar multiplication and physical-attack scenarios against ECDSA/ECDH implementations.<br><a href='https://link.springer.com/chapter/10.1007/3-540-44598-6_8' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2002,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Bellcore 攻击在真实智能卡上实现",
+      "text": "CHES 2002。英飞凌的 Aumüller、Bier、Fischer、Hofreiter 与 Seifert 将 1997 年的理论攻击在真实硬件上验证：在智能卡 IC（论文未列出具体料号）执行 RSA-CRT 时用电压尖峰注入故障，成功从错误签名中分解出私钥。论文同时测试了多种软件与硬件对策，并记录了签名前自检在双重故障下的表现。<br><a href='https://eprint.iacr.org/2002/073.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Bellcore Attack on a Real Smartcard",
+      "text": "CHES 2002. Infineon's Aumüller, Bier, Fischer, Hofreiter and Seifert validated the 1997 theoretical attack on real hardware: inducing faults with voltage spikes while a smartcard IC (the paper does not list a part number) computed RSA-CRT, they successfully factored the private key out of faulty signatures. The paper also evaluated several software/hardware countermeasures in practice, showing that the most common one — verifying before output — still falls to double faults. The paper reports a hardware experiment corresponding to the theoretical analysis.<br><a href='https://eprint.iacr.org/2002/073.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2002,
+      "month": 8
+    },
+    "zh": {
+      "headline": "低成本光故障注入",
+      "text": "CHES 2002。Skorobogatov 与 Anderson 对开封后的智能卡微控制器（论文未列出具体料号）进行光故障注入：普通相机闪光灯即可引起 SRAM 多位翻转，把约 60 美元的二手激光笔改装聚焦后可对单个晶体管进行置位或复位，实验达到单比特精度。整套装置成本仅几百美元，把此前被认为需要昂贵设备的攻击带入低成本实验室；论文同时讨论了顶层金属屏蔽与光传感器等防护方向。<br><a href='https://www.cl.cam.ac.uk/~sps32/ches02-optofault.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Low-Cost Optical Fault Injection",
+      "text": "CHES 2002. Skorobogatov and Anderson performed optical fault injection on decapsulated smartcard microcontrollers (no part numbers disclosed): an ordinary camera flash flipped multiple SRAM bits, while a repurposed ~$60 laser pointer could set or reset individual transistors with single-bit precision. The entire setup cost only a few hundred dollars, bringing attacks once thought to require expensive equipment into low-budget labs; the paper also discusses countermeasures such as top-metal shields and light sensors.<br><a href='https://www.cl.cam.ac.uk/~sps32/ches02-optofault.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2003,
+      "month": 2
+    },
+    "zh": {
+      "headline": "AES 的差分故障分析：Dusart 等",
+      "text": "ePrint 2003/010。Olivier Vivolo、Philippe Dusart 与 Guillaume Letourneux 针对 AES 末轮（不含 MixColumns）的单字节故障建立差分分析：故障在最后一轮只影响四个输出字节，据此可逐字节约束并反推末轮子密钥。数值模拟显示平均不到 10 条错误密文、配合约 2^40 次离线运算即可恢复完整 128 位密钥。这是最早针对 AES 的差分故障分析之一，同年 CHES 的 Piret–Quisquater 等工作进一步降低了所需故障密文数量。<br><a href='https://eprint.iacr.org/2003/010' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Differential Fault Analysis on AES: Dusart et al.",
+      "text": "ePrint 2003/010. Olivier Vivolo, Philippe Dusart and Guillaume Letourneux built a differential analysis for single-byte faults in the last AES round (which has no MixColumns): the fault spreads to only four output bytes, so the final-round subkey can be recovered byte by byte. Simulations showed fewer than 10 faulty ciphertexts plus about 2^40 offline operations recover the full 128-bit key. It was among the first DFAs on AES; Piret–Quisquater at CHES the same year cut the required number of faulty ciphertexts further.<br><a href='https://eprint.iacr.org/2003/010' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2003,
+      "month": 9
+    },
+    "zh": {
+      "headline": "AES 的差分故障攻击",
+      "text": "CHES 2003。Piret 与 Quisquater 提出针对 SPN（代换-置换网络）结构的通用 DFA 并应用于 AES 与 Khazad：在倒数第二轮 MixColumns 前注入单字节故障，理论上仅 2 条正确/故障密文对即可大幅缩小密钥空间，约 250 条故障密文可在论文给定条件下恢复 AES-128 密钥。论文还讨论了感染式计数器和冗余校验等防护。<br><a href='https://link.springer.com/chapter/10.1007/978-3-540-45238-6_7' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "DFA Comes to AES",
+      "text": "CHES 2003. Piret and Quisquater proposed a generic DFA against SPN (substitution-permutation network) ciphers and applied it to AES and Khazad: injecting a single-byte fault just before the MixColumns of the penultimate round, as few as 2 correct/faulty ciphertext pairs dramatically shrink the key space, and ~250 faulty ciphertexts recover an AES-128 key under the paper’s stated conditions. The paper discusses infection-based and redundancy countermeasures.<br><a href='https://link.springer.com/chapter/10.1007/978-3-540-45238-6_7' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2004,
+      "month": 9
+    },
+    "zh": {
+      "headline": "流密码的故障分析",
+      "text": "CHES 2004。Jonathan J. Hoch 与 Adi Shamir 提出针对流密码的故障分析通用框架，按故障作用于密钥流、内部状态还是反馈函数分类，并给出对 LILI-128、RC4、Scream、Snow 和蓝牙 E0 等算法的具体攻击推演，说明少量故障输出即可恢复内部状态乃至密钥。论文属于纯密码分析，不对应单一芯片实验，但为后来在真实器件上攻击流密码实现提供了理论基础。<br><a href='https://doi.org/10.1007/978-3-540-28632-5_18' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault Analysis of Stream Ciphers",
+      "text": "CHES 2004. Jonathan J. Hoch and Adi Shamir proposed a general framework for fault analysis of stream ciphers, classified by whether the fault hits the keystream, internal state or feedback function, and worked out concrete attacks on LILI-128, RC4, Scream, Snow and Bluetooth E0, showing a few faulty outputs suffice to recover internal state or the key. It is pure cryptanalysis with no single-chip experiment, but it laid the theoretical groundwork for later attacks on real stream-cipher implementations.<br><a href='https://doi.org/10.1007/978-3-540-28632-5_18' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2004,
+      "month": 9
+    },
+    "zh": {
+      "headline": "《故障攻击巫师学徒指南》",
+      "text": "FDTC 2004（期刊版发表于 Proceedings of the IEEE 2006 年 2 月）。Bar-El、Choukri、Naccache、Tunstall 与 Whelan 综述了故障注入手段（电压、时钟、温度、光照、粒子束）、故障模型（瞬态/永久、单比特/多比特）、DFA、安全错误攻击（safe-error）和碰撞故障攻击，并汇总了相应对策。<br><a href='https://eprint.iacr.org/2004/100' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "The Sorcerer's Apprentice Guide to Fault Attacks",
+      "text": "FDTC 2004 (journal version in Proceedings of the IEEE, Feb 2006). Bar-El, Choukri, Naccache, Tunstall and Whelan wrote a survey of the field: a systematic taxonomy of injection methods (voltage, clock, temperature, light, particle beams) and fault models (transient/permanent, single-/multi-bit), plus DFA, safe-error and collision fault-analysis techniques and a panorama of countermeasures. The survey covers the fault-attack methods and countermeasures discussed at FDTC 2004.<br><a href='https://eprint.iacr.org/2004/100' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2005,
+      "month": 4
+    },
+    "zh": {
+      "headline": "故障、格与 DSA",
+      "text": "PKC 2005。David Naccache、Phong Q. Nguyên、Michael Tunstall 与 Claire Whelan 研究 DSA 签名中的故障信息：如果故障让临时密钥 k 的若干比特变为已知（例如部分位置零），签名方程就转化为隐藏数问题，可用格基约简恢复私钥。论文给出了在智能卡芯片上诱发此类临时密钥部分故障的实验验证（未披露具体料号），并统计了恢复私钥所需的签名数量与泄露比特数的关系。<br><a href='https://doi.org/10.1007/978-3-540-30580-4_3' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Experimenting with Faults, Lattices and the DSA",
+      "text": "PKC 2005. David Naccache, Phong Q. Nguyên, Michael Tunstall and Claire Whelan studied fault information in DSA signatures: if a fault makes some bits of the ephemeral key k known (e.g. partially zeroed), the signature equation becomes a hidden-number problem solvable by lattice reduction. The paper includes an experimental demonstration of inducing such partial ephemeral-key faults on a smartcard chip (no part number disclosed) and quantifies how many signatures and leaked bits are needed.<br><a href='https://doi.org/10.1007/978-3-540-30580-4_3' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2005,
+      "month": 4
+    },
+    "zh": {
+      "headline": "半侵入式攻击体系化",
+      "text": "Skorobogatov 的剑桥博士论文/技术报告 UCAM-CL-TR-630。“半侵入式”指开封芯片（发烟硝酸去封装）但不接触钝化层；在这一条件下可实施光故障注入、光探测（非接触读出总线数据）和背面成像。报告对比了约一万美元级实验装置与百万美元级 FIB 工作站的成本，系统梳理了从开封、显微成像到存储器直接读取的完整流程，实验对象包括多款 90 年代智能卡与微控制器（未按商业料号逐一列出）。<br><a href='https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-630.html' target='_blank'>报告</a>"
+    },
+    "en": {
+      "headline": "Semi-invasive Attacks Systematized",
+      "text": "Skorobogatov's Cambridge PhD thesis / technical report UCAM-CL-TR-630. 'Semi-invasive' means decapsulating the chip (fuming nitric acid) without touching the passivation layer; this enables optical fault injection, optical probing (contactless readout of bus data) and rear-side imaging. The report contrasts a ~$10,000 lab setup with million-dollar FIB workstations, documents the full flow from decapsulation and microscopy to direct memory readout, and covers several 1990s smartcards and microcontrollers without listing commercial part numbers.<br><a href='https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-630.html' target='_blank'>Report</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2006,
+      "month": 9
+    },
+    "zh": {
+      "headline": "椭圆曲线密码的符号变换故障攻击",
+      "text": "FDTC 2006。Johannes Blömer、Martin Otto 与 Jean-Pierre Seifert 提出针对椭圆曲线密码实现的 sign-change fault attack：在标量乘法中间点注入使其符号翻转的故障后，错误结果与正确结果的差异只与少数几位秘密标量有关，结合枚举或格方法即可逐段恢复标量。攻击要求实现未校验中间点是否仍在曲线上，因此点验证被证明是关键对策。论文为理论分析，不对应单一芯片。<br><a href='https://doi.org/10.1007/11889700_4' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Sign Change Fault Attacks on Elliptic Curve Cryptosystems",
+      "text": "FDTC 2006. Johannes Blömer, Martin Otto and Jean-Pierre Seifert proposed the sign-change fault attack on ECC implementations: flipping the sign of an intermediate point during scalar multiplication makes the difference between faulty and correct results depend on only a few secret scalar bits, recoverable segment by segment via enumeration or lattice methods. The attack requires the implementation to skip point-on-curve checks, making point validation the key countermeasure. It is a theoretical analysis with no single-chip experiment.<br><a href='https://doi.org/10.1007/11889700_4' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2007,
+      "month": 9
+    },
+    "zh": {
+      "headline": "无效故障分析 (Ineffective Fault Analysis)",
+      "text": "CHES 2007。Clavier 提出：即便注入的故障<b>没有</b>改变输出，攻击者只要观察到“这次故障无效”这一事实，就已经获得了关于秘密的信息。无效故障分析（IFA）不要求故障成功，因此许多只检测“输出是否出错”的对策对它无效。2018 年的 SIFA 将这一故障有效性信息与统计密钥排序结合，用于分析部分带掩码的实现。<br><a href='https://iacr.org/workshops/ches/ches2007/presentations/S5T2-Clavier.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Ineffective Fault Analysis",
+      "text": "CHES 2007. Clavier observed that even when an injected fault does <b>not</b> change the output, merely observing that “this fault was ineffective” leaks information about the secret. Ineffective Fault Analysis (IFA) does not require faults to succeed, so countermeasures that only check whether the output is wrong are useless against it. The paper defines IFA and its effect on output-only fault checks; SIFA (2018) uses fault-effectiveness statistics for masked implementations.<br><a href='https://iacr.org/workshops/ches/ches2007/presentations/S5T2-Clavier.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2007,
+      "month": 10
+    },
+    "zh": {
+      "headline": "光/电磁故障攻击 CRT-RSA：Austrochip 2007",
+      "text": "Austrochip 2007（2007 年 10 月 11 日）。Jörn-Marc Schmidt 与 Michael Hutter 在运行 CRT-RSA 的安全设备上分别使用光照和电磁脉冲注入故障，两条路径都能得到错误签名并分解出私钥。论文对比了两类手段在故障率、设备成本和时序精度上的差异，并验证了签名结果自检的必要性；实验使用低成本设备，论文未给出芯片料号。<br><a href='https://tugraz.elsevierpure.com/en/publications/optical-and-em-fault-attacks-on-crt-based-rsa-concrete-results/' target='_blank'>论文资料</a>"
+    },
+    "en": {
+      "headline": "Optical and EM Fault Attacks on CRT-RSA: Austrochip 2007",
+      "text": "Austrochip 2007 (Oct 11, 2007). Jörn-Marc Schmidt and Michael Hutter injected faults into a security device running CRT-RSA using both light and electromagnetic pulses; either path produced faulty signatures from which the private key was factored. The paper compares the two methods in fault rate, equipment cost and timing precision, and confirms the necessity of signature verification; all experiments used low-cost equipment and no chip part number is given.<br><a href='https://tugraz.elsevierpure.com/en/publications/optical-and-em-fault-attacks-on-crt-based-rsa-concrete-results/' target='_blank'>Paper record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2008,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Square-and-Multiply 的实用故障攻击",
+      "text": "FDTC 2008（2008 年 8 月 10 日）。Jörn-Marc Schmidt 与 Christoph Herbst 针对 Square-and-Multiply 模幂算法的控制流提出故障攻击：在平方/乘法条件分支处注入故障改变执行路径，通过比较正确与错误签名逐比特恢复私钥指数。作者用非侵入式电压尖峰在真实芯片上完成实验，整套设备仅数百欧元；论文未披露芯片料号，并讨论了分支随机化等防护思路。<br><a href='https://doi.org/10.1109/FDTC.2008.10' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "A Practical Fault Attack on Square and Multiply",
+      "text": "FDTC 2008 (Aug 10, 2008). Jörn-Marc Schmidt and Christoph Herbst presented a fault attack on the control flow of square-and-multiply exponentiation: glitching the conditional branch between square and multiply steps lets the private exponent be recovered bit by bit from correct/faulty signature pairs. Experiments on a real chip used non-invasive voltage spikes with equipment costing only a few hundred euros; no part number is disclosed, and countermeasures such as branch randomization are discussed.<br><a href='https://doi.org/10.1109/FDTC.2008.10' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2008,
+      "month": 8
+    },
+    "zh": {
+      "headline": "故障攻击椭圆曲线 Montgomery ladder",
+      "text": "FDTC 2008。Pierre-Alain Fouque、Reynald Lercier、Denis Réal 与 Frédéric Valette 针对不使用 y 坐标的 Montgomery ladder 提出故障攻击：注入故障使中间点离开原椭圆曲线、落到阶含小因子的弱曲线上，再利用小子群离散对数和中国剩余定理逐段恢复秘密标量。论文给出对 XTR 与 ECDH 类实现的具体攻击复杂度，指出约一到两次故障即可恢复完整秘密指数，并建议以点验证作为防护。<br><a href='https://doi.org/10.1109/FDTC.2008.15' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault Attack on Elliptic Curve Montgomery Ladder Implementation",
+      "text": "FDTC 2008. Pierre-Alain Fouque, Reynald Lercier, Denis Réal and Frédéric Valette attacked the y-coordinate-free Montgomery ladder: a fault pushes an intermediate point off the original curve onto a weak curve whose order has small factors, allowing the secret scalar to be recovered piecewise via small-subgroup discrete logs and the CRT. The paper gives concrete attack complexities for XTR- and ECDH-type implementations, shows one to two faults can suffice, and recommends point validation as countermeasure.<br><a href='https://doi.org/10.1109/FDTC.2008.15' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2009,
+      "month": 1
+    },
+    "zh": {
+      "headline": "局部加热攻击 Flash 存储器",
+      "text": "HST 2009。Sergei Skorobogatov 使用显微镜上的低成本激光二极管对开封装芯片局部加热，改变 EEPROM 与 Flash 单元的读出阈值，使其读出为擦除态；作者用该方法把安全熔丝恢复为未保护状态并读取存储器内容。由于无法逐位精确控制，论文结合密钥空间穷举恢复部分密码材料。整套装置远低于常规激光注入系统的成本，论文未公开具体商业料号。<br><a href='https://doi.org/10.1109/HST.2009.5225028' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Local-Heating Attacks on Flash Memory Devices",
+      "text": "HST 2009. Sergei Skorobogatov used a low-cost laser diode on a microscope to locally heat decapsulated chips, shifting the read threshold of EEPROM and Flash cells so they read as erased; he applied this to reset security fuses to an unprotected state and read out memory. Because bit-precise control was impossible, the attack is combined with keyspace search to recover partial cryptographic material. The setup costs far less than conventional laser systems; no commercial part numbers are disclosed.<br><a href='https://doi.org/10.1109/HST.2009.5225028' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2009,
+      "month": 9
+    },
+    "zh": {
+      "headline": "故障攻击 ECDSA",
+      "text": "FDTC 2009。Jörn-Marc Schmidt 与 Marcel Medwed 通过故障注入修改 ECDSA 签名过程的程序流：跳过或篡改指令可使临时密钥 k 部分位置零或泄露若干比特，再用格攻击从少量错误签名中恢复签名私钥。作者在真实硬件上验证了故障模型的可行性，并给出临时密钥完整性校验、冗余计算与签名自检等防护建议；实验芯片未披露具体料号。<br><a href='https://doi.org/10.1109/FDTC.2009.38' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "A Fault Attack on ECDSA",
+      "text": "FDTC 2009. Jörn-Marc Schmidt and Marcel Medwed used fault injection to alter the program flow of ECDSA signing: skipping or corrupting instructions can partially zero or leak bits of the ephemeral key k, after which lattice attacks recover the private key from a few faulty signatures. The fault model was validated on real hardware (no part number disclosed), and countermeasures including ephemeral-key integrity checks, redundant computation and signature self-verification are proposed.<br><a href='https://doi.org/10.1109/FDTC.2009.38' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2009,
+      "month": 9
+    },
+    "zh": {
+      "headline": "ARM9 上的欠压故障实验",
+      "text": "FDTC 2009。Barenghi、Bertoni、Parrinello 与 Pelosi 对运行纯软件 RSA 的 ARM9 应用处理器（论文未披露具体料号）实施 underfeeding——让芯片在低于额定值的电压下运行。在临界电压附近出现可重复、确定性的计算错误，作者从错误签名中恢复出私钥，并刻画了电压、频率与故障率的关系。论文是最早系统研究应用处理器欠压故障的工作之一，并提出电压监测等防护建议。<br><a href='https://doi.org/10.1109/FDTC.2009.30' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Low-Voltage Fault Attacks Reach Full CPUs",
+      "text": "FDTC 2009. Barenghi, Bertoni, Parrinello and Pelosi applied underfeeding — running the chip below its nominal supply voltage — to an ARM9 application processor executing software RSA (no part number disclosed). Near the critical voltage, repeatable and deterministic computation errors appeared, from which the private key was recovered; the paper characterizes the voltage/frequency/fault-rate relationship. It was among the first systematic studies of undervolting faults on application processors, with countermeasures such as voltage monitoring proposed.<br><a href='https://doi.org/10.1109/FDTC.2009.30' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2009,
+      "month": 9
+    },
+    "zh": {
+      "headline": "CRT-RSA 的二阶故障分析防护",
+      "text": "WISTP 2009。Emmanuelle Dottax、Christophe Giraud、Matthieu Rivain 与 Yannick Sierra 讨论 CRT-RSA 实现抵抗二阶故障分析的设计：当攻击者能注入两次相关故障时，Shamir 校验、感染式计算等一阶防护会失效。论文给出可抵抗二阶故障的 CRT-RSA 实现结构，并对安全性与性能开销做了量化比较；工作属于算法/协议层设计，不对应单一芯片。<br><a href='https://doi.org/10.1007/978-3-642-03944-7_6' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "On Second-Order Fault Analysis Resistance for CRT-RSA Implementations",
+      "text": "WISTP 2009. Emmanuelle Dottax, Christophe Giraud, Matthieu Rivain and Yannick Sierra studied CRT-RSA designs resistant to second-order fault analysis: when an attacker can inject two related faults, first-order countermeasures such as Shamir's check and infective computation fail. The paper presents a CRT-RSA structure secure against second-order faults with quantified security/performance trade-offs; it is an algorithm/protocol-level design with no single-chip experiment.<br><a href='https://doi.org/10.1007/978-3-642-03944-7_6' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2009,
+      "month": 9
+    },
+    "zh": {
+      "headline": "激光/光照故障攻击 AES：“紫色威胁”",
+      "text": "FDTC 2009。Jörn-Marc Schmidt、Michael Hutter 与 Thomas Plos 在四种去封装微控制器上研究 254 nm UV-C 光对非易失存储的影响，并在 8 位 MCU 的 AES 软件实现中改变 S-box；论文报告约 2,500 对正确/故障密文可在给定条件下恢复密钥。<br><a href='https://doi.org/10.1109/fdtc.2009.37' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Optical Fault Attacks on AES: “A Threat in Violet”",
+      "text": "FDTC 2009. Jörn-Marc Schmidt, Michael Hutter and Thomas Plos studied 254 nm UV-C irradiation on non-volatile memory in four depackaged microcontrollers, then changed an AES S-box in an 8-bit MCU software implementation; the paper reports that about 2,500 correct/faulty ciphertext pairs recover the key under its stated conditions.<br><a href='https://doi.org/10.1109/fdtc.2009.37' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2010,
+      "month": 1
+    },
+    "zh": {
+      "headline": "PlayStation 3 Hypervisor：内存总线毛刺",
+      "text": "2010 年 1 月。George Hotz（geohot）的 PlayStation 3 Hypervisor 攻击利用 Cell Broadband Engine 处理器内存总线上约 40 ns 的电压脉冲，使 hypervisor 在释放页表映射时漏写，随后通过 Linux 内核模块篡改哈希页表，获得对主内存的完整读写权限。这一突破打破了 PS3 的安全链，随后 fail0verflow 团队进一步提取了 ECDSA 签名密钥，索尼则以固件更新移除了 OtherOS 功能。<br><a href='https://rdist.root.org/2010/01/27/how-the-ps3-hypervisor-was-hacked/' target='_blank'>分析文章</a>"
+    },
+    "en": {
+      "headline": "PlayStation 3 Hypervisor: Memory-Bus Glitch",
+      "text": "January 2010. George Hotz (geohot) attacked the PlayStation 3 hypervisor with a ~40 ns voltage pulse on the Cell Broadband Engine's memory bus, causing the hypervisor to miss a write when releasing a page-table mapping; a Linux kernel module then rewrote the hashed page table for full read/write access to main memory. The breach broke the PS3 security chain — fail0verflow subsequently extracted the ECDSA signing keys, and Sony removed OtherOS via a firmware update.<br><a href='https://rdist.root.org/2010/01/27/how-the-ps3-hypervisor-was-hacked/' target='_blank'>Technical analysis</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2010,
+      "month": 4
+    },
+    "zh": {
+      "headline": "Java Card 3 的故障与逻辑组合攻击",
+      "text": "CARDIS 2010。Guillaume Barbu、Hugues Thiebeauld 与 Vincent Guerin 将故障注入和逻辑篡改组合用于 Java Card 3 Connected Edition：先用激光故障改变字节码校验器对恶意 applet 的判定，再向卡内写入存在类型混淆的方法字节码，最终实现非法方法执行并读取卡内敏感对象。该工作开创了“组合攻击”路线，说明仅防御故障或仅防御逻辑攻击都不充分；实验芯片未公布料号。<br><a href='https://doi.org/10.1007/978-3-642-12510-2_11' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Attacks on Java Card 3.0 Combining Fault and Logical Attacks",
+      "text": "CARDIS 2010. Guillaume Barbu, Hugues Thiebeauld and Vincent Guerin combined fault injection with logical tampering against Java Card 3 Connected Edition: a laser fault flips the bytecode verifier's decision on a malicious applet, then type-confused method bytecode written to the card enables illicit method execution and reading of sensitive on-card objects. The work pioneered 'combined attacks', showing that defending against only fault or only logical attacks is insufficient; the card part number was not disclosed.<br><a href='https://doi.org/10.1007/978-3-642-12510-2_11' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2010,
+      "month": 7
+    },
+    "zh": {
+      "headline": "How to Flip a Bit？：0.35 µm 单比特激光故障",
+      "text": "IOLTS 2010。Agoyan、Dutertre、Mirbaha、Naccache、Ribotta 与 Tria 在无防护的 8 位 0.35 µm RISC 微控制器上调节光斑与时序，稳定得到单比特故障，并在片上 SRAM 的 AES 实现中验证攻击。论文未给出商业料号。<br><a href='https://doi.org/10.1109/IOLTS.2010.5560194' target='_blank'>论文</a> · <a href='https://hal-emse.ccsd.cnrs.fr/emse-01130826' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "How to Flip a Bit?: Single-Bit Laser Faults on 0.35 µm",
+      "text": "IOLTS 2010. Agoyan, Dutertre, Mirbaha, Naccache, Ribotta and Tria tuned beam size and timing on an unprotected 8-bit 0.35 µm RISC microcontroller to obtain repeatable single-bit faults, then demonstrated the attack on an AES implementation in on-chip SRAM. The paper does not give a commercial part number.<br><a href='https://doi.org/10.1109/IOLTS.2010.5560194' target='_blank'>Paper</a> · <a href='https://hal-emse.ccsd.cnrs.fr/emse-01130826' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2010,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Flash Memory “Bumping” Attacks",
+      "text": "CHES 2010。Sergei Skorobogatov 在 NEC 78K/0S µPD78F9116（16 KB Flash）和 Actel ProASIC3 A3P250 上演示光学 bumping：利用验证操作对数据通路进行选择性干扰，绕过 verify-only 保护并提取 Flash/AES 认证相关数据。<br><a href='https://www.cl.cam.ac.uk/~sps32/ches2010-bumping.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Flash Memory “Bumping” Attacks",
+      "text": "CHES 2010. Sergei Skorobogatov demonstrated optical “bumping” on a NEC 78K/0S µPD78F9116 with 16 KB Flash and an Actel ProASIC3 A3P250, using the verify operation to selectively disturb the data path and bypass verify-only protection for Flash/AES-authentication data.<br><a href='https://www.cl.cam.ac.uk/~sps32/ches2010-bumping.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2010,
+      "month": 8
+    },
+    "zh": {
+      "headline": "光学故障屏蔽：PIC 与 MSP430 非易失存储器",
+      "text": "FDTC 2010。Sergei Skorobogatov 提出 optical fault masking：持续光照在浮动栅单元中感生光电流，使编程/擦除高压无法累积，写入或擦除操作“看似成功”但内容未变。作者演示用该方法阻止安全熔丝被烧录，把 Microchip PIC 微控制器与 TI MSP430 的保护位留在未锁定状态；实验用背面注入定位活动区域，PIC 的完整料号未公开。<br><a href='https://doi.org/10.1109/FDTC.2010.18' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Optical Fault-Masking Attacks on PIC and MSP430",
+      "text": "FDTC 2010. Sergei Skorobogatov introduced optical fault masking: continuous illumination induces photocurrent in floating-gate cells so the program/erase high voltage cannot build up, making writes or erases appear successful while contents stay unchanged. He demonstrated preventing security fuses from being programmed, leaving protection bits unlocked on Microchip PIC microcontrollers and TI MSP430 devices; rear-side injection was used to locate active areas, and the full PIC part number was not disclosed.<br><a href='https://doi.org/10.1109/FDTC.2010.18' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2010,
+      "month": 9
+    },
+    "zh": {
+      "headline": "故障敏感性分析",
+      "text": "CHES 2010。Yang Li、Kazuo Sakiyama、Shigeto Gomisawa、Toshinori Fukunaga、Junko Takahashi 与 Kazuo Ohta 提出 Fault Sensitivity Analysis，用器件对故障的敏感性分布辅助区分和利用故障；论文聚焦分析方法，不对应单一芯片型号。<br><a href='https://doi.org/10.1007/978-3-642-15031-9_22' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault Sensitivity Analysis",
+      "text": "CHES 2010. Yang Li, Kazuo Sakiyama, Shigeto Gomisawa, Toshinori Fukunaga, Junko Takahashi and Kazuo Ohta introduced fault sensitivity analysis, using a device's sensitivity profile to characterize and exploit injected faults; the method is not tied to one chip model.<br><a href='https://doi.org/10.1007/978-3-642-15031-9_22' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2010,
+      "month": 10
+    },
+    "zh": {
+      "headline": "SRAM FPGA 上 AES 的电压与激光故障攻击",
+      "text": "Journal of Cryptology，在线发表于 2010 年 10 月 26 日。G. Canivet、P. Maistri、R. Leveugle、J. Clédière、F. Valette 与 M. Renaudin 在 SRAM FPGA 的受保护 AES 实现上比较电压毛刺和动态激光故障；论文讨论两类故障的差异及相应防护，实验使用 Xilinx FPGA 设计但未给出统一的器件料号。<br><a href='https://doi.org/10.1007/s00145-010-9083-9' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Voltage and Laser Fault Attacks on AES in an SRAM FPGA",
+      "text": "Journal of Cryptology, published online 26 October 2010. G. Canivet, P. Maistri, R. Leveugle, J. Clédière, F. Valette and M. Renaudin compared voltage glitches with dynamic laser faults against a protected AES implementation in an SRAM FPGA; the paper discusses their different effects and countermeasures, using a Xilinx FPGA design without one disclosed part number.<br><a href='https://doi.org/10.1007/s00145-010-9083-9' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2011,
+      "month": 6
+    },
+    "zh": {
+      "headline": "一种新的 ECDSA 故障攻击",
+      "text": "HOST 2011。Alessandro Barenghi、Guido Bertoni、Andrea Palomba 与 Ruggero Susella 提出一种新的 ECDSA 故障攻击：在签名计算中注入单比特翻转故障后，把错误签名代入公钥验证方程，通过穷举少量候选即可筛出私钥。论文针对定点标量乘法（如 wNAF）给出完整复杂度分析，并讨论签名前验证与点校验等对策；属于密码实现分析，不对应单一芯片。<br><a href='https://doi.org/10.1109/HST.2011.5955015' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "A Novel Fault Attack against ECDSA",
+      "text": "HOST 2011. Alessandro Barenghi, Guido Bertoni, Andrea Palomba and Ruggero Susella proposed a new ECDSA fault attack: after injecting a single-bit flip into the signature computation, the faulty signature is substituted into the public verification equation and the private key is filtered from a small set of candidates. The paper gives a full complexity analysis for fixed-point scalar multiplication such as wNAF and discusses countermeasures like pre-output verification and point validation; it is an implementation analysis with no single-chip experiment.<br><a href='https://doi.org/10.1109/HST.2011.5955015' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2011,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Xbox 360 Reset Glitch Hack (RGH)",
+      "text": "GliGli 与 Tiros 发布的社区主机越狱：Xbox 360 的 IBM Xenon CPU 在启动时用 memcmp 比对引导加载器哈希，攻击者通过 CPLD 在比对的精确瞬间向 CPU 注入慢时钟/复位脉冲，使比较指令出错、永远返回“相等”—— 微软的签名链就此断裂，多个硬件版本可以运行未签名代码。后续版本包括 RGH2 和 RGH3，均使用时序故障注入。<br><a href='https://free60.org/Hacks/Reset_Glitch_Hack' target='_blank'>free60 wiki</a>"
+    },
+    "en": {
+      "headline": "Xbox 360 Reset Glitch Hack (RGH)",
+      "text": "GliGli and Tiros published a community console jailbreak: the Xbox 360's IBM Xenon CPU compares bootloader hashes with memcmp during boot; a CPLD injects a slow-clock/reset pulse at the precise instant of the comparison, faulting the instruction so it always returns “equal” — the signature-check path is bypassed and unsigned code runs on multiple console revisions. RGH2 and RGH3 are timing-only variants; the documented method faults the memcmp comparison during boot.<br><a href='https://free60.org/Hacks/Reset_Glitch_Hack' target='_blank'>free60 wiki</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2011,
+      "month": 9
+    },
+    "zh": {
+      "headline": "时钟毛刺故障模型的黑盒刻画",
+      "text": "FDTC 2011。Balasch、Gierlichs 与 Verbauwhede 对 8 位 AVR 微控制器（论文未披露具体料号）进行黑盒时钟毛刺实验：系统扫描毛刺偏移与宽度并绘制故障成功率热图，观察到指令跳过与指令损坏两类主要结果，且故障率与参数强相关。实测行为与理想化的“单比特翻转”模型存在明显差异，说明在真实芯片上做黑盒毛刺刻画是设计攻击与防护的前提。<br><a href='https://doi.org/10.1109/fdtc.2011.9' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Clock-Glitch Fault Models on 8-bit MCUs",
+      "text": "FDTC 2011. Balasch, Gierlichs and Verbauwhede ran black-box clock-glitch experiments on an 8-bit AVR microcontroller (no part number disclosed): sweeping glitch offset and width produced fault-rate heat maps revealing two dominant outcomes — instruction skipping and instruction corruption — with strongly parameter-dependent rates. Measured behavior diverged noticeably from the idealized 'single-bit flip' model, showing that black-box glitch characterization on real silicon is a prerequisite for attack and countermeasure design.<br><a href='https://doi.org/10.1109/fdtc.2011.9' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2011,
+      "month": 9
+    },
+    "zh": {
+      "headline": "局部直接 EM 注入：90 nm CMOS 环形振荡器",
+      "text": "FDTC 2011。Poucheret、Tobich、Lisart、Chusseau、Robisson 与 Maurine 用微型天线探针在不去封装的条件下向 90 nm CMOS 环形振荡器局部注入电磁能量，观察到逻辑结构、TRNG 与时钟发生器的扰动；论文对象是测试结构而非商业 MCU。<br><a href='https://doi.org/10.1109/FDTC.2011.18' target='_blank'>论文</a> · <a href='https://hal-lirmm.ccsd.cnrs.fr/lirmm-00607868' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Local Direct EM Injection into 90 nm CMOS",
+      "text": "FDTC 2011. Poucheret, Tobich, Lisart, Chusseau, Robisson and Maurine used a micro-antenna probe to inject EM energy locally into 90 nm CMOS ring oscillators without decapsulation, disturbing logic structures, TRNG elements and clock generators; the targets were test structures rather than a commercial MCU.<br><a href='https://doi.org/10.1109/FDTC.2011.18' target='_blank'>Paper</a> · <a href='https://hal-lirmm.ccsd.cnrs.fr/lirmm-00607868' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2011,
+      "month": 9
+    },
+    "zh": {
+      "headline": "安全微控制器的实用光故障注入",
+      "text": "FDTC 2011。Jasper G. J. van Woudenberg、Marc F. Witteman 与 Federico Menarini 用 FPGA 对目标功耗波形做实时模式识别，在指定运算轮次触发无抖动二极管激光，在受保护智能卡（未给出料号）上实现了可重复的指令级光故障注入。论文给出了光斑、能量与时序参数的校准方法，并验证了对称加密与 RSA 实现的攻击路径，把光注入从“碰运气”推向可工程化复现。<br><a href='https://doi.org/10.1109/FDTC.2011.12' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Practical Optical Fault Injection on Secure Microcontrollers",
+      "text": "FDTC 2011. Jasper G. J. van Woudenberg, Marc F. Witteman and Federico Menarini used an FPGA for real-time pattern matching on the target's power trace, triggering a jitter-free diode laser at a chosen computation round to achieve repeatable instruction-level optical fault injection on a protected smartcard (no part number given). The paper documents calibration of spot size, energy and timing, and validates attack paths on symmetric-cipher and RSA implementations, turning optical injection into an engineering-repeatable technique.<br><a href='https://doi.org/10.1109/FDTC.2011.12' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2011,
+      "month": 9
+    },
+    "zh": {
+      "headline": "Fault Attack Jungle：故障攻击分类模型",
+      "text": "FDTC 2011。Ingrid Verbauwhede、Dusko Karaklajic 与 Jörn-Marc Schmidt 指出此前文献中故障模型定义混乱，于是按注入媒介、空间与时间精度、故障持续性和可观测效果建立统一分类，梳理 DFA、碰撞攻击、safe-error 等攻击族与软硬件对策的对应关系。论文是分类学研究，不对应单一芯片实验，但为后续故障攻击与防护研究提供了共同的术语框架。<br><a href='https://doi.org/10.1109/FDTC.2011.13' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "The Fault Attack Jungle: A Classification Model",
+      "text": "FDTC 2011. Ingrid Verbauwhede, Dusko Karaklajic and Jörn-Marc Schmidt noted that fault models in prior literature were inconsistently defined, and built a unified taxonomy by injection medium, spatial/temporal precision, fault duration and observable effect, mapping attack families (DFA, collision attacks, safe-error) to hardware and software countermeasures. It is a classification study with no single-chip experiment, but it gave later fault-attack research a common vocabulary.<br><a href='https://doi.org/10.1109/FDTC.2011.13' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2012,
+      "month": 6
+    },
+    "zh": {
+      "headline": "AES 轮数修改分析：激光改变轮计数器",
+      "text": "HOST 2012。Dutertre、Mirbaha、Naccache、Ribotta、Tria 与 Vaschalde 对一颗 8 位 0.35 µm RISC 微控制器上的软件 AES 实施激光故障注入，改变轮计数器或总轮数，使 AES 执行缩减或增加轮次并从错误密文恢复密钥；论文未给出商业料号。<br><a href='https://doi.org/10.1109/HST.2012.6224334' target='_blank'>论文</a> · <a href='https://hal-emse.ccsd.cnrs.fr/emse-00742567' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "AES Round Modification Analysis: Laser Faults on the Round Counter",
+      "text": "HOST 2012. Dutertre, Mirbaha, Naccache, Ribotta, Tria and Vaschalde laser-glitched a software AES implementation on an 8-bit 0.35 µm RISC microcontroller, changing the round counter or total round count so AES executed fewer or more rounds and the key could be recovered from faulty ciphertexts; no commercial part number is given.<br><a href='https://doi.org/10.1109/HST.2012.6224334' target='_blank'>Paper</a> · <a href='https://hal-emse.ccsd.cnrs.fr/emse-00742567' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2012,
+      "month": 6
+    },
+    "zh": {
+      "headline": "RSA-CRT 实现的故障攻击",
+      "text": "Fault Analysis in Cryptography 2012。Chong Hee Kim 与 Jean-Jacques Quisquater 系统归纳并扩展针对 RSA-CRT 实现的故障攻击：比较永久故障与瞬态故障模型下 Bellcore 攻击及其变体（Cao、Giraud、Aumüller 等）的威胁差异，并形式化分析“校验签名”“感染式计算”等对策在多重故障下的失效条件。论文是纯理论分析，不对应单一芯片，为 CRT-RSA 防护设计提供了参考基准。<br><a href='https://doi.org/10.1007/978-3-642-29656-7_8' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault Attacks Against RSA-CRT Implementation",
+      "text": "Fault Analysis in Cryptography 2012. Chong Hee Kim and Jean-Jacques Quisquater systematized and extended fault attacks on RSA-CRT implementations: they compared permanent- versus transient-fault variants of the Bellcore attack and its successors (Cao, Giraud, Aumüller et al.), and formally analyzed when countermeasures like signature verification and infective computation fail under multiple faults. It is a purely theoretical analysis with no single-chip experiment, serving as a reference baseline for CRT-RSA protection design.<br><a href='https://doi.org/10.1007/978-3-642-29656-7_8' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2012,
+      "month": 9
+    },
+    "zh": {
+      "headline": "电磁瞬态故障注入 AES：硬件与软件实现",
+      "text": "FDTC 2012。Amine Dehbaoui、Jean-Max Dutertre、Bruno Robisson 与 Assia Tria 在 AVR ATmega128 的软件 AES 和 Xilinx Spartan-3 FPGA 的硬件 AES 上实施电磁瞬态故障，报告可改变 AES 计算中的单个字节。<br><a href='https://doi.org/10.1109/FDTC.2012.15' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Electromagnetic Transient Faults Injection on AES",
+      "text": "FDTC 2012. Amine Dehbaoui, Jean-Max Dutertre, Bruno Robisson and Assia Tria injected transient EM faults into software AES on an AVR ATmega128 and hardware AES on a Xilinx Spartan-3 FPGA, reporting faults that changed individual AES bytes.<br><a href='https://doi.org/10.1109/FDTC.2012.15' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2012,
+      "month": 9
+    },
+    "zh": {
+      "headline": "微线圈 EMFI 精确定位攻击 AES",
+      "text": "FDTC 2012。Dehbaoui、Dutertre、Robisson 与 Tria 使用毫米级微线圈在芯片表面逐点扫描，在不去封装的条件下向 FPGA 硬件 AES 与微控制器软件 AES（均未列出具体型号）注入电磁故障：实验给出可复现故障与探头坐标、脉冲参数的关系，并通过差分分析恢复完整密钥。该工作证明局部化的近场电磁注入可以替代激光完成空间选择性故障注入。<br><a href='https://doi.org/10.1109/fdtc.2012.15' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Localized EMFI on AES with a Micro-Coil",
+      "text": "FDTC 2012. Dehbaoui, Dutertre, Robisson and Tria scanned a millimeter-scale micro-coil across the chip surface, injecting electromagnetic faults without decapsulation into a hardware AES on FPGA and a software AES on a microcontroller (neither part number listed): the experiments map reproducible faults to probe coordinates and pulse parameters, and the full key was recovered by differential analysis. The work showed localized near-field EM injection can replace lasers for spatially selective fault injection.<br><a href='https://doi.org/10.1109/fdtc.2012.15' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2012,
+      "month": 9
+    },
+    "zh": {
+      "headline": "EMFI 技术、设备与实验结果",
+      "text": "FDTC 2012。Philippe Maurine 比较谐波注入（连续波耦合）与脉冲注入（瞬态高场强）两类电磁故障注入平台在成本、空间分辨率与故障率上的权衡，并介绍从芯片背面注入与正向体偏压注入（FBBI）的装置结构。论文在运行 CRT-RSA 的安全器件上给出实验结果，成功诱发可利用故障并分解出私钥，为后续 EMFI 实验台设计提供了参考。<br><a href='https://doi.org/10.1109/FDTC.2012.21' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Techniques for EM Fault Injection: Equipment and Results",
+      "text": "FDTC 2012. Philippe Maurine compared harmonic injection (continuous-wave coupling) and pulsed injection (transient high field) EMFI platforms in cost, spatial resolution and fault rate, and described rear-side injection and Forward Body Biasing Injection (FBBI) setups. Experiments on a secure device running CRT-RSA produced exploitable faults and factored the private key, providing a reference for later EMFI bench design.<br><a href='https://doi.org/10.1109/FDTC.2012.21' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2012,
+      "month": 11
+    },
+    "zh": {
+      "headline": "故障注入攻击综述：理论、实践与对策",
+      "text": "Proceedings of the IEEE，2012 年 11 月。Alessandro Barenghi、Luca Breveglieri、Israel Koren 与 David Naccache 综述电压、时钟、光和电磁故障注入，整理 RSA、ECC、AES 等算法的故障分析及硬件、软件防护；论文是综述，不对应单一芯片。<br><a href='https://doi.org/10.1109/JPROC.2012.2188769' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault Injection Attacks: Theory, Practice and Countermeasures",
+      "text": "Proceedings of the IEEE, November 2012. Alessandro Barenghi, Luca Breveglieri, Israel Koren and David Naccache survey voltage, clock, optical and electromagnetic injection, together with fault analysis of RSA, ECC and AES and hardware/software countermeasures; it is a survey rather than a single-chip experiment.<br><a href='https://doi.org/10.1109/JPROC.2012.2188769' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 6
+    },
+    "zh": {
+      "headline": "前照式激光注入 AES 末轮：大光斑故障模型",
+      "text": "HST 2013。Roscian、Dutertre 与 Tria 对运行硬件 AES 的 ASIC（未给出商业型号）实施正面激光注入，比较约 100 µm 大光斑与较小光斑的故障效果：大光斑主要产生 bit-set/bit-reset 故障且集中在末轮状态存储单元。作者据此实施两种 DFA（Piret–Quisquater 与 Tunstall 变体），仅用少量故障密文即恢复密钥，说明攻击者不必具备单比特精度也能完成有效攻击。<br><a href='https://doi.org/10.1109/HST.2013.6581576' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Frontside Laser Fault Injection into AES",
+      "text": "HST 2013. Roscian, Dutertre and Tria performed front-side laser injection on an ASIC running hardware AES (no commercial model given), comparing a ~100 µm wide spot with smaller ones: the wide spot mainly produced bit-set/bit-reset faults concentrated in the last-round state registers. Two DFAs (Piret–Quisquater and Tunstall variants) recovered the key from only a few faulty ciphertexts, showing effective attacks do not require single-bit precision.<br><a href='https://doi.org/10.1109/HST.2013.6581576' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 8
+    },
+    "zh": {
+      "headline": "EMFI 故障模型扩展到 32 位单片机",
+      "text": "FDTC 2013。Moro、Dehbaoui、Heydemann、Robisson 与 Encrenaz 在 ARM Cortex-M3 微控制器（论文未披露具体料号）上分析电磁故障注入：结合反汇编逐条比对执行轨迹，作者把观察到的指令替换故障归因于 Flash 读出数据在取指通路上被篡改，而非流水线时序错误。该结论把 EMFI 故障模型研究从 8 位 AVR 扩展到 32 位单片机，并直接影响了后续 EMFI 攻击的建模方式。<br><a href='https://doi.org/10.1109/fdtc.2013.9' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "EMFI Fault Model on 32-bit MCUs",
+      "text": "FDTC 2013. Moro, Dehbaoui, Heydemann, Robisson and Encrenaz analyzed EMFI on an ARM Cortex-M3 microcontroller (no part number disclosed): by comparing execution traces against disassembly instruction by instruction, they attributed the observed instruction-substitution faults to corruption of Flash read data on the instruction-fetch path rather than pipeline timing errors. The result extended EMFI fault-model research from 8-bit AVR to 32-bit MCUs and shaped how later EMFI attacks were modeled.<br><a href='https://doi.org/10.1109/fdtc.2013.9' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 8
+    },
+    "zh": {
+      "headline": "激光故障的 SRAM 位集/位清模型",
+      "text": "FDTC 2013。Roscian、Sarafianos、Dutertre 与 Tria 对独立 SRAM 测试单元及微控制器 RAM 进行激光注入：扫描结果显示故障以单比特 bit-set 或 bit-reset 出现，方向取决于单元原存储值，与 MOS 光电流模型一致。作者据此修正了密码分析文献中常用的理想 bit-flip 假设，并讨论真实故障模型对 DFA 攻击复杂度的影响；论文未公开微控制器的商业料号。<br><a href='https://doi.org/10.1109/FDTC.2013.17' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Laser Faults in SRAM: Bit-Set/Bit-Reset Model",
+      "text": "FDTC 2013. Roscian, Sarafianos, Dutertre and Tria laser-injected standalone SRAM test cells and microcontroller RAM: scans showed faults appear as single-bit set or reset, with direction depending on the cell's stored value, consistent with a MOS photocurrent model. The authors corrected the idealized bit-flip assumption common in cryptanalysis literature and discussed how the real fault model affects DFA complexity; the microcontroller's commercial part number was not disclosed.<br><a href='https://doi.org/10.1109/FDTC.2013.17' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 8
+    },
+    "zh": {
+      "headline": "统计故障攻击 (SFA)：只需错误密文",
+      "text": "FDTC 2013。Fuhr、Jaulmes、Lomné 与 Thillard 提出统计故障攻击（SFA）：只需在 AES 倒数第二轮注入一次非均匀分布的单字节故障，再对一批错误密文按字节做统计分布分析，即可逐字节恢复子密钥。与 DFA 相比不需要正确/故障密文配对，与故障敏感度分析相比不依赖精确的故障模型；论文给出仿真与实验结果，不限定单一芯片型号。<br><a href='https://doi.org/10.1109/fdtc.2013.18' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Statistical Fault Attacks: Faulty Ciphertexts Only",
+      "text": "FDTC 2013. Fuhr, Jaulmes, Lomné and Thillard introduced Statistical Fault Attacks (SFA): a single non-uniformly distributed byte fault injected before the penultimate AES round lets the subkey be recovered byte by byte from the statistical distribution of faulty ciphertexts alone. Unlike DFA it needs no correct/faulty pairs, and unlike fault-sensitivity analysis it needs no precise fault model; the paper gives simulation and experimental results without targeting a specific chip.<br><a href='https://doi.org/10.1109/fdtc.2013.18' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 9
+    },
+    "zh": {
+      "headline": "电磁毛刺攻击 AES 轮计数器",
+      "text": "COSADE 2013。Amine Dehbaoui、Amir-Pasha Mirbaha、Nicolas Moro、Jean-Max Dutertre 与 Assia Tria 在 ARM Cortex-M3 32 位 MCU 上干扰 AES 倒数第二轮末的轮计数器，使 AES 多执行一轮；两对正确/错误密文可用于恢复密钥。<br><a href='https://doi.org/10.1007/978-3-642-40026-1_2' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Electromagnetic Glitch on the AES Round Counter",
+      "text": "COSADE 2013. Amine Dehbaoui, Amir-Pasha Mirbaha, Nicolas Moro, Jean-Max Dutertre and Assia Tria targeted the AES round counter on a 32-bit ARM Cortex-M3 MCU, causing one extra AES round at the end of the penultimate round; two correct/faulty ciphertext pairs can recover the key.<br><a href='https://doi.org/10.1007/978-3-642-40026-1_2' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 11
+    },
+    "zh": {
+      "headline": "Glitch It If You Can：故障参数搜索策略",
+      "text": "CARDIS 2013（11 月 27–29 日）。Rafael Boix Carpi、Stjepan Picek、Lejla Batina、Federico Menarini、Domagoj Jakobovic 与 Marin Golub 比较故障注入中时刻、宽度和幅度等参数的搜索策略，研究如何减少实验次数；论文不限定单一芯片型号。<br><a href='https://doi.org/10.1007/978-3-319-08302-5_16' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Glitch It If You Can: Parameter Search Strategies",
+      "text": "CARDIS 2013 (27–29 November). Rafael Boix Carpi, Stjepan Picek, Lejla Batina, Federico Menarini, Domagoj Jakobovic and Marin Golub compare search strategies for injection timing, width and amplitude to reduce experiments; the paper does not target one chip model.<br><a href='https://doi.org/10.1007/978-3-319-08302-5_16' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 11
+    },
+    "zh": {
+      "headline": "温度侧信道与加热故障攻击",
+      "text": "CARDIS 2013（2013 年 11 月 27–29 日）。Michael Hutter 与 Jörn-Marc Schmidt 把温度作为观测与攻击的双重对象：一方面通过片上传感与功耗分析提取温度侧信道信息，另一方面用局部加热改变安全芯片的存储与计算行为、诱发可利用故障。论文给出了两类实验的装置与结果，并讨论了温度监测类对策的边界；实验器件未给出商业料号。<br><a href='https://doi.org/10.1007/978-3-319-08302-5_15' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "The Temperature Side Channel and Heating Fault Attacks",
+      "text": "CARDIS 2013 (Nov 27–29, 2013). Michael Hutter and Jörn-Marc Schmidt treated temperature as both observable and attack vector: they extracted temperature side-channel information via on-chip sensing and power analysis, and used localized heating to alter memory and computation behavior of a security chip, inducing exploitable faults. The paper reports both experimental setups and discusses the limits of temperature-monitoring countermeasures; no commercial part number is given.<br><a href='https://doi.org/10.1007/978-3-319-08302-5_15' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2013,
+      "month": 12
+    },
+    "zh": {
+      "headline": "故障攻击硬件设计指南",
+      "text": "IEEE TVLSI，2013 年 12 月。Dusko Karaklajic、Jörn-Marc Schmidt 与 Ingrid Verbauwhede 面向硬件设计者系统整理故障攻击：按电压、时钟、温度、光照与电磁等注入媒介分类，分析寄存器、总线、存储器等易受攻击结构与对应故障模型，并给出从威胁建模、故障仿真到硅后验证的评估流程。论文还讨论了传感器、冗余与随机化等硬件防护；属于设计方法学综述，不对应单一芯片。<br><a href='https://doi.org/10.1109/TVLSI.2012.2231707' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Hardware Designer's Guide to Fault Attacks",
+      "text": "IEEE TVLSI, December 2013. Dusko Karaklajic, Jörn-Marc Schmidt and Ingrid Verbauwhede systematically organized fault attacks for hardware designers: categorizing injection media (voltage, clock, temperature, light, EM), analyzing vulnerable structures (registers, buses, memories) and their fault models, and presenting an evaluation flow from threat modeling and fault simulation to post-silicon validation. Hardware countermeasures — sensors, redundancy, randomization — are discussed; it is a design-methodology survey with no single-chip experiment.<br><a href='https://doi.org/10.1109/TVLSI.2012.2231707' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2014,
+      "month": 3
+    },
+    "zh": {
+      "headline": "EM 毛刺检测器的覆盖范围",
+      "text": "DATE 2014。Loic Zussa、Amine Dehbaoui、Karim Tobich、Jean-Max Dutertre、Philippe Maurine、Ludovic Guillaume-Sage、Jessy Clediere 与 Assia Tria 在 Xilinx Spartan 700 上的 128 位 AES 设计中评估延迟型毛刺检测器；实验显示局部 EM 毛刺可能绕过单个检测器。<br><a href='https://doi.org/10.7873/DATE.2014.216' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Efficiency of a Glitch Detector against Electromagnetic Fault Injection",
+      "text": "DATE 2014. Loic Zussa, Amine Dehbaoui, Karim Tobich, Jean-Max Dutertre, Philippe Maurine, Ludovic Guillaume-Sage, Jessy Clediere and Assia Tria evaluated a delay-based glitch detector on a 128-bit AES design in a Xilinx Spartan 700; experiments showed that localized EM glitches can bypass a single detector.<br><a href='https://doi.org/10.7873/DATE.2014.216' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2014,
+      "month": 8
+    },
+    "zh": {
+      "headline": "SASEBO-G 上同步电磁故障注入",
+      "text": "EMC 2014。Yu-ichi Hayashi、Naofumi Homma、Takaaki Mizuki、Takafumi Aoki 与 Hideaki Sone 提出用目标自身的电磁辐射作为触发信号：先实时监测 SASEBO-G AES 评估板（Xilinx FPGA）的电磁泄漏波形，在识别到目标运算时刻后同步注入有意电磁干扰（IEMI）故障，从而把故障时刻精度提高到时钟周期级。实验证明这种自触发结构能在无外部触发线的条件下实现高精度故障注入。<br><a href='https://doi.org/10.1109/ISEMC.2014.6899066' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Synchronized IEMI Fault Injection on SASEBO-G",
+      "text": "EMC 2014. Yu-ichi Hayashi, Naofumi Homma, Takaaki Mizuki, Takafumi Aoki and Hideaki Sone proposed using the target's own electromagnetic emanation as a trigger: monitoring the EM leakage of a SASEBO-G AES evaluation board (Xilinx FPGA) in real time, they injected intentional electromagnetic interference (IEMI) synchronized to the detected computation moment, achieving clock-cycle-level timing precision. The experiments show this self-triggered structure enables precise fault injection without an external trigger line.<br><a href='https://doi.org/10.1109/ISEMC.2014.6899066' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2014,
+      "month": 9
+    },
+    "zh": {
+      "headline": "故障强度分析：结合故障与功耗统计",
+      "text": "FDTC 2014。Nahid Farhady Ghalaty、Bilgiday Yuce、Mostafa Taha 与 Patrick Schaumont 提出 Differential Fault Intensity Analysis，在 FPGA AES 故障注入模型上用故障偏差进行统计检验；实验报告平均约 7 次故障注入即可重建 128 位密钥。<br><a href='https://doi.org/10.1109/FDTC.2014.15' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Differential Fault Intensity Analysis",
+      "text": "FDTC 2014. Nahid Farhady Ghalaty, Bilgiday Yuce, Mostafa Taha and Patrick Schaumont introduced Differential Fault Intensity Analysis, applying statistical tests to biased faults in an FPGA AES injection model; the experiment reports reconstructing a 128-bit key with an average of about seven injections.<br><a href='https://doi.org/10.1109/FDTC.2014.15' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2014,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Glitching For n00bs：低门槛电气毛刺实验",
+      "text": "31C3 2014。exide 展示如何用面包板、自蚀刻 PCB、廉价 FPGA 与自制逻辑分析仪搭建电气毛刺实验平台，并比较直接电源短接、MOSFET crowbar 等不同瞬态注入方式对集成电路的影响。议题面向入门者给出完整的物料清单与调试经验，大幅降低了故障注入的硬件门槛；讨论的是实验方法本身，未限定单一芯片型号。<br><a href='https://media.ccc.de/v/31c3_-_6499_-_en_-_saal_2_-_201412271715_-_glitching_for_n00bs_-_exide' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "Glitching For n00bs: Low-Cost Electrical Glitching",
+      "text": "31C3 2014. exide showed how to build an electrical-glitching platform from a breadboard, self-etched PCBs, a cheap FPGA and a homemade logic analyzer, comparing transient injection techniques such as direct supply shorting and MOSFET crowbars and their effects on ICs. Aimed at beginners, the talk provides a full bill of materials and debugging tips, sharply lowering the hardware entry barrier; it covers experimental method rather than a specific chip.<br><a href='https://media.ccc.de/v/31c3_-_6499_-_en_-_saal_2_-_201412271715_-_glitching_for_n00bs_-_exide' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2015,
+      "month": 5
+    },
+    "zh": {
+      "headline": "ARMv7-M 指令缓存的高精度 EMFI",
+      "text": "HST 2015。Rivière、Najm、Rauzy、Danger、Bringer 与 Sauvage 针对 ARMv7-M 处理器的指令缓存建立可复现的电磁故障注入平台：实验显示 EMFI 可在缓存行粒度精确损坏取指数据，精确故障模型复现率最高约 96%。作者进一步展示了缓存级故障对控制流完整性和既有故障攻击（如指令跳过）效果的影响；论文未指定单一 MCU 料号。<br><a href='https://doi.org/10.1109/HST.2015.7140238' target='_blank'>论文</a> · <a href='https://arxiv.org/abs/1510.01537' target='_blank'>预印本</a>"
+    },
+    "en": {
+      "headline": "High-Precision EMFI on ARMv7-M Instruction Caches",
+      "text": "HST 2015. Rivière, Najm, Rauzy, Danger, Bringer and Sauvage built a reproducible EMFI platform targeting the instruction cache of an ARMv7-M processor: experiments show EMFI can corrupt fetched instructions at cache-line granularity, with up to ~96% reproduction of precise fault models. They further demonstrate the impact of cache-level faults on control-flow integrity and on the effectiveness of known fault attacks such as instruction skipping; no specific MCU part number is given.<br><a href='https://doi.org/10.1109/HST.2015.7140238' target='_blank'>Paper</a> · <a href='https://arxiv.org/abs/1510.01537' target='_blank'>Preprint</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2015,
+      "month": 7
+    },
+    "zh": {
+      "headline": "SRAM 激光注入：30 ps 与 50 ns 脉冲对比",
+      "text": "IOLTS 2015。Lacruche、Borrel、Champeix、Roscian、Sarafianos、Rigaud、Dutertre 与 Kussener 将 SRAM 激光脉冲从 50 ns 缩短到 30 ps，发现新的敏感区域，并在微控制器 RAM 上复现实验；结果仍以 bit-set/bit-reset 为主。目标器件未给出商业料号。<br><a href='https://doi.org/10.1109/IOLTS.2015.7229820' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Laser Injection into SRAM: 30 ps vs 50 ns",
+      "text": "IOLTS 2015. Lacruche, Borrel, Champeix, Roscian, Sarafianos, Rigaud, Dutertre and Kussener compared 30-ps and 50-ns laser pulses on SRAM, found additional sensitive regions, and validated the results on a microcontroller RAM; bit-set/bit-reset remained the dominant model. No commercial part number is given.<br><a href='https://doi.org/10.1109/IOLTS.2015.7229820' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2015,
+      "month": 8
+    },
+    "zh": {
+      "headline": "ChipWhisperer：开源毛刺实验平台",
+      "text": "DEF CON 23。Colin O'Flynn 发布开源的 ChipWhisperer 平台：一块几百美元的 FPGA 板即可精确产生电压/时钟毛刺，并同步采集功耗波形用于侧信道分析。现场演示包括绕过 MCU 的密码校验和提取 AES 密钥。ChipWhisperer 把故障注入与功耗分析从数万美元的商用设备带入教育和个人实验场景，成为后续大量公开毛刺研究的默认平台。<br><a href='https://www.youtube.com/watch?v=BHqrA8lzz2o' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "ChipWhisperer: Glitching Made Easy",
+      "text": "DEF CON 23. Colin O'Flynn released the open-source ChipWhisperer platform: a few-hundred-dollar FPGA board that generates precise voltage/clock glitches and synchronously captures power traces for side-channel analysis. Live demos included bypassing an MCU password check and extracting an AES key. ChipWhisperer moved fault injection and power analysis from tens-of-thousands-of-dollars commercial gear into education and hobbyist labs, becoming the default platform for much of the public glitching research that followed.<br><a href='https://www.youtube.com/watch?v=BHqrA8lzz2o' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2015,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Hardware Attacks：极低成本的芯片攻击",
+      "text": "Camp 2015。Ramiro Pareja 与 Rafa Boix 评估用约 30 欧元的器材入门功耗分析和故障注入：对比市电变压器、蜂鸣器线圈等极易获取的元件与商用平台的差异，演示在智能卡与微控制器上实施毛刺与采集的可行性与局限。议题面向零基础研究者，证明芯片级攻击不必从昂贵设备起步；未限定单一芯片型号。<br><a href='https://media.ccc.de/v/camp2015-6711-hardware_attacks_hacking_chips_on_the_very_cheap' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "Hardware Attacks: Hacking Chips on the Very Cheap",
+      "text": "Camp 2015. Ramiro Pareja and Rafa Boix evaluated entry-level power analysis and fault injection with about €30 of equipment: comparing readily available parts (mains transformers, buzzer coils) against commercial platforms, they demonstrated the feasibility and limits of glitching and trace capture on smartcards and microcontrollers. Aimed at absolute beginners, the talk showed chip-level attacks need not start with expensive gear; no specific chip model is targeted.<br><a href='https://media.ccc.de/v/camp2015-6711-hardware_attacks_hacking_chips_on_the_very_cheap' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2015,
+      "month": 9
+    },
+    "zh": {
+      "headline": "激光故障攻击物理不可克隆函数",
+      "text": "FDTC 2015。Shahin Tajik、Heiko Lohrke、Fatemeh Ganji、Jean-Pierre Seifert 与 Christian Boit 在 180 nm CPLD 的可编程逻辑单元上实施激光故障，分别分析 XOR arbiter PUF 与 RO PUF：故障可提高建模攻击效果并降低响应熵。<br><a href='https://doi.org/10.1109/FDTC.2015.19' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Laser Fault Attack on Physically Unclonable Functions",
+      "text": "FDTC 2015. Shahin Tajik, Heiko Lohrke, Fatemeh Ganji, Jean-Pierre Seifert and Christian Boit injected laser faults into programmable logic cells of a 180 nm CPLD, analyzing XOR arbiter PUFs and RO PUFs; the faults increased modeling-attack effectiveness and reduced response entropy.<br><a href='https://doi.org/10.1109/FDTC.2015.19' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 1
+    },
+    "zh": {
+      "headline": "体偏压注入（BBI）实验化",
+      "text": "YACC 2016。Noemie Beringuier-Boher、Marc Lacruche、David El-Baze、Jean-Max Dutertre、Jean-Baptiste Rigaud 与 Philippe Maurine 介绍可重复的体偏压注入实验台：向芯片衬底施加高压脉冲以诱发瞬态故障，并给出器件物理效应和故障模型。<br><a href='https://doi.org/10.1145/2858930.2858940' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Body Bias Injection (BBI) in Practice",
+      "text": "YACC 2016. Noemie Beringuier-Boher, Marc Lacruche, David El-Baze, Jean-Max Dutertre, Jean-Baptiste Rigaud and Philippe Maurine present a repeatable body-bias-injection bench: a high-voltage substrate pulse induces transient faults, and the paper describes the physical effects and a refined fault model.<br><a href='https://doi.org/10.1145/2858930.2858940' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 3
+    },
+    "zh": {
+      "headline": "EMFI：触发器的脆弱性",
+      "text": "Journal of Cryptographic Engineering，在线发表于 2016 年 3 月 25 日。Ordas、Guillaume-Sage 与 Maurine 通过 D 触发器实验说明电磁故障可产生 bit-set 或 bit-reset，而不只是时序错误；实验使用 Xilinx Spartan 3E-1000 和 Spartan 3-1000 上的 AES 设计。<br><a href='https://doi.org/10.1007/s13389-016-0128-3' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "EMFI: The Curse of Flip-Flops",
+      "text": "Journal of Cryptographic Engineering, published online 25 March 2016. Ordas, Guillaume-Sage and Maurine used D-flip-flop experiments to show that EM faults can produce bit-set or bit-reset effects, rather than only timing faults; experiments used AES designs on Xilinx Spartan 3E-1000 and Spartan 3-1000 devices.<br><a href='https://doi.org/10.1007/s13389-016-0128-3' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 3
+    },
+    "zh": {
+      "headline": "90/45 nm SRAM 单元的精确激光故障注入",
+      "text": "CARDIS 2015（Springer 2016）。Selmke、Brummer、Heyszl 与 Sigl 在 90 nm 和 45 nm SRAM 测试单元上用皮秒激光定位故障，比较背面注入的空间分辨率、脉冲参数与可重复的位翻转：实验显示 45 nm 单元对激光能量更敏感，精确控制脉冲可在不损伤邻近单元的前提下翻转目标位；对象为工艺测试结构，不是商业 MCU。<br><a href='https://doi.org/10.1007/978-3-319-31271-2_12' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Precise Laser Fault Injection into 90 nm and 45 nm SRAM Cells",
+      "text": "CARDIS 2015 (Springer 2016). Selmke, Brummer, Heyszl and Sigl used picosecond lasers to localize faults in 90 nm and 45 nm SRAM test cells, comparing rear-side injection spatial resolution, pulse parameters and reproducible bit flips: the 45 nm cells proved more sensitive to laser energy, and precise pulse control flipped target bits without damaging neighbors; the targets were process test structures, not commercial MCUs.<br><a href='https://doi.org/10.1007/978-3-319-31271-2_12' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 6
+    },
+    "zh": {
+      "headline": "光学故障注入智能卡 Flash",
+      "text": "ICEIEC 2016。Cai、Bai、Liu 与 Hu 对现代微型智能卡的 Flash 存储器进行光学故障注入：实验能把部分字节改成已知值，再结合卡内校验机制的绕过与对剩余字节的猜测，恢复非易失存储中的敏感内容。该工作说明即使做不到完全位级控制，部分可控的存储故障仍足以构成实际威胁；论文未公开智能卡型号。<br><a href='https://doi.org/10.1109/ICEIEC.2016.7589684' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Optical Fault Injection against Smartcard Flash",
+      "text": "ICEIEC 2016. Cai, Bai, Liu and Hu optically fault-injected the Flash memory of a modern miniaturized smartcard: the experiments changed selected bytes to known values, then bypassed the card's checksum mechanism and brute-forced the remaining bytes to recover sensitive non-volatile contents. The work shows that even partially controlled memory faults — short of full bit-level control — are enough for practical attacks; the smartcard model was not disclosed.<br><a href='https://doi.org/10.1109/ICEIEC.2016.7589684' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 7
+    },
+    "zh": {
+      "headline": "多重故障注入结合缓冲区溢出",
+      "text": "Journal of Cryptographic Engineering，在线发表于 2016 年 7 月 20 日。Shoei Nashimoto、Naofumi Homma、Yu-ichi Hayashi、Junko Takahashi、Hitoshi Fuji 与 Takafumi Aoki 通过跳过输入长度检查，将多重故障注入与缓冲区溢出结合；实验对象为 AVR ATmega163 和 ARM Cortex-M0+，并验证了软件对策。<br><a href='https://doi.org/10.1007/s13389-016-0136-3' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Buffer Overflow Attack with Multiple Fault Injection",
+      "text": "Journal of Cryptographic Engineering, published online 20 July 2016. Shoei Nashimoto, Naofumi Homma, Yu-ichi Hayashi, Junko Takahashi, Hitoshi Fuji and Takafumi Aoki combined multiple instruction skips with a buffer overflow; experiments used an AVR ATmega163 and an ARM Cortex-M0+, and evaluated a software countermeasure.<br><a href='https://doi.org/10.1007/s13389-016-0136-3' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 8
+    },
+    "zh": {
+      "headline": "电压毛刺控制 ARM 程序计数器",
+      "text": "FDTC 2016。Timmers、Spruyt 与 Witteman 报告了对 ARM 应用处理器（论文未披露具体料号）的实验：在取指阶段对数据通路实施电压毛刺，可直接控制程序计数器（PC）的值，把执行流重定向到攻击者选择的地址。这是早期公开演示“毛刺劫持 PC”的工作之一，说明电压故障不止能跳过指令，还能实现任意控制流转移，为后续的代码执行攻击铺路。<br><a href='https://doi.org/10.1109/fdtc.2016.18' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Controlling PC on ARM Using Fault Injection",
+      "text": "FDTC 2016. Timmers, Spruyt and Witteman reported experiments on an ARM application processor (no part number disclosed): voltage-glitching the instruction-fetch datapath directly controls the program counter, redirecting execution to an attacker-chosen address. Among the first public demonstrations of 'glitching the PC', it showed voltage faults can do more than skip instructions — they enable arbitrary control-flow transfer, paving the way for later code-execution attacks.<br><a href='https://doi.org/10.1109/fdtc.2016.18' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Crowbar：嵌入式系统电压故障注入",
+      "text": "ePrint 2016/810（2016 年 8 月 25 日）。Colin O'Flynn 介绍 crowbar 电压故障注入：用 MOSFET 把目标电源轨瞬时短接到地，产生宽度可控的电压跌落。论文在 8 位 AVR 微控制器上重复产生单比特和多比特故障，并在 FPGA 内部寄存器与配置逻辑上验证故障注入；该方法结构简单、成本极低，此后成为 ChipWhisperer 等平台的标准毛刺生成方式。<br><a href='https://eprint.iacr.org/2016/810' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault Injection using Crowbars on Embedded Systems",
+      "text": "ePrint 2016/810 (Aug 25, 2016). Colin O'Flynn presented crowbar voltage fault injection: a MOSFET momentarily shorts the target's supply rail to ground, producing a precisely width-controlled voltage dip. The paper repeatedly generates single- and multi-bit faults on an 8-bit AVR microcontroller and validates injection into FPGA internal registers and configuration logic. The method is simple and extremely cheap, and has since become the standard glitch-generation approach in platforms like ChipWhisperer.<br><a href='https://eprint.iacr.org/2016/810' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 8
+    },
+    "zh": {
+      "headline": "双激光绕过冗余 AES 故障防护",
+      "text": "FDTC 2016。Selmke、Heyszl 与 Sigl 在 Xilinx Spartan-6 FPGA（45 nm）上实现带感染式防护的冗余 AES——两份计算持续比对，一旦结果不同就污染输出。作者用两束激光同时命中两个状态寄存器，使相同故障同步进入两份计算，比对无法发现差异，感染式防护被绕过，随后重新实施 DFA 恢复密钥。实验证明“双重故障”是冗余类对策的系统性弱点。<br><a href='https://doi.org/10.1109/FDTC.2016.16' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Simultaneous Laser Faults Defeat Redundant AES",
+      "text": "FDTC 2016. Selmke, Heyszl and Sigl implemented a redundancy-protected AES with infective countermeasures on a Xilinx Spartan-6 FPGA (45 nm) — two computations are continuously compared and any mismatch poisons the output. Using two laser beams hitting both state registers simultaneously, they injected identical faults into both copies so the comparison saw no difference, defeated the infective protection, and re-mounted DFA to recover the key. The work demonstrates double faults as a systemic weakness of redundancy-based countermeasures.<br><a href='https://doi.org/10.1109/FDTC.2016.16' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Software Fault Resistance is Futile：单次时钟毛刺",
+      "text": "FDTC 2016。Yuce、Ghalaty、Santapuri、Deshpande、Patrick 与 Schaumont 证明，面向指令级冗余和结果校验的软件防护可被一次低成本时钟毛刺破坏：故障同时影响冗余执行的两份拷贝，使校验失效。实验在 SAKURA-G 板（Xilinx FPGA）上进行，并对带故障防护的 LED 分组密码实现恢复了密钥。论文结论是纯软件对策必须假设多重/相关故障能力，否则防护强度会被高估。<br><a href='https://doi.org/10.1109/FDTC.2016.21' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Software Fault Resistance is Futile: Single-Glitch Attacks",
+      "text": "FDTC 2016. Yuce, Ghalaty, Santapuri, Deshpande, Patrick and Schaumont showed that software-only countermeasures based on instruction-level redundancy and result checking can be broken by a single low-cost clock glitch: the fault hits both copies of the redundant execution, defeating the check. Experiments ran on a SAKURA-G board (Xilinx FPGA), recovering the key from a fault-protected LED block-cipher implementation. The paper concludes software countermeasures must assume multiple/correlated fault capability or their strength is overestimated.<br><a href='https://doi.org/10.1109/FDTC.2016.21' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2016,
+      "month": 11
+    },
+    "zh": {
+      "headline": "电压毛刺绕过安全启动 — Raelize",
+      "text": "Black Hat Europe 2016。Raelize（Niek Timmers 与 Cristofaro Mune）演示在 ARM 嵌入式 SoC（公开演示未披露具体料号）校验启动镜像签名时注入电压毛刺，使签名校验结果被篡改，未授权固件得以启动。该演示把故障注入从密码密钥提取扩展到“安全启动绕过”这一影响面更大的目标，并给出毛刺参数搜索与触发点定位的工程方法，成为后来大量安全启动毛刺研究的范本。<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>"
+    },
+    "en": {
+      "headline": "Bypassing Secure Boot using Fault Injection",
+      "text": "Black Hat Europe 2016. Raelize (Niek Timmers and Cristofaro Mune) demonstrated injecting voltage glitches while an ARM embedded SoC (no part number disclosed) verifies the boot image signature, corrupting the verification result so unauthorized firmware boots. The demo extended fault injection from key extraction to the higher-impact target of secure-boot bypass, and documented an engineering method for glitch-parameter search and trigger-point localization that became a template for later secure-boot glitching research.<br><a href='https://raelize.com/publications' target='_blank'>Raelize</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 1
+    },
+    "zh": {
+      "headline": "纳米聚焦 X 射线重编程安全电路：ATmega1284P",
+      "text": "2017。Anceau、Bleuet、Clédière、Maingault、Rainard 与 Tucoulou 在 350 nm ATmega1284P 上用同步辐射纳米 X 射线定位 Flash、EEPROM 和 RAM 的单个晶体管，制造可热恢复的半永久 stuck-at 故障，并把 Flash 中的认证分支改写为绕过 PIN。<br><a href='https://doi.org/10.1007/978-3-319-66787-4_9' target='_blank'>论文</a> · <a href='https://cea.hal.science/cea-03986080' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Nanofocused X-Ray Reprogramming of an ATmega1284P",
+      "text": "2017. Anceau, Bleuet, Clédière, Maingault, Rainard and Tucoulou used a synchrotron nanofocused X-ray beam on a 350-nm ATmega1284P to target individual transistors in Flash, EEPROM and RAM. The semi-permanent stuck-at faults were thermally reversible; a Flash authentication branch was changed to bypass a PIN.<br><a href='https://doi.org/10.1007/978-3-319-66787-4_9' target='_blank'>Paper</a> · <a href='https://cea.hal.science/cea-03986080' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 2
+    },
+    "zh": {
+      "headline": "NXP LPC 代码读取保护的故障注入测试",
+      "text": "REcon Brussels 2017。Chris Gerlinsky 针对 NXP LPC 系列 MCU 的 CRP（Code Read Protection）：引导程序在上电时读取 CRP 等级值，在读取瞬间注入电压毛刺可把合法等级损坏成“无效值”，而芯片固件对无效值的处理是<b>静默关闭保护</b>；随后可用调试器读取完整固件。实验记录了配置读取阶段的故障结果及其错误处理路径。<br><a href='https://www.youtube.com/watch?v=YNpJ3c1GJoc' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "Breaking Code Read Protection on NXP LPC MCUs",
+      "text": "REcon Brussels 2017. Chris Gerlinsky targeted the CRP (Code Read Protection) of NXP LPC MCUs: the bootloader reads the CRP level at power-up; a voltage glitch at that instant corrupts a valid level into an <b>invalid</b> one — and the firmware silently disabled protection for the invalid value. A debugger then read the firmware. The talk records the configuration-read fault and its error-handling path.<br><a href='https://www.youtube.com/watch?v=YNpJ3c1GJoc' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 7
+    },
+    "zh": {
+      "headline": "比特币硬件钱包的故障注入测试",
+      "text": "DEF CON 25。Josh Datko 与 Chris Quartier 对一款比特币硬件钱包中的 STM32F2 系列微控制器（演讲未列出具体料号）实施电压毛刺：在启动读取 RDP 读保护配置的瞬间注入故障，把保护等级降级，随后通过调试接口读取固件与钱包敏感数据。演讲完整演示了从拆机、焊接到毛刺参数搜索的流程，是硬件钱包故障注入攻击的早期公开案例。<br><a href='https://www.youtube.com/watch?v=hAtoRrxFBWs' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "Breaking Bitcoin Hardware Wallets",
+      "text": "DEF CON 25. Josh Datko and Chris Quartier voltage-glitched an STM32F2-series microcontroller (no specific part number named) inside a Bitcoin hardware wallet: glitching while the boot code reads the RDP readout-protection configuration downgrades the protection level, after which firmware and wallet secrets are read out over the debug interface. The talk covers the full flow from teardown and soldering to glitch-parameter search — an early public case of fault injection against hardware wallets.<br><a href='https://www.youtube.com/watch?v=hAtoRrxFBWs' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 8
+    },
+    "zh": {
+      "headline": "BADFET：二阶脉冲电磁故障注入",
+      "text": "USENIX WOOT 2017。Ang Cui 与 Rick Housley 介绍 BADFET（二阶脉冲电磁故障注入）：用线圈产生强瞬态磁场，无需拆机或去封装即可在芯片内部诱发故障。作者在 Cisco 8861 VoIP 电话上验证攻击，目标组件包括 Broadcom BCM11123 应用处理器、Micron DDR3L D9SFT 内存和 Spansion S34ML02G2 NAND Flash，演示了电磁脉冲对安全启动链的破坏效果。<br><a href='https://www.usenix.org/system/files/conference/woot17/woot17-paper-cui.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "BADFET: Second-Order Pulsed EMFI",
+      "text": "USENIX WOOT 2017. Ang Cui and Rick Housley introduced BADFET (second-order pulsed electromagnetic fault injection): a coil generates a strong transient magnetic field that induces faults inside a chip without teardown or decapsulation. They validated the attack on a Cisco 8861 VoIP phone, targeting its Broadcom BCM11123 application processor, Micron DDR3L D9SFT memory and Spansion S34ML02G2 NAND Flash, demonstrating disruption of the secure-boot chain.<br><a href='https://www.usenix.org/system/files/conference/woot17/woot17-paper-cui.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 8
+    },
+    "zh": {
+      "headline": "CLKSCREW：软件触发的故障注入",
+      "text": "USENIX Security 2017（同年 12 月登陆 Black Hat Europe）。哥伦比亚大学 Tang、Sethumadhavan 与 Stolfo 使用内核驱动通过软件接口触发故障：在搭载 Qualcomm Snapdragon 805（APQ8084）SoC 的 Nexus 6 上用内核驱动滥用 DVFS 动态调压调频，把 CPU 核心推到安全工作点之外（超频+欠压），使 ARM TrustZone 内的执行出错 —— 成功提取 TrustZone 中的 AES 密钥，并加载自签名的可信应用。攻击通过软件接口触发，不需要物理接触设备。<br><a href='https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/tang' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "CLKSCREW: Software-Driven Fault Attack",
+      "text": "USENIX Security 2017 (also at Black Hat Europe that December). Columbia's Tang, Sethumadhavan and Stolfo used a kernel driver on a Nexus 6 with a Qualcomm Snapdragon 805 (APQ8084) SoC they abused DVFS to push the CPU core outside its safe operating point (overclock + undervolt), faulting execution inside ARM TrustZone — extracting AES keys from the secure world and loading self-signed trusted apps. The attack was triggered through software interfaces and did not require physical contact with the device.<br><a href='https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/tang' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 8
+    },
+    "zh": {
+      "headline": "WOOT：STM32F0 固件保护研究",
+      "text": "USENIX WOOT 2017。Johannes Obermaier 与 Stefan Tatschner 在 STM32F051R8T6 和 STM32F030R8T6 上研究固件读保护：RDP1 下的 Cold-Boot Stepping 可读 SRAM，254 nm UV-C 可使 RDP2 降级，SWD 竞争条件可绕过 RDP1 并读取 Flash。<br><a href='https://www.usenix.org/system/files/conference/woot17/woot17-paper-obermaier.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Shedding too much Light on STM32F0 Firmware Protection",
+      "text": "USENIX WOOT 2017. Johannes Obermaier and Stefan Tatschner studied firmware readout protection on STM32F051R8T6 and STM32F030R8T6: Cold-Boot Stepping reads SRAM under RDP1, 254 nm UV-C downgrades RDP2, and an SWD race condition bypasses RDP1 to read Flash.<br><a href='https://www.usenix.org/system/files/conference/woot17/woot17-paper-obermaier.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 9
+    },
+    "zh": {
+      "headline": "ASIL 认证汽车 MCU 的故障注入测试",
+      "text": "FDTC 2017。Pareja、Wiersma 与 Witteman（Riscure）对通过 ISO 26262 QM、ASIL-D1 与 ASIL-D2 安全认证的汽车微控制器（论文未列出具体料号）实施电压毛刺和 EMFI，记录到 16–37% 的故障注入成功率。论文的核心结论是：锁步核、ECC、电压监控等 ASIL 安全机制针对的是随机硬件失效（如宇宙射线翻转），而非攻击者精确控制幅度与时序的故意故障——“功能安全认证不等于信息安全防护”。<br><a href='https://doi.org/10.1109/fdtc.2017.15' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Fault Injection on ASIL-Certified Automotive MCUs",
+      "text": "FDTC 2017. Pareja, Wiersma and Witteman (Riscure) applied voltage glitching and EMFI to automotive microcontrollers certified to ISO 26262 QM, ASIL-D1 and ASIL-D2 (no part numbers listed), recording 16–37% fault-injection success rates. The key conclusion: ASIL safety mechanisms such as lockstep cores, ECC and voltage monitors are designed against random hardware faults (e.g. cosmic-ray upsets), not deliberately timed attacker-controlled glitches — functional-safety certification does not equal security protection.<br><a href='https://doi.org/10.1109/fdtc.2017.15' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 9
+    },
+    "zh": {
+      "headline": "KERNELFAULT：故障注入影响 Linux 内核",
+      "text": "hardwear.io 2017。Raelize 在系统启动早期、内核镜像正从外部 SDRAM 取数时注入电压毛刺，测试 ARM Cortex-A9 SoC（公开材料未披露具体料号）中传入 Linux 内核的指令和数据被篡改时的行为：实验观察到了权限提升类效果。该工作说明毛刺窗口不必局限在引导 ROM，内核加载阶段的取数通路同样是有效攻击面，外部存储器的完整性校验因此成为关键防护点。<br><a href='https://raelize.com/upload/research/2017/2017_Hardwear-io_KERNELFAULT-Pwning-Linux-using-Hardware-Fault-Injection_NT-CM.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "KERNELFAULT: Pwning Linux via FI",
+      "text": "hardwear.io 2017. Raelize injected voltage glitches early in boot, while the kernel image is being fetched from external SDRAM, testing what happens when instructions and data flowing into the Linux kernel are corrupted on an ARM Cortex-A9 SoC (no part number disclosed in public material): privilege-escalation effects were observed. The work shows the glitch window need not be limited to boot ROM — the fetch path during kernel loading is equally exposed, making integrity checks on external memory a critical defense.<br><a href='https://raelize.com/upload/research/2017/2017_Hardwear-io_KERNELFAULT-Pwning-Linux-using-Hardware-Fault-Injection_NT-CM.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 9
+    },
+    "zh": {
+      "headline": "激光故障注入绕过手机安全启动",
+      "text": "FDTC 2017（扩展版发表于 TCHES 2018）。Aurélien Vasselle 与 Hugues Thiebeauld 在商用智能手机 SoC（公开材料未披露具体料号）的启动链签名校验指令处实施激光故障注入，使校验结果被跳过或篡改，最终加载并执行未授权镜像。该工作证明即使在集成度极高的手机 SoC 上，激光注入仍能精确命中启动验证的关键指令，安全启动的物理层脆弱性不因工艺演进而消失。<br><a href='https://doi.org/10.1109/fdtc.2017.18' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Laser FI Bypasses Smartphone Secure Boot",
+      "text": "FDTC 2017 (extended version in TCHES 2018). Aurélien Vasselle and Hugues Thiebeauld performed laser fault injection at the signature-verification instruction of a commercial smartphone SoC's boot chain (no part number disclosed), causing the check to be skipped or corrupted so an unauthorized image loads and executes. The work shows that even on highly integrated mobile SoCs, laser injection can precisely hit the critical boot-verification instruction — the physical-layer fragility of secure boot persists across process generations.<br><a href='https://doi.org/10.1109/fdtc.2017.18' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 12
+    },
+    "zh": {
+      "headline": "GlitchKit：开源故障注入工具链",
+      "text": "34C3 2017。ktemkin 展示 GlitchKit 开源硬件与固件工具链：基于 GreatFET、FaceDancer 和 ChipWhisperer，对 USB 枚举等通信事件进行同步触发，把毛刺精确落在目标芯片处理协议的关键时刻，用于从读保护或加密 ROM 中提取固件。议题的重点是工具链设计与事件同步触发方法，并开源了全部硬件与软件；未限定单一芯片型号。<br><a href='https://media.ccc.de/v/34c3-9207-opening_closed_systems_with_glitchkit' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "GlitchKit: An Open Fault-Injection Toolchain",
+      "text": "34C3 2017. ktemkin presented GlitchKit, an open-source hardware/firmware toolchain: built on GreatFET, FaceDancer and ChipWhisperer, it synchronizes glitches to communication events such as USB enumeration, landing faults at the exact moment the target processes protocol data, for extracting firmware from read-protected or encrypted ROMs. The talk focuses on toolchain design and event-synchronized triggering, with all hardware and software open-sourced; no single chip model is targeted.<br><a href='https://media.ccc.de/v/34c3-9207-opening_closed_systems_with_glitchkit' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2017,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Switch Security：Homebrew on the Horizon",
+      "text": "34C3 2017。Plutoo、Derrek 与 Naehrwert 系统梳理了 Nintendo Switch 的安全架构，议题内容涵盖对 NVIDIA Tegra X1 启动 ROM 的电压毛刺研究，记录了密钥和明文固件暴露的结果，并分析了 Switch 启动链各阶段的安全边界。该议题是 Switch 破解社区早期最重要的公开资料之一，为后续引导链分析与自制系统研究提供了基础。<br><a href='https://www.youtube.com/watch?v=Ec4NgWRE8ik' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Switch Security: Homebrew on the Horizon",
+      "text": "34C3 2017. Plutoo, Derrek and Naehrwert systematically walked through the Nintendo Switch security architecture; the talk covered voltage-glitching work against the NVIDIA Tegra X1 boot ROM, recording the exposure of keys and plaintext firmware, and analyzed the security boundaries of each boot-chain stage. It was one of the most important early public resources for the Switch homebrew community, laying groundwork for later boot-chain analysis and custom-system research.<br><a href='https://www.youtube.com/watch?v=Ec4NgWRE8ik' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 5
+    },
+    "zh": {
+      "headline": "安全嵌入式软件的故障攻击综述",
+      "text": "Journal of Hardware and Systems Security，在线发表于 2018 年 5 月 10 日。Bilgiday Yuce、Patrick Schaumont 与 Marc Witteman 综述电压、时钟、电磁和激光故障如何影响嵌入式软件的数据流、控制流及防护评估；论文是综述，不对应单一芯片。<br><a href='https://doi.org/10.1007/s41635-018-0038-1' target='_blank'>论文</a> · <a href='https://arxiv.org/pdf/2003.10513' target='_blank'>开放版本</a>"
+    },
+    "en": {
+      "headline": "Fault Attacks on Secure Embedded Software",
+      "text": "Journal of Hardware and Systems Security, published online 10 May 2018. Bilgiday Yuce, Patrick Schaumont and Marc Witteman survey how voltage, clock, electromagnetic and laser faults affect embedded-software data/control flow and how to evaluate countermeasures; it is a survey rather than a single-chip experiment.<br><a href='https://doi.org/10.1007/s41635-018-0038-1' target='_blank'>Paper</a> · <a href='https://arxiv.org/pdf/2003.10513' target='_blank'>Open version</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 6
+    },
+    "zh": {
+      "headline": "故障注入测试汽车诊断协议",
+      "text": "escar USA 2018。Raelize 在未披露具体料号的汽车 ECU 上测试 UDS（统一诊断服务）SecurityAccess 流程：ECU 校验诊断工具返回的密钥响应时注入电压毛刺，使错误响应被判定为通过，诊断会话解锁后便可读取或修改固件。该工作把故障注入从芯片级密码操作引入车载诊断协议层，说明通信协议中的“比较-放行”结构同样是毛刺的高价值目标。<br><a href='https://raelize.com/upload/research/2018/2018_escarusa_fault-injection-on-diagnosis-protocols-presentation.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Fault Injection on Automotive Diagnostic Protocols",
+      "text": "escar USA 2018. Raelize tested the UDS (Unified Diagnostic Services) SecurityAccess flow on an automotive ECU (no part number disclosed): voltage-glitching the ECU while it validates the diagnostic tool's key response makes a wrong response pass, after which the unlocked diagnostic session allows firmware readout or modification. The work brought fault injection from chip-level crypto operations to the vehicle-diagnostic protocol layer, showing compare-and-grant structures in communication protocols are equally valuable glitch targets.<br><a href='https://raelize.com/upload/research/2018/2018_escarusa_fault-injection-on-diagnosis-protocols-presentation.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 6
+    },
+    "zh": {
+      "headline": "Glitching the Switch：故障注入任天堂 Switch 启动链",
+      "text": "OpenChaos（CCC 科隆）2018。研究者对 Nintendo Switch 的 NVIDIA Tegra X1 启动 ROM 实施电压毛刺，尝试在硬件层面绕过签名校验：议题记录了毛刺时序搜索、目标点位定位以及电源轨改造的完整过程，并讨论了成败判据。该演示与同期其他 Tegra X1 毛刺工作相互印证，说明游戏主机的启动链是低成本故障注入的可达目标。<br><a href='https://media.ccc.de/v/c4.openchaos.2018.06.glitching-the-switch' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "Glitching the Switch (Tegra X1 Boot ROM)",
+      "text": "OpenChaos (CCC Cologne) 2018. The presenter voltage-glitched the NVIDIA Tegra X1 boot ROM of the Nintendo Switch, attempting to bypass signature verification at the hardware level: the talk documents glitch-timing search, target-point localization and power-rail modification, along with success criteria. The demonstration corroborates contemporary Tegra X1 glitching work, showing console boot chains are reachable targets for low-cost fault injection.<br><a href='https://media.ccc.de/v/c4.openchaos.2018.06.glitching-the-switch' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 8
+    },
+    "zh": {
+      "headline": "FPGAhammer：共享 FPGA 的远程电压故障",
+      "text": "TCHES 2018。FPGAhammer 证明在多租户共享 FPGA 场景中，攻击者只需向自己租用的逻辑区域部署高功耗翻转电路（如大规模环形振荡器阵列），即可制造局部电压跌落和时序故障，从另一租户的 AES 实现中构造差分故障攻击并恢复密钥。论文讨论的是共享 FPGA 平台的远程电压故障，不限定单一器件料号，并评估了电压传感器等对策。<br><a href='https://doi.org/10.46586/tches.v2018.i3.44-68' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "FPGAhammer: Remote Voltage Faults on Shared FPGAs",
+      "text": "TCHES 2018. FPGAhammer showed that in multi-tenant shared FPGAs, an attacker who simply deploys high-power toggle logic (large ring-oscillator arrays) in their own allocated region can create local voltage droops and timing faults, mounting a differential fault attack against another tenant's AES implementation to recover its key. The paper studies remote voltage faults on shared FPGA platforms without targeting a specific device part number, and evaluates countermeasures such as voltage sensors.<br><a href='https://doi.org/10.46586/tches.v2018.i3.44-68' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 8
+    },
+    "zh": {
+      "headline": "遗传算法优化 EMFI 参数",
+      "text": "FDTC 2018。研究者把 EMFI 的探针位置、脉冲强度和时序搜索建模为黑盒优化问题，用遗传算法自动演化参数组合：在黑盒 SHA-3 设备上，相比随机搜索获得约 40 倍的故障样本和约 20 倍的不同故障样本，可利用故障比例也显著提高。该工作是“自动化毛刺参数搜索”的早期代表，此后进化算法成为故障注入参数寻优的常用工具；论文未指定单一芯片型号。<br><a href='https://doi.org/10.1109/FDTC.2018.00014' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Genetic-Algorithm Optimization for EMFI",
+      "text": "FDTC 2018. The researchers formulated the search for EMFI probe position, pulse strength and timing as a black-box optimization problem solved by a genetic algorithm: on a black-box SHA-3 device it yielded about 40× more faulty samples and 20× more distinct faults than random search, with a higher share of exploitable faults. An early example of automated glitch-parameter search, it helped establish evolutionary algorithms as a standard tool for fault-injection parameter tuning; no single chip model is specified.<br><a href='https://doi.org/10.1109/FDTC.2018.00014' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 8
+    },
+    "zh": {
+      "headline": "There Will Be Glitches：汽车 ECU 固件提取",
+      "text": "Black Hat USA 2018。Alyssa Milburn 与 Niek Timmers 演示对缺少软件漏洞的汽车 ECU 实施故障注入：先用毛刺绕过读保护提取受保护固件，再用自建的 CPU 仿真器对固件做动态分析、秘密提取和接口模糊测试，形成“毛刺提取+软件分析”的完整流程。议题强调即使 ECU 软件本身没有可利用漏洞，物理层故障注入仍能打开缺口；公开摘要未给出单一芯片料号。<br><a href='https://www.youtube.com/watch?v=4svMU1qGods' target='_blank'>演讲录像</a> · <a href='https://www.blackhat.com/us-18/briefings/schedule/#there-will-be-glitches-extracting-and-analyzing-automotive-firmware-efficiently-10696' target='_blank'>议题摘要</a>"
+    },
+    "en": {
+      "headline": "There Will Be Glitches: Extracting and Analyzing Automotive Firmware Efficiently",
+      "text": "Black Hat USA 2018. Alyssa Milburn and Niek Timmers demonstrated fault injection against automotive ECUs that lack software vulnerabilities: glitching past readout protection to extract protected firmware, then running it in a self-built CPU emulator for dynamic analysis, secret extraction and interface fuzzing — a complete 'glitch-and-analyze' pipeline. The talk stressed that even when ECU software has no exploitable bugs, physical-layer fault injection can still open a way in; no single chip part number was given in the public abstract.<br><a href='https://www.youtube.com/watch?v=4svMU1qGods' target='_blank'>Talk video</a> · <a href='https://www.blackhat.com/us-18/briefings/schedule/#there-will-be-glitches-extracting-and-analyzing-automotive-firmware-efficiently-10696' target='_blank'>Abstract</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 9
+    },
+    "zh": {
+      "headline": "CMOS 28 nm 工艺节点的激光故障模型",
+      "text": "FDTC 2018。Dutertre 等人在 CMOS 28 nm 测试芯片的 64 个 D 触发器、移位寄存器和硬件 AES 单元上进行激光注入，比较静态（器件保持状态）与动态（器件运行中）实验的单比特、位集/位清故障模型，并把观测结果与电路级仿真对照。研究为先进工艺节点下的激光故障建模提供了器件级数据；对象为 28 nm 测试芯片，论文未给商业料号。<br><a href='https://doi.org/10.1109/FDTC.2018.00009' target='_blank'>论文</a> · <a href='https://hal-emse.ccsd.cnrs.fr/emse-01856008' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Laser Fault Injection at the CMOS 28 nm Node",
+      "text": "FDTC 2018. Dutertre et al. laser-injected 64 D flip-flops, shift registers and a hardware AES unit on a CMOS 28 nm test chip, comparing single-bit and set/reset fault models under static (state-held) and dynamic (running) conditions, and checked observations against circuit-level simulation. The study provides device-level data for laser fault modeling at advanced process nodes; the target was a 28 nm test chip with no commercial part number.<br><a href='https://doi.org/10.1109/FDTC.2018.00009' target='_blank'>Paper</a> · <a href='https://hal-emse.ccsd.cnrs.fr/emse-01856008' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 9
+    },
+    "zh": {
+      "headline": "SIFA：统计无效故障攻击",
+      "text": "CHES 2018 / TCHES 2018(3)。Dobraunig、Eichlseder、Korak、Mangard、Mendel 与 Primas 将无效故障信息与统计密钥排序结合成 SIFA：利用故障是否生效的概率偏差逐比特筛选密钥，分析部分带掩码的 AES 实现以及只检测错误输出的对策。论文还讨论了相应防护方向。<br><a href='https://tches.iacr.org/index.php/TCHES/article/view/7286' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "SIFA: Statistical Ineffective Fault Attacks",
+      "text": "CHES 2018 / TCHES 2018(3). Dobraunig, Eichlseder, Korak, Mangard, Mendel and Primas combined ineffective-fault information with statistical key ranking into SIFA. The paper analyzes masked AES implementations and countermeasures that only detect wrong outputs, and discusses corresponding protections.<br><a href='https://tches.iacr.org/index.php/TCHES/article/view/7286' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 11
+    },
+    "zh": {
+      "headline": "ATmega328P：激光脉冲黑盒刻画",
+      "text": "CARDIS 2018。Kumar、Beckers、Balasch、Gierlichs 与 Verbauwhede 对 Microchip（原 Atmel）ATmega328P 8 位 AVR 微控制器进行黑盒激光脉冲实验：可重复地将指令和数据字中的单个位复位，并演示了 AES 轮数修改攻击。研究完全基于公开文档和实测，不依赖芯片内部设计资料，说明成熟商用 MCU 的激光故障行为可被低成本黑盒方法精确刻画。<br><a href='https://doi.org/10.5281/zenodo.2647324' target='_blank'>预印本</a> · <a href='https://doi.org/10.1007/978-3-030-15462-2_11' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "ATmega328P: Black-Box Characterization of Laser Pulses",
+      "text": "CARDIS 2018. Kumar, Beckers, Balasch, Gierlichs and Verbauwhede ran black-box laser-pulse experiments on the Microchip (formerly Atmel) ATmega328P 8-bit AVR microcontroller: they could reproducibly reset individual bits in instruction and data words and demonstrated an AES round-modification attack. The study relied solely on public documentation and measurements — no internal design data — showing that the laser fault behavior of a mature commercial MCU can be precisely characterized with low-cost black-box methods.<br><a href='https://doi.org/10.5281/zenodo.2647324' target='_blank'>Preprint</a> · <a href='https://doi.org/10.1007/978-3-030-15462-2_11' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Viva la Vita Vida：PlayStation Vita F00D 故障注入",
+      "text": "35C3 2018。Yifan Lu 介绍 PlayStation Vita 的 F00D 安全协处理器——索尼定制 SoC 中负责密钥管理与安全启动的独立核心：他使用改造的 ChipWhisperer 对该定制 SoC 实施故障注入和侧信道分析，讲解了 F00D 的电源域划分、毛刺触发点选择和参数搜索过程。公开材料未给出 F00D 的商业料号，该议题是 Vita 安全研究的关键公开资料。<br><a href='https://media.ccc.de/v/35c3-9364-viva_la_vita_vida' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "Viva la Vita Vida: Fault-Injection Attacks on F00D",
+      "text": "35C3 2018. Yifan Lu presented the PlayStation Vita's F00D security co-processor — a dedicated core inside Sony's custom SoC handling key management and secure boot: using a modified ChipWhisperer, he performed fault injection and side-channel analysis on the custom SoC, explaining F00D's power domains, glitch trigger-point selection and parameter search. Public material gives no commercial part number for F00D; the talk is a key public reference for Vita security research.<br><a href='https://media.ccc.de/v/35c3-9364-viva_la_vita_vida' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2018,
+      "month": 12
+    },
+    "zh": {
+      "headline": "wallet.fail：硬件钱包故障注入研究",
+      "text": "35C3（第 35 届混沌通信大会）。Thomas Roth、Josh Datko 与 Dmitry Nedospasov 对 Ledger Nano S、Ledger Blue 的 STM32 主控（演讲未列出具体料号）以及 Trezor One 的 STM32F205 实施电压毛刺，展示了绕过读保护、提取助记词种子与 PIN 的方法，并演示了 Ledger Blue 的射频侧信道。厂商随后发布了固件更新和安全声明。<br><a href='https://media.ccc.de/v/35c3-9563-wallet_fail' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "wallet.fail — 35C3",
+      "text": "35th Chaos Communication Congress. Thomas Roth, Josh Datko and Dmitry Nedospasov used voltage glitches against the STM32 controllers in Ledger Nano S and Ledger Blue (the talk does not list part numbers) and the STM32F205 in Trezor One, showing readout-protection bypasses and extraction of seed material and PINs, alongside an RF side-channel demonstration on the Ledger Blue. The vendors published firmware updates and security statements after the presentation.<br><a href='https://media.ccc.de/v/35c3-9563-wallet_fail' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 1
+    },
+    "zh": {
+      "headline": "激光指令跳过模型的实验分析：ATmega328P",
+      "text": "NordSec 2019。Dutertre、Riom、Potin 与 Rigaud 在 0.35 µm、8 位 AVR ATmega328P（32 kB Flash、2 kB SRAM、1 kB EEPROM）上用 1064 nm 激光把取指指令变成 NOP，可连续擦除任意长度的固件片段，并演示 PIN 检查绕过。<br><a href='https://doi.org/10.1007/978-3-030-35055-0_14' target='_blank'>论文</a> · <a href='https://hal.science/hal-02379754' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Laser-Induced Instruction Skips on ATmega328P",
+      "text": "NordSec 2019. Dutertre, Riom, Potin and Rigaud used a 1064-nm laser on a 0.35-µm 8-bit AVR ATmega328P (32 kB Flash, 2 kB SRAM, 1 kB EEPROM) to turn fetched instructions into NOPs, erase firmware sections of arbitrary length and demonstrate a PIN-check bypass.<br><a href='https://doi.org/10.1007/978-3-030-35055-0_14' target='_blank'>Paper</a> · <a href='https://hal.science/hal-02379754' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 2
+    },
+    "zh": {
+      "headline": "用电压毛刺注入软件漏洞",
+      "text": "arXiv 2019。Yifan Lu 建立 CMOS 电路电压毛刺的晶体管级模型，解释毛刺如何转化为软件层可利用的漏洞（如跳过安全检查、篡改比较结果），并在 Sony PlayStation Vita 的定制 Samsung 45 nm SoC/F00D 启动处理器上实施毛刺，取得早期启动控制并转储 secure-boot ROM。该工作为“用故障注入注入软件漏洞”的思路提供了从器件物理到系统攻破的完整案例。<br><a href='https://arxiv.org/abs/1903.08102' target='_blank'>论文预印本</a>"
+    },
+    "en": {
+      "headline": "Injecting Software Vulnerabilities with Voltage Glitching",
+      "text": "arXiv 2019. Yifan Lu built a transistor-level model of voltage glitching in CMOS circuits, explaining how glitches turn into software-exploitable vulnerabilities (such as skipped security checks or corrupted comparisons), and applied glitches to the custom Samsung 45 nm SoC/F00D boot processor of the Sony PlayStation Vita, gaining early boot control and dumping the secure-boot ROM. The work provides a complete case of 'injecting software vulnerabilities with fault injection', from device physics to system compromise.<br><a href='https://arxiv.org/abs/1903.08102' target='_blank'>Preprint</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 3
+    },
+    "zh": {
+      "headline": "Number “Not Used” Once：pqm4 后量子密码故障攻击",
+      "text": "COSADE 2019（在线发表于 2019 年 3 月 16 日）。Prasanna Ravi、Debapriya Basu Roy、Shivam Bhasin、Anupam Chattopadhyay 与 Debdeep Mukhopadhyay 分析 NewHope、Kyber、Frodo 和 Dilithium 的 nonce 分隔用途；EMFI 跳过 ARM Cortex-M4 参考实现中的指令可造成 nonce 重复，从而恢复密钥或消息。<br><a href='https://doi.org/10.1007/978-3-030-16350-1_13' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Number “Not Used” Once: Fault Attacks on pqm4",
+      "text": "COSADE 2019 (online 16 March 2019). Prasanna Ravi, Debapriya Basu Roy, Shivam Bhasin, Anupam Chattopadhyay and Debdeep Mukhopadhyay analyze the nonce-separation role in NewHope, Kyber, Frodo and Dilithium; EMFI instruction skips in ARM Cortex-M4 pqm4 reference implementations can repeat a nonce and enable key or message recovery.<br><a href='https://doi.org/10.1007/978-3-030-16350-1_13' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 3
+    },
+    "zh": {
+      "headline": "塑造毛刺：任意波形电压注入",
+      "text": "TCHES 2019 / CHES 2019。Bozzato、Focardi 与 Palmarini 比较任意波形发生器和 crowbar 产生的电压毛刺，在 STMicroelectronics STM32F103、STM32F373，Texas Instruments MSP430F5172、MSP430FR5725，以及 Renesas 78K0/Kx2、78K0R/Kx3-L 六个目标上绕过串行引导加载器并提取固件。<br><a href='https://doi.org/10.46586/tches.v2019.i2.199-224' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Shaping the Glitch",
+      "text": "TCHES 2019 / CHES 2019. Bozzato, Focardi and Palmarini compared arbitrary-waveform-generator and crowbar voltage glitches. They bypassed serial bootloaders and extracted firmware on six targets: STMicroelectronics STM32F103 and STM32F373, Texas Instruments MSP430F5172 and MSP430FR5725, and Renesas 78K0/Kx2 and 78K0R/Kx3-L.<br><a href='https://doi.org/10.46586/tches.v2019.i2.199-224' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 5
+    },
+    "zh": {
+      "headline": "32 位微控制器 Flash：激光单比特指令破坏",
+      "text": "HOST 2019。Colombier、Menu、Dutertre、Moëllic、Rigaud 与 Danger 在 90 nm、Cortex-M3、128 kB Flash 的 32 位微控制器上进行激光注入；读取指令时可触发只影响取指结果的单比特 bit-set 故障，并演示改变比较、加法等指令字段。论文未给出商业料号。<br><a href='https://doi.org/10.1109/HST.2019.8741030' target='_blank'>论文</a> · <a href='https://telecom-paris.hal.science/hal-02344050' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Laser-Induced Single-Bit Faults in 32-bit Flash Instructions",
+      "text": "HOST 2019. Colombier, Menu, Dutertre, Moëllic, Rigaud and Danger injected a 90 nm Cortex-M3 microcontroller with 128 kB Flash; read-time laser shots produced single-bit bit-set faults in fetched instructions, and the authors demonstrated changes to compare, add and other instruction fields. No commercial part number is given.<br><a href='https://doi.org/10.1109/HST.2019.8741030' target='_blank'>Paper</a> · <a href='https://telecom-paris.hal.science/hal-02344050' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 8
+    },
+    "zh": {
+      "headline": "EMFI：故障是如何发生的",
+      "text": "FDTC 2019。Dehbaoui、Dutertre、Robisson 与 Tria 建立电磁故障注入的感应机理模型：把脉冲磁场在芯片供电网络与键合线中感生的电流/电压扰动形式化，并用实验数据验证模型，解释了封装无需去除时电磁场如何在 SoC 内部形成可利用故障。该工作把 EMFI 从经验技术向可预测的工程方法推进了一步；论文未限定单一芯片型号。<br><a href='https://doi.org/10.1109/FDTC.2019.00010' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Electromagnetic Fault Injection: How Faults Occur",
+      "text": "FDTC 2019. Dehbaoui, Dutertre, Robisson and Tria built a model of EMFI's induction mechanism: formalizing how pulsed magnetic fields induce current/voltage disturbances in the chip's power network and bond wires, validated with experimental data, explaining how EM fields create exploitable faults inside a SoC without package removal. The work moved EMFI from an empirical technique toward a predictable engineering method; no single chip model is specified.<br><a href='https://doi.org/10.1109/FDTC.2019.00010' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 8
+    },
+    "zh": {
+      "headline": "MIN()imum Failure：WOOT 上的 STM32 USB 栈 EMFI",
+      "text": "USENIX WOOT 2019。Colin O'Flynn 证明无需拆开设备外壳，也能用电磁故障注入攻击 USB 协议栈：Trezor One 使用 STM32F205，SoloKey 使用 STM32L432；EMFI 跳过 USB 栈中的 MIN() 长度比较后，主机提供的异常 wLength 可让两者回读最多 64 KB 内存并泄露敏感数据。论文介绍了 PhyWhisperer-USB 的 USB 解码与周期级毛刺触发功能。<br><a href='https://www.usenix.org/conference/woot19/presentation/oflynn' target='_blank'>论文与演讲</a>"
+    },
+    "en": {
+      "headline": "MIN()imum Failure: EMFI on STM32 USB Stacks at WOOT",
+      "text": "USENIX WOOT 2019. Colin O'Flynn showed that an enclosure need not be opened to attack USB stacks with electromagnetic fault injection: the Trezor One uses an STM32F205 and the SoloKey an STM32L432; EMFI skips the USB stack's MIN() length check, so a host-supplied oversized wLength makes both devices read back up to 64 KB of memory, exposing secrets. The paper introduced PhyWhisperer-USB for USB decoding and cycle-accurate glitch triggering.<br><a href='https://www.usenix.org/conference/woot19/presentation/oflynn' target='_blank'>Paper and talk</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 11
+    },
+    "zh": {
+      "headline": "毛刺数据传输与代码执行",
+      "text": "POC 2019（首尔）。Raelize 在 ARM AArch32 启动环境中测试总线数据传输阶段的电压毛刺：在启动代码从外部存储读取数据的传输瞬间注入故障，使一次传输中的取指数据被篡改，启动阶段随即执行了构造的代码。该演示说明毛刺目标不限于处理核内部，存储器总线上的数据通路同样是任意代码执行的入口。<br><a href='https://raelize.com/upload/research/2019/2019_PoC_Using-Fault-Injection-to-Turn-Data-Transfers-into-Arbitrary-Execution_CM-NT.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "FI Turns Data Transfers into Arbitrary Execution",
+      "text": "POC 2019 (Seoul). Raelize tested voltage glitching during bus data transfers in an ARM AArch32 boot environment: glitching the exact moment boot code fetches data from external memory corrupts the fetched instruction data of a single transfer, after which the boot stage executes constructed code. The demo shows glitch targets are not limited to the processor core — the datapath on the memory bus is equally an entry point to arbitrary code execution.<br><a href='https://raelize.com/upload/research/2019/2019_PoC_Using-Fault-Injection-to-Turn-Data-Transfers-into-Arbitrary-Execution_CM-NT.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 11
+    },
+    "zh": {
+      "headline": "VoltJockey：软件欠压攻破 TrustZone",
+      "text": "ACM CCS 2019。Qiu、Wang、Lyu 与 Qu 提出 VoltJockey：在商用多核 ARM 手机/平板平台（公开摘要未列出具体 SoC 料号）上，利用内核可调用的 DVFS 调压调频接口精确控制欠压时机，对 TrustZone 安全世界注入故障，最终提取安全存储中的密钥。与 CLKSCREW 同属软件触发故障注入，但 VoltJockey 用硬件性能计数器实现了更精确的故障时刻控制，并分析了相应防护。<br><a href='https://dl.acm.org/doi/10.1145/3319535.3354201' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "VoltJockey: Breaching TrustZone via Software",
+      "text": "ACM CCS 2019. Qiu, Wang, Lyu and Qu presented VoltJockey: on commercial multi-core ARM phone/tablet platforms (no specific SoC part number in the public abstract), it uses the kernel-reachable DVFS interface to precisely time undervolting, injects faults into the TrustZone secure world, and extracts keys from secure storage. Like CLKSCREW it is software-triggered fault injection, but VoltJockey uses hardware performance counters for more precise fault timing, and analyzes corresponding defenses.<br><a href='https://dl.acm.org/doi/10.1145/3319535.3354201' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 12
+    },
+    "zh": {
+      "headline": "激光可控指令替换：ARM SC100 智能卡",
+      "text": "IEICE 2019。Sakamoto、Fujimoto 与 Matsumoto 使用 Flash 激光照射在 ARM SC100 系列安全微控制器（智能卡芯片，论文未给出具体卡片料号）上实现可控指令替换：精确替换目标指令的操作码而非简单跳过，并以 AES 软件实现为例，用替换分支指令的方式绕过针对指令跳过设计的防护。该工作说明“指令替换”比“指令跳过”更难被通用对策检测。<br><a href='https://doi.org/10.1587/transfun.2019cip0028' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Controllable Laser Instruction Replacement on ARM SC100",
+      "text": "IEICE 2019. Sakamoto, Fujimoto and Matsumoto used flash-laser irradiation to achieve controllable instruction substitution on ARM SC100-series secure microcontrollers (smartcard chips; no specific card part number given): precisely replacing the opcode of a target instruction rather than merely skipping it, and demonstrated on a software AES by replacing a branch instruction to defeat countermeasures designed against instruction skipping. The work shows instruction substitution is harder for generic defenses to detect than instruction skipping.<br><a href='https://doi.org/10.1587/transfun.2019cip0028' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Fatal Fury on ESP32：V1 安全配置绕过",
+      "text": "Black Hat Europe 2019。LimitedResults 发布“Pwn the ESP32 Forever”成果：ESP32（V1 硅片）上电读取 eFuse 安全配置的瞬间注入电源毛刺，即可绕过 Secure Boot 与 Flash Encryption 两道防线，从量产芯片中提取出本应由熔丝保护的密钥。由于 eFuse 属一次性烧录、启动 ROM 无法更新，该问题需要硬件修订；乐鑫推出了 ESP32-V3。<br><a href='https://www.youtube.com/watch?v=vwwTC_ivG00' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "Fatal Fury on ESP32 — Black Hat Europe",
+      "text": "Black Hat Europe 2019. LimitedResults presented “Pwn the ESP32 Forever”: power-glitching the ESP32 (V1 silicon) at the exact moment it reads eFuse security configuration at power-up defeats both Secure Boot and Flash Encryption, extracting keys that were supposed to be fused in production chips. The one-time-programmable eFuses and non-updatable boot ROM meant that the issue required a hardware revision; Espressif shipped the ESP32-V3 revision.<br><a href='https://www.youtube.com/watch?v=vwwTC_ivG00' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Plundervolt：软件欠压影响 Intel SGX",
+      "text": "2019 年 12 月披露，IEEE S&P 2020 正式发表（CVE-2019-11157）。Murdock、Oswald、Garcia、Van Bulck、Gruss 与 Piessens 发现 Intel 留给超频玩家的 MSR 0x150 电压调节接口可被滥用：从软件对 CPU 封装内欠压，使 SGX 飞地内的计算翻转比特 —— 提取 AES-NI 密钥、攻破 RSA 实现，甚至在飞地内制造内存安全漏洞。Intel 随后通过微码更新默认禁用该接口。<br><a href='https://plundervolt.com' target='_blank'>网站</a>"
+    },
+    "en": {
+      "headline": "Plundervolt: Software Undervolting Affects SGX",
+      "text": "Disclosed December 2019, formally published at IEEE S&P 2020 (CVE-2019-11157). Murdock, Oswald, Garcia, Van Bulck, Gruss and Piessens found that Intel's overclocking MSR 0x150 voltage interface could be abused: undervolting the CPU package from software flips bits inside SGX enclave computations — extracting AES-NI keys, breaking RSA implementations, even inducing memory-safety bugs inside enclaves. Intel disabled the interface via a microcode update. The paper documents the effect of software-controlled voltage on SGX computations.<br><a href='https://plundervolt.com' target='_blank'>Site</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
+      "month": 12
+    },
+    "zh": {
+      "headline": "TrustZone-M(eh)：ARMv8-M 安全特性故障注入",
+      "text": "36C3 2019。Thomas Roth 公开其 FPGA 毛刺平台并演示对 Microchip SAM L11（ARM Cortex-M23、支持 TrustZone-M）等嵌入式处理器重新启用 JTAG 调试、绕过安全启动和 AES 密钥保护；工具链与硬件同时开源。议题系统测试了 ARMv8-M 新引入的 TrustZone-M 与调试认证机制在故障注入下的表现，是 TrustZone-M 安全性的早期公开评估。<br><a href='https://media.ccc.de/v/36c3-10859-trustzone-m_eh_breaking_armv8-m_s_security' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "TrustZone-M(eh): Faulting ARMv8-M Security",
+      "text": "36C3 2019. Thomas Roth released his FPGA glitching platform and demonstrated re-enabling JTAG debug, bypassing secure boot and AES key protection on embedded processors including the Microchip SAM L11 (ARM Cortex-M23 with TrustZone-M); both toolchain and hardware were open-sourced. The talk systematically tested how ARMv8-M's newly introduced TrustZone-M and debug-authentication mechanisms behave under fault injection — an early public evaluation of TrustZone-M security.<br><a href='https://media.ccc.de/v/36c3-10859-trustzone-m_eh_breaking_armv8-m_s_security' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 7
+    },
+    "zh": {
+      "headline": "Flash 临时激光故障：校准与增强攻击",
+      "text": "IOLTS 2020。Garb 与 Obermaier 研究嵌入式微控制器 Flash 的临时激光故障：给出激光位置的校准方法，使不破坏芯片的临时故障（断电后恢复）可重复复现，并讨论 Flash 感知的错误检测与数据退化防护。论文区分了临时故障与永久损伤的边界条件，为“非破坏性激光攻击”提供了系统化实验依据；未公开具体商业料号。<br><a href='https://doi.org/10.1109/IOLTS50870.2020.9159712' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Temporary Laser Faults in Flash: Calibration and Countermeasures",
+      "text": "IOLTS 2020. Garb and Obermaier studied temporary laser faults in embedded-microcontroller Flash: they present a laser-position calibration method making non-destructive temporary faults (which vanish after power-down) reproducible, and discuss Flash-aware error detection and data-degradation defenses. The paper delineates the boundary between temporary faults and permanent damage, systematizing the experimental basis for non-destructive laser attacks; no commercial part number is disclosed.<br><a href='https://doi.org/10.1109/IOLTS50870.2020.9159712' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 8
+    },
+    "zh": {
+      "headline": "V0LTpwn：软件攻击 x86 完整性",
+      "text": "USENIX Security 2020。Kenjar、Frassetto、Gens、Franz 与 Sadeghi 把欠压攻击的目标从 SGX 机密性扩展到整个 x86 的<b>完整性</b>：通过 MSR 欠压让普通（非飞地）代码出错，包括内核态执行与 Hypervisor；实验使用 Intel Core i7-7700、i7-7700K 和 i7-8700K。论文记录了这些处理器在软件欠压下的执行影响。<br><a href='https://www.usenix.org/system/files/sec20-kenjar.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "V0LTpwn: Attacking x86 Integrity from Software",
+      "text": "USENIX Security 2020. Kenjar, Frassetto, Gens, Franz and Sadeghi extended undervolting attacks from SGX confidentiality to x86 <b>integrity</b> as a whole: MSR undervolting faults ordinary non-enclave code, including kernel-mode execution and hypervisors; the experiments use Intel Core i7-7700, i7-7700K and i7-8700K processors. The paper records their execution faults under software-controlled voltage.<br><a href='https://www.usenix.org/system/files/sec20-kenjar.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 9
+    },
+    "zh": {
+      "headline": "NOR Flash 单比特激光故障模型",
+      "text": "FDTC 2020。Menu、Dutertre、Colombier、Rigaud、Moëllic 与 Danger 在两种不同厂商的嵌入式 NOR Flash 微控制器上比较激光注入；两颗器件分别采用 Cortex-M0+（256 kB Flash、32 kB SRAM）和 Cortex-M3（128 kB Flash、8 kB SRAM），可在不改写存储内容的情况下得到单比特 bit-set 故障，并用于 AES safe-error 攻击。论文未给出商业料号。<br><a href='https://doi.org/10.1109/FDTC51366.2020.00013' target='_blank'>论文</a> · <a href='https://telecom-paris.hal.science/hal-03034855' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Single-Bit Laser Faults in NOR Flash",
+      "text": "FDTC 2020. Menu, Dutertre, Colombier, Rigaud, Moëllic and Danger compared laser injection on two embedded NOR-Flash microcontrollers from different manufacturers: a Cortex-M0+ device with 256 kB Flash and 32 kB SRAM, and a Cortex-M3 device with 128 kB Flash and 8 kB SRAM. Single-bit bit-set faults left stored contents unchanged and enabled an AES safe-error attack; commercial part numbers are not given.<br><a href='https://doi.org/10.1109/FDTC51366.2020.00013' target='_blank'>Paper</a> · <a href='https://telecom-paris.hal.science/hal-03034855' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 11
+    },
+    "zh": {
+      "headline": "BAM BAM!!：EMFI 解除车规 ECU 审查锁",
+      "text": "escar Europe 2020（ePrint 2020/937）。Colin O'Flynn 在 NXP MPC55xx/MPC56xx 系列 E41 ECU 上实施 EMFI，攻击 BAM 密码比较；自动重试在数分钟内解锁一辆 2019 Chevrolet Silverado 2500 HD 的原厂 ECU 并读取 Flash。<br><a href='https://eprint.iacr.org/2020/937' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "BAM BAM!!: EMFI on an Automotive ECU",
+      "text": "escar Europe 2020 (ePrint 2020/937). Colin O'Flynn used EMFI against the BAM password comparison on an NXP MPC55xx/MPC56xx-series E41 ECU. Automated retries unlocked the stock ECU from a 2019 Chevrolet Silverado 2500 HD and read its flash within minutes.<br><a href='https://eprint.iacr.org/2020/937' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 11
+    },
+    "zh": {
+      "headline": "低成本 BBI 作用于 WLCSP 封装芯片",
+      "text": "CARDIS 2020。Colin O'Flynn 把 2012 年提出的体偏压注入做成了较低成本的实验装置：无需 X 光或激光台，用自制廉价装置对晶圆级封装（WLCSP）的 STM32F415 从背面衬底注入偏压脉冲，成功诱导可利用故障。论文同时开源了工装与方法，并记录了 BBI 绕过正面金属屏蔽的实验结果。<br><a href='https://eprint.iacr.org/2020/1228.pdf' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Low-Cost Body Biasing Injection on WLCSP",
+      "text": "CARDIS 2020. Colin O'Flynn implemented body bias injection (proposed in 2012) with a low-cost setup: with no X-ray or laser bench, a homebuilt cheap rig injected bias pulses through the backside substrate of a wafer-level chip-scale packaged STM32F415, inducing exploitable faults. The paper open-sourced the jig and methodology and records BBI faults injected through the backside of a shielded MCU.<br><a href='https://eprint.iacr.org/2020/1228.pdf' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Debug Resurrection：恢复 Nordic nRF52 调试接口",
+      "text": "Black Hat Europe 2020。LimitedResults 在 Nordic nRF52840 上研究 APPROTECT 调试保护：在芯片上电初始化的精确窗口注入电压毛刺，重新获得 SWD 调试访问并读取 Flash；演讲还在 nRF52832 和 nRF52833 上观察到相同模式。这是 nRF52 系列 APPROTECT 的首次公开绕过，研究者同时公开了完整的毛刺参数与复现方法，Nordic 随后在后续产品中强化了调试保护设计。<br><a href='https://i.blackhat.com/eu-20/Wednesday/eu-20-LimitedResults-Debug-Resurrection-On-nRF52-Series.pdf' target='_blank'>演讲幻灯片</a> · <a href='https://limitedresults.com/results/nrf52-debug-resurrection-approtect-bypass' target='_blank'>研究文章</a>"
+    },
+    "en": {
+      "headline": "Debug Resurrection: Nordic nRF52 APPROTECT",
+      "text": "Black Hat Europe 2020. LimitedResults studied the APPROTECT debug protection on the Nordic nRF52840: a voltage glitch fired in the precise window of power-on initialization restored SWD debug access and allowed Flash readout; the same pattern was observed on the nRF52832 and nRF52833. It was the first public bypass of nRF52-series APPROTECT — the researchers published full glitch parameters and reproduction steps, and Nordic subsequently strengthened debug protection in later products.<br><a href='https://i.blackhat.com/eu-20/Wednesday/eu-20-LimitedResults-Debug-Resurrection-On-nRF52-Series.pdf' target='_blank'>Slides</a> · <a href='https://limitedresults.com/results/nrf52-debug-resurrection-approtect-bypass' target='_blank'>Research article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Fill your Boots：故障注入与二进制分析攻破引导加载器",
+      "text": "TCHES 2021(1)，在线发表于 2020 年 12 月 3 日。论文分别研究 NXP LPC1343 上不需要毛刺的纯软件 ROP、STM8L152C6 和 STM8AF6266 上由动态分析辅助的多重电压毛刺，以及 Renesas 78K0/KC2 上由符号执行辅助的定点电压毛刺，并比较三条路线的适用场景与成本。结果表明程序分析与故障注入的结合能攻破单一手段无法处理的引导加载器目标。<br><a href='https://doi.org/10.46586/tches.v2021.i1.56-81' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fill your Boots: Bootloader Exploits via Fault Injection and Binary Analysis",
+      "text": "TCHES 2021(1), published online Dec 3, 2020. The paper studies three cases: pure software ROP without any glitch on the NXP LPC1343, dynamic-analysis-assisted multiple voltage glitches on the STM8L152C6 and STM8AF6266, and symbolic-execution-assisted targeted voltage glitching on the Renesas 78K0/KC2, comparing applicability and cost of each route. The results show that combining program analysis with fault injection defeats bootloader targets that neither technique alone can handle.<br><a href='https://doi.org/10.46586/tches.v2021.i1.56-81' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 1
+    },
+    "zh": {
+      "headline": "PQC KEM 的故障注入攻击",
+      "text": "PQCrypto 2021。研究者分析 NIST 后量子密码第三轮 KEM 候选（Kyber、NewHope 等）在故障注入下的攻击面：解封装过程中的指令跳过可破坏其错误处理与重加密比对逻辑，泄露密钥相关信息。论文面向算法实现层面的故障路径，梳理了格基 KEM 的 FO 变换在物理攻击下的薄弱环节；不对应单一芯片。<br><a href='https://doi.org/10.1007/978-3-030-92075-3_2' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault-Injection Attacks on NIST PQC KEM Candidates",
+      "text": "PQCrypto 2021. The researchers analyzed the fault-attack surface of NIST third-round PQC KEM candidates (Kyber, NewHope et al.): instruction skips during decapsulation can break error handling and re-encryption comparison logic, leaking key-related information. The paper maps fault paths at the algorithm-implementation level, identifying weak points of lattice-based KEMs' Fujisaki–Okamoto transform under physical attack; no single chip is involved.<br><a href='https://doi.org/10.1007/978-3-030-92075-3_2' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 2
+    },
+    "zh": {
+      "headline": "CCA 安全格 KEM 的故障攻击",
+      "text": "TCHES 2021。Krahmer 等人利用一次时钟毛刺造成的指令跳过，攻击 Kyber 和 NewHope 解封装中的解码路径：通过区分有效与无效故障的统计差异恢复密钥，并在 ARM Cortex-M4 上实验验证，Kyber512 模拟约需 6,500 次故障解封装。论文同时给出针对解码函数的防护建议，是 CCA 安全格 KEM 物理攻击的代表性工作之一。<br><a href='https://doi.org/10.46586/tches.v2021.i2.37-60' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Fault Attacks on CCA-Secure Lattice KEMs",
+      "text": "TCHES 2021. Krahmer et al. used single clock-glitch instruction skips against the decoding path of Kyber and NewHope decapsulation: statistical separation of effective versus ineffective faults recovers the key, validated experimentally on an ARM Cortex-M4, with Kyber512 requiring about 6,500 faulted decapsulations in simulation. The paper also proposes defenses for the decoding function and is a representative physical attack on CCA-secure lattice KEMs.<br><a href='https://doi.org/10.46586/tches.v2021.i2.37-60' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 3
+    },
+    "zh": {
+      "headline": "复杂 CPU 上的 EMFI 微架构故障模型",
+      "text": "Journal of Cryptographic Engineering，在线发表于 2021 年 3 月 19 日。Trouchkine、Bukasa、Escouteloup、Lashermes 与 Bouffard 在 Raspberry Pi 3 使用的 Broadcom BCM2837 上观察 L1 指令缓存、L1 数据缓存、L2 缓存和 MMU 的持久故障，并用 AES 密钥恢复验证故障模型。<br><a href='https://doi.org/10.1007/s13389-021-00259-6' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "EMFI against a Complex CPU: Microarchitectural Fault Models",
+      "text": "Journal of Cryptographic Engineering, published online 19 March 2021. Trouchkine, Bukasa, Escouteloup, Lashermes and Bouffard observed persistent faults in the L1 instruction cache, L1 data cache, L2 cache and MMU of the Broadcom BCM2837 used in Raspberry Pi 3, and validated the fault model by recovering an AES key.<br><a href='https://doi.org/10.1007/s13389-021-00259-6' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 5
+    },
+    "zh": {
+      "headline": "TRAITOR：低成本多重故障注入平台",
+      "text": "ASSS 2021（2021 年 5 月 24 日）。Ludovic Claudepierre、Pierre-Yves Péneau、Damien Hardy 与 Erven Rohou 设计低成本时钟毛刺平台 TRAITOR：在普通硬件上产生精确可控的多重故障脉冲，并在 STM32F100RB（ARM Cortex-M3）上评估多故障软件防护的有效性。实验显示部分针对单故障设计的对策在多重毛刺下失效，平台成本远低于商用多重故障设备。<br><a href='https://doi.org/10.1145/3457340.3458303' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "TRAITOR: A Low-Cost Multifault-Injection Platform",
+      "text": "ASSS 2021 (May 24, 2021). Ludovic Claudepierre, Pierre-Yves Péneau, Damien Hardy and Erven Rohou designed TRAITOR, a low-cost clock-glitch platform that generates precisely controlled multiple-fault pulses on commodity hardware, and evaluated multi-fault software countermeasures on an STM32F100RB (ARM Cortex-M3). Experiments show some defenses designed for single faults fail under multiple glitches, at a platform cost far below commercial multi-fault equipment.<br><a href='https://doi.org/10.1145/3457340.3458303' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 6
+    },
+    "zh": {
+      "headline": "Glitching Demystified：控制流毛刺攻击与防护",
+      "text": "DSN 2021。研究者结合指令集级故障模拟、ChipWhisperer 实测和 GLITCHRESISTOR 自动插桩工具，分析控制流毛刺在真实程序中的实际效果：评估单次与多次毛刺的成功率、可被利用的指令窗口，以及软件防护带来的性能开销。工作为“控制流完整性 vs 故障注入”提供了量化数据；实验基于常见微控制器平台，论文未强调单一芯片料号。<br><a href='https://doi.org/10.1109/DSN48987.2021.00051' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Glitching Demystified: Control-Flow Attacks and Defenses",
+      "text": "DSN 2021. The researchers combined instruction-set fault simulation, ChipWhisperer experiments and the GLITCHRESISTOR automatic instrumentation tool to analyze the real-world effects of control-flow glitches: quantifying single- versus multi-glitch success rates, exploitable instruction windows and the performance overhead of software defenses. The work provides quantitative data for control-flow integrity versus fault injection; experiments ran on common microcontroller platforms without emphasizing a single part number.<br><a href='https://doi.org/10.1109/DSN48987.2021.00051' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 6
+    },
+    "zh": {
+      "headline": "微控制器 Flash 的永久激光故障",
+      "text": "NEWCAS 2021。Viera、Dutertre、Dumont 与 Moëllic 在 90 nm、Cortex-M3、128 kB Flash 微控制器的写操作期间实施激光故障注入，得到可重复的单比特 bit-reset 永久故障，并用约 15 µm 光斑将 Flash 中的 32 位密码逐位清零；论文未给商业料号。<br><a href='https://doi.org/10.1109/NEWCAS50681.2021.9462773' target='_blank'>论文</a> · <a href='https://hal.science/hal-03360634' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Permanent Laser Faults in Microcontroller Flash",
+      "text": "NEWCAS 2021. Viera, Dutertre, Dumont and Moëllic injected a 90 nm Cortex-M3 microcontroller with 128 kB Flash during write operations, producing repeatable permanent single-bit bit-reset faults; a roughly 15 µm spot cleared a 32-bit Flash password bit by bit. No commercial part number is given.<br><a href='https://doi.org/10.1109/NEWCAS50681.2021.9462773' target='_blank'>Paper</a> · <a href='https://hal.science/hal-03360634' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 7
+    },
+    "zh": {
+      "headline": "Security and Trust：安全令牌闪存擦除抑制",
+      "text": "TCHES 2021（2021-07-09）。Schink、Wagner、Unterstein 与 Heyszl 对七款开源安全令牌进行实测，公开展示 STM32L422 等 MCU 的闪存擦除抑制：在 RDP 降级与 mass-erase 期间注入 EMFI，使调试保护降级而保留原有固件，进而提取令牌中的密钥。论文报告了七款开源安全令牌上的闪存擦除抑制测试结果。<br><a href='https://doi.org/10.46586/tches.v2021.i3.176-201' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Security and Trust: Flash-Erase Suppression on Security Tokens",
+      "text": "TCHES 2021 (9 July 2021). Schink, Wagner, Unterstein and Heyszl examined seven open-source security tokens and publicly demonstrated flash-erase suppression on MCUs including the STM32L422: EMFI during the RDP downgrade/mass-erase sequence lowers debug protection while preserving the original firmware, enabling key extraction from the token. The paper reports flash-erase suppression measurements on seven open-source security tokens.<br><a href='https://doi.org/10.46586/tches.v2021.i3.176-201' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 8
+    },
+    "zh": {
+      "headline": "C8051F34x：毛刺影响 Silicon Labs 代码保护",
+      "text": "2021 年 8 月公开。debug-silicon 对 Silicon Labs C8051F340/C8051F34x 的专有 C2 调试接口进行了协议逆向、功耗分析与 ChipWhisperer 毛刺实验：一次成功的电压毛刺最多可读出 256 字节受保护 Flash，重复执行即可恢复整片代码。研究同时绕过了未授权代码读取限制与 C2 调试器读取限制，披露时间线显示 2021 年 6 月通知厂商、7 月获准公开。<br><a href='https://github.com/debug-silicon/C8051F34x_Glitch' target='_blank'>研究与代码</a>"
+    },
+    "en": {
+      "headline": "C8051F34x: Testing Silicon Labs Code Protection with Glitches",
+      "text": "Publicly released in August 2021. debug-silicon reverse-engineered Silicon Labs' proprietary C2 debug interface and used power analysis plus ChipWhisperer glitching against the C8051F340/C8051F34x: each successful voltage glitch exposes up to 256 bytes of protected Flash, so repeated attempts recover the entire code image. The work bypasses both untrusted-code restrictions and external C2-debugger read protection; its disclosure log records vendor notification in June and publication clearance in July 2021.<br><a href='https://github.com/debug-silicon/C8051F34x_Glitch' target='_blank'>Research and code</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Hacking the Apple AirTags：故障注入提取固件",
+      "text": "DEF CON 29，2021 年 8 月。Thomas Roth 在 Apple AirTag 的 Nordic nRF52832 微控制器上实施电压故障注入，绕过 APPROTECT 调试保护恢复 SWD 访问，随后读取、修改并写回固件，演示了修改 NFC 链接等定制行为。该案例说明即便 AirTag 这类小型消费设备，其调试保护也挡不住低成本毛刺攻击；研究基于此前公开的 nRF52 APPROTECT 绕过技术。<br><a href='https://www.youtube.com/watch?v=paxErRRsrTU' target='_blank'>演讲录像</a> · <a href='https://defcon.org/html/defcon-29/dc-29-schedule.html' target='_blank'>DEF CON 29 日程</a>"
+    },
+    "en": {
+      "headline": "Hacking the Apple AirTags with Fault Injection",
+      "text": "DEF CON 29, August 2021. Thomas Roth performed voltage fault injection on the Nordic nRF52832 microcontroller inside Apple AirTag, bypassing APPROTECT to restore SWD debug access, then read, modified and reflashed the firmware, demonstrating customized behavior such as altered NFC links. The case shows even small consumer devices like AirTag are not protected against low-cost glitching, building on previously published nRF52 APPROTECT bypass techniques.<br><a href='https://www.youtube.com/watch?v=paxErRRsrTU' target='_blank'>Talk video</a> · <a href='https://defcon.org/html/defcon-29/dc-29-schedule.html' target='_blank'>DEF CON 29 schedule</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 8
+    },
+    "zh": {
+      "headline": "VoltPillager：硬件 SVID 攻击复活 Plundervolt",
+      "text": "USENIX Security 2021。Intel 用微码禁用了 MSR 欠压接口；Chen、Vasilakis、Murdock 等人在 SVID 总线上连接约 30 美元的 Teensy，伪造调压指令对 Intel Core i3-7100、i3-9100 和 i3-7100U 平台实施硬件欠压，影响 SGX 并提取飞地密钥。论文记录了通过 SVID 总线实施硬件欠压并影响 SGX 的实验结果。<br><a href='https://www.usenix.org/conference/usenixsecurity21/presentation/chen-zitai' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "VoltPillager: $30 Hardware Revives SGX Undervolting",
+      "text": "USENIX Security 2021. Intel locked down the MSR undervolting interface with microcode to stop Plundervolt. Chen, Vasilakis, Murdock et al. connected a ~$30 Teensy to the SVID bus between CPU and voltage regulator; it forged voltage commands to undervolt Intel Core i3-7100, i3-9100 and i3-7100U platforms in hardware, affecting SGX and extracting enclave keys. The paper records hardware undervolting over the SVID bus and its effect on SGX.<br><a href='https://www.usenix.org/conference/usenixsecurity21/presentation/chen-zitai' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 9
+    },
+    "zh": {
+      "headline": "不同架构 SoC 的 EM 故障模型",
+      "text": "FDTC 2021。Trouchkine、Bouffard 与 Clediere 在 Broadcom BCM2837（Raspberry Pi 3 的 ARM Cortex-A53 SoC）和 Intel Core i3-6100T 上使用相同 EMFI 方法做对比实验，刻画 ARM 与 x86 两类复杂架构在电磁故障下的不同故障模型，并用 OpenSSL 的 RSA/AES 实现评估故障对真实密码库的影响。研究说明 EMFI 故障模型具有架构相关性，不能跨平台直接套用。<br><a href='https://doi.org/10.1109/FDTC53659.2021.00014' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "EM Fault Models across SoCs and ISAs",
+      "text": "FDTC 2021. Trouchkine, Bouffard and Clediere applied the same EMFI method to the Broadcom BCM2837 (the ARM Cortex-A53 SoC of the Raspberry Pi 3) and an Intel Core i3-6100T, characterizing how the fault models of these two complex architectures differ under electromagnetic injection, and evaluated the impact on real crypto libraries via OpenSSL's RSA/AES implementations. The study shows EMFI fault models are architecture-dependent and cannot be transferred across platforms blindly.<br><a href='https://doi.org/10.1109/FDTC53659.2021.00014' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 9
+    },
+    "zh": {
+      "headline": "激光故障注入 32 位 MCU 指令流水线",
+      "text": "FDTC 2021。Vanthanh Khuat、Jean-Luc Danger 与 Jean-Max Dutertre 在 Microchip SAMD21G18A（Cortex-M0+）上沿 Flash 接口、AHB 总线和核心流水线布置激光故障点，观察到块重放、两条指令重放和单条指令跳过。<br><a href='https://doi.org/10.1109/FDTC53659.2021.00020' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Laser Fault Injection in a 32-bit MCU Pipeline",
+      "text": "FDTC 2021. Vanthanh Khuat, Jean-Luc Danger and Jean-Max Dutertre placed laser-fault points along the Flash interface, AHB bus and execution pipeline of a Microchip SAMD21G18A (Cortex-M0+), observing block replay, two-instruction replay and single-instruction skips.<br><a href='https://doi.org/10.1109/FDTC53659.2021.00020' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 9
+    },
+    "zh": {
+      "headline": "NVIDIA Tegra X2：电压毛刺攻击",
+      "text": "FDTC 2021。Otto Bittner、Thilo Krachenfels、Andreas Galauner 与 Jean-Pierre Seifert 在 NVIDIA Tegra X2（Parker）SoC、Jetson TX2 平台上实施电压故障注入：重新启用隐藏 bootloader 后，可执行最高权限代码并提取 iROM、后续启动阶段解密密钥。论文还说明该 SoC 用于 NVIDIA DRIVE PX 2 等汽车/机器人平台。<br><a href='https://doi.org/10.1109/FDTC53659.2021.00021' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "NVIDIA Tegra X2: Voltage-Glitch Attack",
+      "text": "FDTC 2021. Otto Bittner, Thilo Krachenfels, Andreas Galauner and Jean-Pierre Seifert fault-injected the NVIDIA Tegra X2 (Parker) SoC on a Jetson TX2 platform: re-enabling a hidden bootloader gives highest-privilege code execution and exposes the iROM and keys used to decrypt later boot stages. The paper notes the SoC's use in platforms such as NVIDIA DRIVE PX 2 for automotive and robotic systems.<br><a href='https://doi.org/10.1109/FDTC53659.2021.00021' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 11
+    },
+    "zh": {
+      "headline": "One Glitch to Rule Them All：AMD SEV 故障注入研究",
+      "text": "ACM CCS 2021。Buhren、Jacob、Krachenfels 与 Seifert（TU 柏林）对 AMD 安全处理器（PSP，Zen 1–3 全系列）的启动 ROM 签名校验实施一次电压毛刺，即在 PSP 上获得代码执行 —— 进而解密 SEV/SEV-ES/SEV-SNP 保护的虚拟机内存、提取 VCEK 背书密钥并伪造远程证明，在所测试的 Zen 1–3 平台上绕过 AMD 加密虚拟化的关键保护；论文未列出单一芯片料号。PSP 启动 ROM 无法通过固件更新修复；论文报告了 Zen 1–3 平台上的实验结果。<br><a href='https://arxiv.org/abs/2108.04575' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "One Glitch to Rule Them All: AMD SEV Fault-Injection Study",
+      "text": "ACM CCS 2021. Buhren, Jacob, Krachenfels and Seifert (TU Berlin) hit the AMD Secure Processor's (PSP) boot-ROM signature check with a single voltage glitch to gain code execution on the PSP across Zen 1–3 — then decrypted SEV/SEV-ES/SEV-SNP virtual machine memory, extracted VCEK endorsement keys and forged remote attestation, bypassing key protections on the tested Zen 1–3 platforms. The PSP boot ROM cannot be patched through firmware updates; the paper does not list a single chip part number.<br><a href='https://arxiv.org/abs/2108.04575' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 3
+    },
+    "zh": {
+      "headline": "多光斑激光故障注入：同时定位多个目标",
+      "text": "CARDIS 2021（Springer 2022）。Colombier 等人用四束 980 nm 激光在 32 位 Cortex-M3、128 kB Flash 的 ChipWhisperer 目标板上同时注入多个时空分离故障，展示多指令/多数据位故障模型；目标芯片未给出商业料号。<br><a href='https://doi.org/10.1007/978-3-030-97348-3_9' target='_blank'>论文</a> · <a href='https://hal.science/hal-03353863' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Multi-Spot Laser Fault Injection",
+      "text": "CARDIS 2021 (Springer 2022). Colombier and colleagues used four 980 nm laser spots to inject simultaneous, spatially separated faults into a 32-bit Cortex-M3 target with 128 kB Flash on a ChipWhisperer board, demonstrating multi-instruction and multi-data-bit fault models; no commercial part number is given.<br><a href='https://doi.org/10.1007/978-3-030-97348-3_9' target='_blank'>Paper</a> · <a href='https://hal.science/hal-03353863' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 3
+    },
+    "zh": {
+      "headline": "瑞萨 RH850 电压毛刺研究",
+      "text": "icanhack.nl，2022。Willem Melching 完成了首个公开的 RH850 电压毛刺攻击：目标是从 2021 款 Toyota RAV4 Prime 电动助力转向（EPS）模块拆下的 Renesas RH850/P1M-E（R7F701381），串行编程访问已完全禁用。攻击者在最后一个同步命令字节到芯片应答之间约 100 µs 的窗口内，用 Raspberry Pi Pico 驱动 N 沟道 FET 对两个 VCL 引脚做 crowbar 拉低；约一天的参数搜索后，成功的毛刺使芯片跳过访问权限检查进入命令等待状态，完整固件通过标准读存储器命令读出。<br><a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>研究整理</a>"
+    },
+    "en": {
+      "headline": "Public Renesas RH850 Glitch Study (Toyota EPS)",
+      "text": "icanhack.nl, 2022. Willem Melching carried out the first public voltage-glitch attack on RH850: the target was a Renesas RH850/P1M-E (R7F701381) pulled from the electric power-steering module of a 2021 Toyota RAV4 Prime, with serial programmer access fully disabled. In the ~100 µs window between the last synchronize-command byte and the chip's reply, a Raspberry Pi Pico driving N-channel FETs crowbarred both VCL pins; after about a day of parameter search, a successful glitch pushed the chip into its command-waiting phase regardless of the access check, and the full firmware came out over standard read-memory commands.<br><a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>Research summary</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 6
+    },
+    "zh": {
+      "headline": "毛刺 OTP 数据传输与 SoC 安全配置",
+      "text": "hardwear.io USA 2022。Raelize 测试 OTP/eFuse 安全配置从存储到使用点的传输阶段：许多 SoC 在启动时把 OTP 中的安全启动锁定、调试端口禁用等配置搬运到影子寄存器，在传输瞬间注入电压毛刺可改变最终生效值，从而重新打开调试口或解除启动锁定。公开演示未列出具体 SoC 料号，议题同时讨论了传输路径加密/校验等防护设计。<br><a href='https://raelize.com/upload/research/2022/hardwear_io_US2022_-_Breaking_SoC_Security_by_Glitching_OTP_Data_Transfers_v1.0.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Glitching OTP Data Transfers in SoCs",
+      "text": "hardwear.io USA 2022. Raelize attacked the transfer stage of OTP/eFuse security configuration: many SoCs copy secure-boot lock and debug-disable settings from OTP into shadow registers at boot, and a voltage glitch timed at the transfer changes the effective values — re-opening debug ports or lifting boot locks. No specific SoC part number was named in the public demo; the talk also discusses defenses such as protecting and checking the transfer path.<br><a href='https://raelize.com/upload/research/2022/hardwear_io_US2022_-_Breaking_SoC_Security_by_Glitching_OTP_Data_Transfers_v1.0.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 7
+    },
+    "zh": {
+      "headline": "现代多核 SoC 上的电磁故障注入",
+      "text": "MCH 2022。Volokitin 与 Loftus 对运行在 GHz 频率的现代 Arm 多核 SoC 实施电磁故障注入，比较高频 SoC 与传统微控制器、安全元件（Secure Element）在故障效果上的差异，并讨论工作频率、电源网络复杂度对攻击效率的影响。实验表明高频并不天然免疫 EMFI，但参数搜索空间显著不同；公开议题未列出具体 SoC 料号。<br><a href='https://media.ccc.de/v/mch2022-279-fault-injection-on-a-modern-multicore-system-on-chip' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "Fault Injection on a Modern Multicore SoC",
+      "text": "MCH 2022. Volokitin and Loftus performed EMFI on a modern GHz-class multi-core Arm SoC, comparing fault effects against traditional microcontrollers and Secure Elements, and discussed how operating frequency and power-network complexity affect attack efficiency. The experiments show high frequency does not inherently immunize a chip against EMFI, though the parameter search space differs markedly; no specific SoC part number was named in the public talk.<br><a href='https://media.ccc.de/v/mch2022-279-fault-injection-on-a-modern-multicore-system-on-chip' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Glitched on Earth by Humans（SpaceX Starlink）",
+      "text": "Black Hat USA 2022（DEF CON 30）。Lennert Wouters 对 Starlink 用户终端的 STM GLLCCOCA6BF（CATSON）四核 Cortex-A53 SoC 实施 crowbar 电压故障注入；终端还包含 STM GLLBSUABBBA（SHIRAZ）数字波束成形器和 STSAFE-A110 安全元件。RP2040 modchip 使 BL1 跳过签名校验并获得 root。终端 PCB 的丝印是 “Made on Earth by humans”，modchip 改为 “Glitched on Earth by humans”。<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-Wouters-Glitched-On-Earth.pdf' target='_blank'>幻灯片</a>"
+    },
+    "en": {
+      "headline": "Glitched on Earth by Humans (SpaceX Starlink)",
+      "text": "Black Hat USA 2022 (DEF CON 30). Lennert Wouters voltage-glitched the Starlink user terminal's STM GLLCCOCA6BF (CATSON) custom quad-core Cortex-A53 SoC with a crowbar; the terminal also contains the STM GLLBSUABBBA (SHIRAZ) digital beamformer and an STSAFE-A110 secure element. An RP2040 modchip made BL1 skip signature verification and yielded root access. The terminal PCB says “Made on Earth by humans”; the modchip changes it to “Glitched on Earth by humans”.<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-Wouters-Glitched-On-Earth.pdf' target='_blank'>Slides</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Unlimited Results：ESP32-V3 固件加密故障注入",
+      "text": "Black Hat USA 2022。Karim M. Abdellatif、Olivier Hériveaux 与 Adrian Thillard 在 Espressif ESP32-V3 上组合使用电压毛刺与 EMFI，控制程序计数器，并在测试芯片上绕过部分固件保护、读取受保护内容。研究针对的是乐鑫为修复 ESP32 V1 eFuse 毛刺问题而推出的 V3 硅片修订版，演示了电压与电磁两种媒介的组合使用，并给出故障定位与参数搜索方法。<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-ABDELLATIF-Unlimited-Results-Breaking-Firmware-Encryption.pdf' target='_blank'>演讲幻灯</a>"
+    },
+    "en": {
+      "headline": "Unlimited Results: Fault Injection on ESP32-V3 Firmware Encryption",
+      "text": "Black Hat USA 2022. Karim M. Abdellatif, Olivier Hériveaux and Adrian Thillard combined voltage glitching with EMFI on the Espressif ESP32-V3, controlling the program counter and bypassing parts of the firmware protection on a test chip to read protected content. The work targets the V3 silicon revision Espressif released to fix the ESP32 V1 eFuse glitching issue, demonstrates the combined use of voltage and electromagnetic media, and documents fault localization and parameter search.<br><a href='https://i.blackhat.com/USA-22/Wednesday/US-22-ABDELLATIF-Unlimited-Results-Breaking-Firmware-Encryption.pdf' target='_blank'>Slides</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 9
+    },
+    "zh": {
+      "headline": "故障注入模拟：攻击者如何翻转一位",
+      "text": "Labortage 2022。Max Hoffmann 用故障模拟器穷举示例程序中所有可能的位翻转和指令故障，跟踪每一类故障对引导加载器、密码运算与控制流的影响路径，并讨论如何从模拟结果提炼不依赖具体芯片的通用防护方法。该议题的价值在于把“攻击者能翻转会怎样”变成可系统枚举的问题，为软件层对策设计提供依据。<br><a href='https://media.ccc.de/v/labortage2021-4221-but-what-if-the-attac' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "Simulating Fault Injection: What If an Attacker Flips a Bit?",
+      "text": "Labortage 2022. Max Hoffmann used a fault simulator to exhaustively enumerate all possible bit flips and instruction faults in an example program, tracing each fault class's impact on bootloaders, cryptographic operations and control flow, and discussed how to distill chip-agnostic software defenses from simulation results. The talk's value lies in turning 'what if the attacker flips a bit' into a systematically enumerable question that informs software-level countermeasure design.<br><a href='https://media.ccc.de/v/labortage2021-4221-but-what-if-the-attac' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 10
+    },
+    "zh": {
+      "headline": "EM-Fault It Yourself：攻击 AMD Secure Processor",
+      "text": "PAINE 2022（2022 年 10 月 25 日）。Kuhnapfel、Buhren、Jacob、Krachenfels、Werling 与 Seifert 搭建可复现的自动化 EMFI 平台，并在 AMD Secure Processor（AMD-SP）上运行已发表的代码执行载荷、定位故障区域和攻击固件签名验证；全文未给出单一 CPU 料号。<br><a href='https://publica.fraunhofer.de/handle/publica/457189' target='_blank'>论文资料</a> · <a href='https://doi.org/10.1109/PAINE56030.2022.10014927' target='_blank'>DOI</a>"
+    },
+    "en": {
+      "headline": "EM-Fault It Yourself: Attacking AMD Secure Processor",
+      "text": "PAINE 2022 (25 October 2022). Kuhnapfel, Buhren, Jacob, Krachenfels, Werling and Seifert built an automated, reproducible EMFI platform, then used a published code-execution exploit to run payloads on the AMD Secure Processor (AMD-SP), map fault regions and attack firmware-signature verification; the paper does not give one CPU part number.<br><a href='https://publica.fraunhofer.de/handle/publica/457189' target='_blank'>Paper record</a> · <a href='https://doi.org/10.1109/PAINE56030.2022.10014927' target='_blank'>DOI</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 1
+    },
+    "zh": {
+      "headline": "EMFI 攻击面高效探索",
+      "text": "FDTC/CHES 2023。研究者将由探针位置、脉冲强度、持续时间和时序构成的高维 EMFI 参数空间形式化建模，提出高效探索攻击面的策略：用分阶段采样与故障反馈引导搜索，减少穷举实验次数并更快定位易受攻击的电路区域。与早期的遗传算法搜索相比，该方法进一步降低了实验成本；面向任意目标芯片的 EMFI 参数寻优，未限定单一芯片型号。<br><a href='https://doi.org/10.1007/978-3-031-29497-6_2' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Efficient Attack-Surface Exploration for EMFI",
+      "text": "FDTC/CHES 2023. The researchers formalized the high-dimensional EMFI parameter space — probe position, pulse strength, duration and timing — and proposed an efficient attack-surface exploration strategy: staged sampling and fault-feedback-guided search reduce exhaustive experiments and locate vulnerable circuit regions faster. Compared with earlier genetic-algorithm searches the method further cuts experimental cost; it targets EMFI parameter optimization on arbitrary chips, with no single part number specified.<br><a href='https://doi.org/10.1007/978-3-031-29497-6_2' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 5
+    },
+    "zh": {
+      "headline": "汽车安全启动的进化式故障参数搜索",
+      "text": "Neural Network World 2023。Pozzobon、Weiß、Mottok 与 Matoušek 以 NXP MPC5748G 汽车微控制器为初始目标，使用遗传算法搜索汽车 ECU 安全启动更新流程的 EMFI 参数（位置、强度、时序），把人工数周的搜索压缩为自动化过程；论文报告搜索次数相较基线约减少两个数量级，并验证了找到的可利用故障能跳过固件签名校验。<br><a href='https://doi.org/10.14311/nnw.2023.33.020' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Evolutionary Fault-Parameter Search for Automotive Secure Boot",
+      "text": "Neural Network World 2023. Pozzobon, Weiß, Mottok and Matoušek targeted the NXP MPC5748G automotive microcontroller, using a genetic algorithm to search EMFI parameters (position, strength, timing) against a secure-boot update flow of an automotive ECU, compressing weeks of manual search into an automated process; the paper reports roughly two orders of magnitude fewer trials than baseline, and the discovered exploitable faults skip firmware signature verification.<br><a href='https://doi.org/10.14311/nnw.2023.33.020' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Back in the Driver’s Seat：电压毛刺 Tesla Autopilot",
+      "text": "Black Hat USA 2023。TU Berlin 研究者（Werling、Buhren、Jacob、Seifert 等）对 Tesla Model 3/Y 车载信息娱乐计算机的安全启动实施电压毛刺，绕过签名校验后获得 root shell，进而读取硬件唯一认证密钥与车辆数据，并可激活付费软件功能；研究还讨论了车辆 TPM 证明链被攻破后的影响。公开演讲材料未给出具体芯片料号。<br><a href='https://www.youtube.com/watch?v=AgC9OiFrIPk' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "Back in the Driver's Seat: Glitching Tesla Autopilot",
+      "text": "Black Hat USA 2023. TU Berlin researchers (Werling, Buhren, Jacob, Seifert et al.) voltage-glitched the secure boot of the Tesla Model 3/Y infotainment computer, bypassing signature verification to gain a root shell, then reading the hardware-unique attestation key and vehicle data, and even unlocking paid software features; the study also discusses the impact once the vehicle TPM attestation chain is broken. Public talk material gives no specific chip part number.<br><a href='https://www.youtube.com/watch?v=AgC9OiFrIPk' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Oven Repair：故障注入维修三星烤箱",
+      "text": "Black Hat USA 2023。Colin O'Flynn 对三星烤箱中的 Toshiba TMP91FW60 主控实施时钟故障注入，并结合功耗侧信道绕过 bootloader 的串口命令认证，执行 RAMCode，最终修改固件以改善加热控制并实时反馈温度。实验记录了 Toshiba TMP91FW60 的 bootloader 认证绕过、RAMCode 执行与固件修改。<br><a href='https://www.youtube.com/watch?v=ugHxUi_Ijso' target='_blank'>演讲录像</a>"
+    },
+    "en": {
+      "headline": "Oven Repair: The Hardware Hacking Way",
+      "text": "Black Hat USA 2023. Colin O'Flynn combined clock fault injection with power side-channel analysis against the Toshiba TMP91FW60 controller in a Samsung oven, bypassed bootloader authentication for serial commands, and executed RAMCode. The firmware was modified for heating control and live temperature feedback.<br><a href='https://www.youtube.com/watch?v=ugHxUi_Ijso' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 8
+    },
+    "zh": {
+      "headline": "别忘了毛刺：闪存擦除抑制现场演示",
+      "text": "Camp 2023。Marc 演示 flash-erase suppression（闪存擦除抑制）：在 MCU 将调试保护降级且准备执行 mass erase 的窗口注入毛刺，抑制擦除操作的同时完成保护降级，从而在保留原有 Flash 内容的情况下读取固件。议题现场演示了完整攻击流程，并讨论了不同厂商芯片上擦除时序窗口的差异；未限定单一芯片型号。<br><a href='https://media.ccc.de/v/camp2023-57401-unlock_the_door_to_my_secrets_but_don_t_forget_to_glitch' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "Unlock the Door to My Secrets: Do Not Forget to Glitch",
+      "text": "Camp 2023. Marc demonstrated flash-erase suppression: glitching the window in which an MCU downgrades its debug protection and prepares a mass erase suppresses the erase while the downgrade completes, so the original Flash contents survive and the firmware can be read out. The talk walks through the full attack live and discusses how erase-timing windows differ across vendors' chips; no single chip model is targeted.<br><a href='https://media.ccc.de/v/camp2023-57401-unlock_the_door_to_my_secrets_but_don_t_forget_to_glitch' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 8
+    },
+    "zh": {
+      "headline": "µ-Glitch：多重毛刺与 TrustZone-M",
+      "text": "USENIX Security 2023。Saß、Mitev 与 Sadeghi 指出现有 FI 对策的一个限制：重复校验、冗余执行等防护几乎全部假设“单次故障”。他们的 µ-Glitch 平台以纳秒精度连续注入多次协调的电压故障，在 NXP LPC55S69、NXP RT6600、ST STM32L5 和 Atmel SAML11 等 TrustZone-M MCU 上测试多重故障；其中 LPC55S69 与 RT6600 的冗余比较和隔离机制被同时绕过。实验结果显示，多次协调故障可同时影响冗余比较与隔离机制；论文包含 Black Hat USA 2022 版本的演示记录。<br><a href='https://www.usenix.org/conference/usenixsecurity23/presentation/sass' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "µ-Glitch: Multi-Glitching TrustZone-M Protections",
+      "text": "USENIX Security 2023. Saß, Mitev and Sadeghi exposed a limitation of existing FI countermeasures: redundant checks and duplicated execution almost all assume a single fault. Their µ-Glitch platform injects multiple coordinated voltage faults with nanosecond precision, bypassing redundancy comparisons and isolation on NXP LPC55S69, NXP RT6600, ST STM32L5 and Atmel SAML11 TrustZone-M MCUs; LPC55S69 and RT6600 showed bypasses of redundant comparisons and isolation. The experiments report coordinated multi-glitching effects on redundant comparisons and isolation; the paper includes the Black Hat USA 2022 demonstration record.<br><a href='https://www.usenix.org/conference/usenixsecurity23/presentation/sass' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 9
+    },
+    "zh": {
+      "headline": "EMFI 影响汽车安全启动加载器",
+      "text": "ASRG 2023。Weiß 与 Pozzobon 在 NXP MPC5748G 汽车网关微控制器的安全启动加载器上用 EMFI 损坏栈指针，使程序流偏离正常路径并绕过固件签名校验；攻击的位置、强度和时序参数用自动化工具 EFISSA 搜索。该工作展示了“栈指针损坏”这一区别于经典指令跳过的 EMFI 利用原语，并给出其在真实汽车安全启动场景中的成功率数据。<br><a href='https://sos.asrg.io/wp-content/uploads/2023/09/Dr.-Nils-Weis-and-Enrico-Pozzobon_Presentation.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Fault Injection Attacks on Secure Automotive Bootloaders",
+      "text": "ASRG 2023. Weiß and Pozzobon used EMFI to corrupt the stack pointer in the secure bootloader of an NXP MPC5748G automotive gateway microcontroller, diverting program flow past the firmware signature check; the position, strength and timing parameters were found with the automated tool EFISSA. The work showcases stack-pointer corruption as an EMFI exploitation primitive distinct from classic instruction skipping, with success-rate data on a real automotive secure-boot target.<br><a href='https://sos.asrg.io/wp-content/uploads/2023/09/Dr.-Nils-Weis-and-Enrico-Pozzobon_Presentation.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 10
+    },
+    "zh": {
+      "headline": "时钟毛刺下的微架构行为",
+      "text": "CARDIS 2023。Alshaer 等人从流水线、缓存和取指路径三个层面分析时钟毛刺导致的异常微架构行为，解释黑盒实验中难以归因的指令跳过与控制流变化——例如取指队列中残留旧指令被执行、分支行为与预期取指不一致等现象，并讨论这些发现对故障模型假设和防护设计的影响。研究也解释了为何相同毛刺参数在不同批次芯片上表现不一；论文未限定单一芯片型号。<br><a href='https://doi.org/10.1007/978-3-031-54409-5_1' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Microarchitectural Behavior under Clock-Glitch FI",
+      "text": "CARDIS 2023. Alshaer et al. analyzed anomalous microarchitectural behavior under clock glitching at three levels — pipeline, cache and instruction-fetch path — explaining instruction skips and control-flow changes that black-box experiments struggle to attribute, such as stale instructions lingering in the fetch queue being executed and branch behavior diverging from expected fetches, and discussed implications for fault-model assumptions and countermeasure design. The work also explains why identical glitch parameters behave differently across chip batches; no single chip model is specified.<br><a href='https://doi.org/10.1007/978-3-031-54409-5_1' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 10
+    },
+    "zh": {
+      "headline": "断电器件的 X 射线非易失存储故障注入",
+      "text": "PAINE 2023。Grandamme、Bossuet 与 Dutertre 对断电状态的 32 位 Cortex-M3、128 kB Flash 微控制器实施 X 射线照射；Flash 出现按总电离剂量增长的 bit-set 故障，部分故障可通过加热恢复，研究还记录了安全位与存储擦除状态的变化。论文未给商业料号。<br><a href='https://doi.org/10.1109/PAINE58317.2023.10318018' target='_blank'>论文</a> · <a href='https://hal.science/hal-04500202v1/document' target='_blank'>HAL PDF</a>"
+    },
+    "en": {
+      "headline": "X-Ray Fault Injection in Flash on Powered-Off MCUs",
+      "text": "PAINE 2023. Grandamme, Bossuet and Dutertre irradiated a powered-off 32-bit Cortex-M3 microcontroller with 128 kB Flash. Flash developed dose-dependent bit-set faults; some faults recovered after heating, and the study recorded changes to security bits and erase-state behavior. No commercial part number is given.<br><a href='https://doi.org/10.1109/PAINE58317.2023.10318018' target='_blank'>Paper</a> · <a href='https://hal.science/hal-04500202v1/document' target='_blank'>HAL PDF</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 11
+    },
+    "zh": {
+      "headline": "faulTPM：提取 AMD fTPM 密钥材料",
+      "text": "EuroS&P 2023。Hans Niklas Jacob、Christian Werling、Nils Buhren 与 Jean-Pierre Seifert 在 AMD Zen 2/Zen 3 平台对 PSP 实施电压毛刺，在取得 PSP 代码执行后提取 fTPM 背书密钥和存储密钥（CVE-2023-20589）。<br><a href='https://doi.org/10.1109/EuroSP57164.2023.00069' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "faulTPM: Extracting AMD fTPM Key Material",
+      "text": "EuroS&P 2023. Hans Niklas Jacob, Christian Werling, Nils Buhren and Jean-Pierre Seifert voltage-glitched the PSP on AMD Zen 2/Zen 3 platforms, then extracted fTPM endorsement and storage keys after obtaining PSP code execution (CVE-2023-20589).<br><a href='https://doi.org/10.1109/EuroSP57164.2023.00069' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Who Watches the Watchers：攻击毛刺检测器",
+      "text": "TCHES 2024（在线发表于 2023-12）。Askeland、Nikova 与 Nikov 分析三类时序违规检测器的工作原理，展示四种高速时钟毛刺攻击可在 FPGA 上注入故障而不触发检测器：毛刺被隐藏在检测器的时间分辨率或采样盲区之内。研究直接挑战了“检测器可替代其他对策”的假设，并为毛刺检测器的设计改进给出了方向。<br><a href='https://doi.org/10.46586/tches.v2024.i1.157-179' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Who Watches the Watchers: Attacking Glitch Detectors",
+      "text": "TCHES 2024 (published online Dec 2023). Askeland, Nikova and Nikov analyzed how three classes of timing-violation detectors work and demonstrated four fast clock-glitch attacks that inject faults on FPGAs without triggering them: the glitches hide inside the detectors' temporal resolution or sampling blind spots. The study directly challenges the assumption that detectors can replace other countermeasures, and points out directions for improving glitch-detector design.<br><a href='https://doi.org/10.46586/tches.v2024.i1.157-179' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 1
+    },
+    "zh": {
+      "headline": "ESP32-C3/C6：故障注入诱发 Boot ROM 缓冲区溢出",
+      "text": "Courk's Blog，2024-01-08。针对 Espressif ESP32-C3 与 ESP32-C6（RISC-V 内核），在 Boot ROM 从 Flash 加载镜像头的阶段注入电压毛刺，把 memcpy 的长度参数从 0x8 改为 0x208，形成可控栈溢出并覆盖返回地址，最终在 Boot ROM 上下文中执行任意代码。研究还指出了 ESP32-C3 与 ESP32-C6 在外部 Flash 控制条件上的差异，并给出具体的毛刺点位与参数。<br><a href='https://courk.cc/esp32-c3-c6-fault-injection' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "ESP32-C3/C6: Boot-ROM Buffer Overflow via Fault Injection",
+      "text": "Courk's Blog, 2024-01-08. Against the Espressif ESP32-C3 and ESP32-C6 (RISC-V cores), a voltage glitch injected while the Boot ROM loads the image header from Flash changes a memcpy length parameter from 0x8 to 0x208, producing a controllable stack overflow that overwrites the return address and yields arbitrary code execution in the Boot ROM context. The write-up also notes the ESP32-C3 and ESP32-C6 differ in external-Flash control conditions, and documents concrete glitch points and parameters.<br><a href='https://courk.cc/esp32-c3-c6-fault-injection' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 2
+    },
+    "zh": {
+      "headline": "电压毛刺解锁 RH850/F1L 车身控制器",
+      "text": "FEV Secure Lab（Sunny 与 Zari）在车身控制模块（BCM）的 RH850/F1L 上进行电压毛刺测试：使用数百美元级的 ChipWhisperer Lite 对 ISOVCL 引脚注入毛刺，绕过 16 字节 IDCODE 校验，提取 Flash 内容并恢复诊断安全访问密钥。文章报告了 RH850/F1L 的 IDCODE 绕过、Flash 读取和诊断安全访问密钥恢复。<br><a href='https://jerinsunny.github.io/blogs/2024/02/14/rh850-voltage-glitching.html' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Unlocking Renesas RH850/F1L with Voltage Glitching",
+      "text": "FEV Secure Lab (Sunny & Zari) tested voltage glitching on the RH850/F1L in a body-control module (BCM). Using a ChipWhisperer Lite and the ISOVCL pin, they bypassed the 16-byte IDCODE check, extracted flash contents and recovered diagnostic security-access keys. The report records RH850/F1L IDCODE bypass, Flash extraction and diagnostic security-access-key recovery.<br><a href='https://jerinsunny.github.io/blogs/2024/02/14/rh850-voltage-glitching.html' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 3
+    },
+    "zh": {
+      "headline": "Unlock the Door：多厂商闪存擦除抑制研究",
+      "text": "TCHES 2024（2024-03-12）。Schink 等人将闪存擦除抑制研究扩展到多厂商目标：在 STMicroelectronics STM32L422、STM32L1 系列、Artery AT32 与 GigaDevice GD32 微控制器上量化 RDP 降级期间 EMFI 抑制 mass-erase 的成功率、设备间差异和对芯片的损伤风险，并给出可复现的实验流程。研究说明擦除抑制不是单一厂商的个案，而是跨厂商存在的系统性问题。<br><a href='https://doi.org/10.46586/tches.v2024.i2.88-129' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Unlock the Door: A Multi-Vendor Study of Flash-Erase Suppression",
+      "text": "TCHES 2024 (2024-03-12). Schink et al. extended flash-erase-suppression research to multiple vendors: quantifying the success rate, device-to-device variance and chip-damage risk of EMFI-based mass-erase suppression during RDP downgrade on STMicroelectronics STM32L422, STM32L1-series, Artery AT32 and GigaDevice GD32 microcontrollers, with a reproducible experimental procedure. The study shows erase suppression is not a single-vendor anomaly but a systemic, cross-vendor problem.<br><a href='https://doi.org/10.46586/tches.v2024.i2.88-129' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 4
+    },
+    "zh": {
+      "headline": "同步时钟毛刺的物理故障模型",
+      "text": "CARDIS 2024。研究者结合实验与电路级仿真分析同步时钟毛刺（SCG）在 D 触发器中的失效模式，检验时序故障模型（setup/hold 违例）与采样故障模型对 EMFI 诱发时钟扰动的解释能力，系统比较了两类模型预测与实测故障的吻合度，为毛刺检测器和防护电路设计提供器件级依据；研究基于可控测试结构，未限定单一商业芯片型号。<br><a href='https://doi.org/10.1007/978-3-031-57543-3_1' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "Characterizing Synchronous Clock-Glitch Faults",
+      "text": "CARDIS 2024. The researchers combined experiments with circuit-level simulation to analyze failure modes of synchronous clock glitching (SCG) in D flip-flops, testing how well the timing-fault model (setup/hold violations) and the sampling-fault model explain EMFI-induced clock disturbances, systematically comparing each model's predictions against measured faults to provide device-level evidence for glitch-detector and protection-circuit design; the study used controllable test structures rather than a specific commercial chip.<br><a href='https://doi.org/10.1007/978-3-031-57543-3_1' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 8
+    },
+    "zh": {
+      "headline": "ACE up the Sleeve：EMFI 攻入 iPhone 15 USB-C 控制器",
+      "text": "DEF CON 32 / 38C3。Thomas Roth 对 iPhone 15 使用的 Apple ACE3 USB-C 控制器进行架构逆向：先通过固件分析与总线行为观察理解其专有指令集，再获得 JTAG 访问，最后用电磁故障注入（EMFI）绕过固件认证，在该控制器上运行修改后的固件。议题完整展示了专有小型安全芯片同样可被系统化逆向与毛刺攻破的流程，并讨论了 ACE 在苹果生态中的安全角色。<br><a href='https://www.youtube.com/watch?v=-uxmmlQr3lA' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "ACE up the Sleeve: Hacking Apple's USB-C Controller",
+      "text": "DEF CON 32 / 38C3. Thomas Roth reverse-engineered the Apple ACE3 USB-C controller used in the iPhone 15: first understanding its proprietary instruction set through firmware analysis and bus-level observation, then gaining JTAG access, and finally bypassing firmware authentication with electromagnetic fault injection (EMFI) to run modified firmware on the controller. The talk demonstrates the full pipeline by which a proprietary small security chip can be systematically reverse-engineered and glitched, and discusses the ACE's security role in the Apple ecosystem.<br><a href='https://www.youtube.com/watch?v=-uxmmlQr3lA' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Ops! It Is JTAG's Fault：攻破 ST SPC58",
+      "text": "Black Hat USA 2024。GoGoByte 在 STMicroelectronics SPC58 汽车微控制器上研究其双重 JTAG 密码比较机制：芯片分两次比对密码以抵抗单次毛刺，攻击者则用多次毛刺分别抑制两次比较，最终获得代码执行和固件访问。该案例说明“比较两次”这类简单重复对策可被多重故障系统性绕过，与 µ-Glitch 等多故障研究相互印证。<br><a href='https://blackhat.com/archive/usa/2024/briefings/schedule/index.html' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Ops! It Is JTAG's Fault — Black Hat USA 2024",
+      "text": "Black Hat USA 2024. GoGoByte examined the double JTAG password comparison on the STMicroelectronics SPC58 automotive microcontroller: the chip compares the password twice to resist single glitches, but the attackers suppressed both comparisons with multiple glitches, ultimately gaining code execution and firmware access. The case shows simple repeat-based defenses like 'compare twice' can be systematically defeated by multiple faults, corroborating multi-fault research such as µ-Glitch.<br><a href='https://blackhat.com/archive/usa/2024/briefings/schedule/index.html' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 8
+    },
+    "zh": {
+      "headline": "WOOT 2024：故障注入计算控制 ESP32-V3 程序计数器",
+      "text": "USENIX WOOT 2024。Delvaux、Mune、Romero 与 Timmers 在带有故障注入防护的 ESP32-V3 上同时绕过 Secure Boot 与 Flash Encryption：先篡改加密 Flash 中的内容，使启动加载器签名 CRC 的 32 位结果变成任意值，再用一次电磁毛刺把该值装入 CPU 的程序计数器（PC），跳入 ROM Download Mode，进而执行任意代码并读取未加密 Flash。论文记录了 Espressif 公告 AR2023-005 与 CVE-2023-35818。<br><a href='https://www.usenix.org/conference/woot24/presentation/delvaux' target='_blank'>论文与演讲</a>"
+    },
+    "en": {
+      "headline": "WOOT 2024: Program-Counter Control on ESP32-V3",
+      "text": "USENIX WOOT 2024. Delvaux, Mune, Romero and Timmers bypassed both Secure Boot and Flash Encryption on the fault-injection-hardened ESP32-V3: they altered encrypted flash so the bootloader-signature CRC produced an attacker-chosen 32-bit value, then used a single EM glitch to load that value into the CPU program counter and jump into ROM Download Mode for arbitrary code execution and access to plaintext flash. The paper records Espressif advisory AR2023-005 and CVE-2023-35818.<br><a href='https://www.usenix.org/conference/woot24/presentation/delvaux' target='_blank'>Paper and talk</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 9
+    },
+    "zh": {
+      "headline": "PoP DRAM：用电磁脉冲诱发 SoC 电压毛刺",
+      "text": "FDTC 2024。针对 PoP（Package-on-Package）封装的移动 SoC，研究者移除叠层 DRAM 以暴露 SoC 本体，并比较三种注入方式：常规 EMFI、常规电压毛刺、以及由 EM 脉冲在供电轨上诱发的电压毛刺；实验显示第三种的故障特征更接近 EMFI，说明电磁与电压两种媒介可在同一目标上互补使用。论文未指定单一 SoC 料号。<br><a href='https://doi.org/10.1109/FDTC64268.2024.00010' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "PoP DRAM: EM-Induced Voltage Glitches on SoCs",
+      "text": "FDTC 2024. Targeting mobile SoCs in PoP (Package-on-Package) packaging, the researchers removed the stacked DRAM to expose the SoC and compared three injection methods: conventional EMFI, conventional voltage glitching, and voltage glitches induced on the supply rail by EM pulses; the third method's fault signatures proved closer to EMFI, showing electromagnetic and voltage media can complement each other on the same target. No single SoC part number is specified.<br><a href='https://doi.org/10.1109/FDTC64268.2024.00010' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 9
+    },
+    "zh": {
+      "headline": "断电 STM32F1 的激光故障与持久性分析",
+      "text": "TCHES 2024。Viera 等人在断电的 STMicroelectronics STM32F1 上对 128 kB Flash 进行激光注入，建立单向 bit-set 故障模型，并在 Flash 中的 AES S 盒上实施持久性故障分析以恢复 128 位密钥；实验使用四颗器件。<br><a href='https://doi.org/10.46586/tches.v2024.i4.425-450' target='_blank'>论文</a> · <a href='https://hal.science/hal-04642748' target='_blank'>HAL 条目</a>"
+    },
+    "en": {
+      "headline": "Powered-Off STM32F1: Laser Faults in Flash",
+      "text": "TCHES 2024. Viera and colleagues used laser injection on the 128 kB Flash of an unpowered STMicroelectronics STM32F1, established a unidirectional bit-set model and applied persistent fault analysis to the AES S-box to recover a 128-bit key; four devices were tested.<br><a href='https://doi.org/10.46586/tches.v2024.i4.425-450' target='_blank'>Paper</a> · <a href='https://hal.science/hal-04642748' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 10
+    },
+    "zh": {
+      "headline": "EMFI 修改 SPC5606B 审查配置",
+      "text": "2024 年 10 月通报 NXP/ST PSIRT。Jan Van den Herrewegen 与 Faheem Adam 在日产 Hands-Free 模块的 STMicroelectronics SPC5606B 汽车微控制器上，利用上电复位（POR）阶段的功耗侧信道定位 SSCM 从 shadow Flash 加载审查（censorship）配置的约 4 µs 活动窗口，并用 EMFI 修改生效配置。值得注意的是：此前 O'Flynn 的 BAM 密码毛刺对这类采用公共密码的 chip-lockout 配置无效，本研究补上了这一空白。<br><a href='https://www.linkedin.com/posts/faheem-adam-b19a66a_emfi-to-disable-censorship-nxp-spc5606b-mcus-activity-7273372256288821249-ZrbH' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Modifying SPC5606B Censorship Configuration via EMFI",
+      "text": "Reported to NXP/ST PSIRT in October 2024. Jan Van den Herrewegen and Faheem Adam used a power side channel during power-on reset (POR) on the STMicroelectronics SPC5606B automotive microcontroller from a Nissan Hands-Free module, locating the ~4 µs activity window in which the SSCM loads its censorship configuration from shadow Flash, and altered the effective configuration with EMFI. Notably, O'Flynn's earlier BAM password glitch does not work against this chip-lockout configuration, which uses the public password — this study closes that gap.<br><a href='https://www.linkedin.com/posts/faheem-adam-b19a66a_emfi-to-disable-censorship-nxp-spc5606b-mcus-activity-7273372256288821249-ZrbH' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 12
+    },
+    "zh": {
+      "headline": "From Fault Injection to RCE：Chipolo ONE",
+      "text": "38C3 2024。Nicolas Oberli 研究 Chipolo ONE 蓝牙追踪器，其核心为 Dialog（现 Renesas）DA14580：通过故障注入绕过芯片调试锁定并提取固件，随后分析固件中的弱认证和缓冲区溢出，实现蓝牙远程代码执行。议题完整呈现了从物理层故障注入到协议层漏洞利用的链式攻击——先拿到固件，再在其中发现可远程触发的内存破坏漏洞，最终无需物理接触即可控制设备。<br><a href='https://media.ccc.de/v/38c3-from-fault-injection-to-rce-analyzing-a-bluetooth-tracker' target='_blank'>议题录像与资料</a>"
+    },
+    "en": {
+      "headline": "From Fault Injection to RCE: Chipolo ONE",
+      "text": "38C3 2024. Nicolas Oberli examined the Chipolo ONE Bluetooth tracker, built around the Dialog (now Renesas) DA14580: fault injection bypassed the chip's debug lock to extract the firmware, after which analysis of the firmware's weak authentication and a buffer overflow yielded Bluetooth remote code execution. The talk presents the full chained attack — from physical-layer fault injection to protocol-layer exploitation: get the firmware first, find a remotely triggerable memory-corruption bug in it, and ultimately control the device without any physical access.<br><a href='https://media.ccc.de/v/38c3-from-fault-injection-to-rce-analyzing-a-bluetooth-tracker' target='_blank'>Talk and materials</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 12
+    },
+    "zh": {
+      "headline": "RP2350：安全启动毛刺攻击",
+      "text": "38C3 2024。Aedan Cullen 研究 Raspberry Pi RP2350 的安全架构：梳理其启动复位流程、Cortex-M33 内核、OTP 存储与内置毛刺检测器，并展示官方 Hacking Challenge 中通过复位阶段故障注入破坏启动认证的路径。议题还讨论了 RP2350 把毛刺检测器纳入芯片设计的意义及其被绕过的方式，是对该芯片安全特性的早期系统性公开分析。<br><a href='https://media.ccc.de/v/38c3-hacking-the-rp2350' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "RP2350: Fault Injection Against Secure Boot",
+      "text": "38C3 2024. Aedan Cullen examined the Raspberry Pi RP2350's security architecture: walking through its boot and reset flow, Cortex-M33 cores, OTP storage and built-in glitch detectors, and demonstrating how reset-stage fault injection defeated boot authentication in the official Hacking Challenge. The talk also discusses the significance of RP2350's on-chip glitch detectors and how they were bypassed — an early systematic public analysis of the chip's security features.<br><a href='https://media.ccc.de/v/38c3-hacking-the-rp2350' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 12
+    },
+    "zh": {
+      "headline": "STM32F4：PicoGlitcher 复现 RDP 固件读取",
+      "text": "2024 年末。Matthias Kesenheimer 在 STM32F401 Black Pill 的 USART Bootloader Read Memory（0x11）路径注入 VCAP 毛刺，绕过 RDP1 并分块读取 Flash；相关项目记录了 STM32F40x/F412/F42x 的参数搜索。<br><a href='https://fault-injection-library.readthedocs.io/en/latest/examples/' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "STM32F4: Reproducible RDP Dumping with PicoGlitcher",
+      "text": "Late 2024. Matthias Kesenheimer injected VCAP glitches into the USART Bootloader Read Memory (0x11) path on an STM32F401 Black Pill, bypassed RDP1 and read Flash in blocks; related projects document parameter searches for STM32F40x/F412/F42x.<br><a href='https://fault-injection-library.readthedocs.io/en/latest/examples/' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 5
+    },
+    "zh": {
+      "headline": "STM32L051：不擦除固件的 RDP 降级",
+      "text": "SySS 公告 SYSS-2025-033（2025-05-23 发布）。针对 STM32L051K8 的 RDP1→RDP0 降级流程，在自动擦除开始前注入电压毛刺，抑制 Flash erase，同时恢复调试读取权限；公告记录了最高约 30% 的成功率，并明确将其归类为 flash-erase suppression attack。6 月实验文章记录了 PicoGlitcher 与 findus 的复现实验。<br><a href='https://blog.syss.com/posts/voltage-glitching-the-stm32l05-microcontroller/' target='_blank'>实验文章</a>"
+    },
+    "en": {
+      "headline": "STM32L051: RDP Downgrade without Erasing Flash",
+      "text": "SySS advisory SYSS-2025-033 (first public disclosure on 23 May 2025). A voltage glitch is injected just before the automatic erase in the STM32L051K8 RDP1→RDP0 downgrade, suppressing Flash erase while restoring debug read access; the advisory reports up to roughly 30% success and classifies it as a flash-erase suppression attack. The June write-up records a PicoGlitcher/findus reproduction.<br><a href='https://blog.syss.com/posts/voltage-glitching-the-stm32l05-microcontroller/' target='_blank'>Experiment write-up</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 5
+    },
+    "zh": {
+      "headline": "nRF54L15：EMFI 影响硬件毛刺检测器",
+      "text": "SySS 公告 SYSS-2025-022（2025-05-23）。在 Nordic nRF54L15 上，即使启用了其 TAMPC/Glitch Detector 硬件毛刺检测器，ChipSHOUTER 电磁脉冲仍能扰动 256 字节 CRC 校验计算，扫描点中最高约 2.4% 产生错误结果。研究说明新一代 MCU 内置的故障检测机制并非不可绕过，同时也表明芯片厂商已开始把抗毛刺设计作为产品特性。<br><a href='https://www.syss.de/pentest-blog/fault-injection-angriffe-auf-die-mikrocontroller-nrf54l15-und-stm32l051-syss-2025-022/-033' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "nRF54L15: EMFI Tests of the Glitch Detector",
+      "text": "SySS advisory SYSS-2025-022 (2025-05-23). On the Nordic nRF54L15, even with its TAMPC/Glitch Detector hardware enabled, ChipSHOUTER electromagnetic pulses could still disturb a 256-byte CRC computation, with up to ~2.4% of scanned points producing wrong results. The study shows the fault-detection mechanisms built into new-generation MCUs are not unbypassable, while also indicating that vendors have started treating glitch resistance as a product feature.<br><a href='https://www.syss.de/pentest-blog/fault-injection-angriffe-auf-die-mikrocontroller-nrf54l15-und-stm32l051-syss-2025-022/-033' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 5
+    },
+    "zh": {
+      "headline": "setresuid(⚡)：故障注入 Google TV Streamer 权限检查",
+      "text": "hardwear.io NL 2025。Raelize 在 Google TV Streamer 的 Amlogic 平台（公开材料未列出具体 SoC 料号）上，对 setresuid 系统调用的权限检查路径实施电压毛刺：通过篡改权限检查的执行结果，从 ADB 受限 shell 直接获得 root 权限。该演示把毛刺目标从启动链扩展到运行时 Linux 系统调用，说明已完成启动的设备仍有可被故障注入利用的攻击面。<br><a href='https://raelize.com/upload/research/2025/hwio-nl-2025_setresuid-glitching-google-tv-streamer-from-adb-to-root.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "setresuid(⚡): Glitching Google's TV Streamer",
+      "text": "hardwear.io NL 2025. Raelize voltage-glitched the permission-check path of the setresuid syscall on the Google TV Streamer's Amlogic platform (no specific SoC part number in public material): corrupting the check's execution result escalated an ADB restricted shell straight to root. The demo extends glitch targets from boot chains to runtime Linux syscalls, showing that fully booted devices still present fault-injection attack surface.<br><a href='https://raelize.com/upload/research/2025/hwio-nl-2025_setresuid-glitching-google-tv-streamer-from-adb-to-root.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 6
+    },
+    "zh": {
+      "headline": "EL3vated Privileges：从 root 到 ARM EL3 的故障注入",
+      "text": "hardwear.io USA 2025。Raelize 在 Google Nest WiFi Pro 的 Qualcomm 路由器平台（公开材料未列出具体 SoC 料号）上，对 Linux 内核发起的 SMC（Secure Monitor Call）调用路径实施精确定时的电压毛刺，从已获得的 Linux root 进一步提升到 ARM EL3 安全监控级代码执行。研究显示 TrustZone 安全监控层的边界在故障注入下同样可被跨越。<br><a href='https://raelize.com/upload/research/2025/Hw_io-USA-2025_EL3vated-Privileges-Glitching-Google-Wifi-Pro-from-Root-to-EL3_v1.0.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "EL3vated Privileges: Root to EL3 by Glitching",
+      "text": "hardwear.io USA 2025. Raelize fired precisely timed voltage glitches at the SMC (Secure Monitor Call) path issued by the Linux kernel on the Google Nest WiFi Pro's Qualcomm router platform (no specific SoC part number in public material), escalating from an already-obtained Linux root to code execution at ARM EL3 secure-monitor level. The research shows the TrustZone secure-monitor boundary can likewise be crossed with fault injection.<br><a href='https://raelize.com/upload/research/2025/Hw_io-USA-2025_EL3vated-Privileges-Glitching-Google-Wifi-Pro-from-Root-to-EL3_v1.0.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 8
+    },
+    "zh": {
+      "headline": "RP2350：WOOT 2025 故障注入路线",
+      "text": "USENIX WOOT 2025。Muench、Cullen、Courdesses、Roth 与 Zonenberg 总结 Raspberry Pi RP2350 Hacking Challenge 的五条公开攻击路线，覆盖电压、电磁和激光故障注入，分别针对 CPU 核心执行、调试口访问、启动签名校验、未签名固件加载和 OTP 反熔丝读取。论文比较了各路线的成本、可复现性与所需设备，是对该芯片安全设计的首次系统性公开评估。<br><a href='https://www.usenix.org/system/files/woot25-muench.pdf' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "RP2350: Multi-Path Fault Injection at WOOT 2025",
+      "text": "USENIX WOOT 2025. Muench, Cullen, Courdesses, Roth and Zonenberg summarized the five public attack routes from the Raspberry Pi RP2350 Hacking Challenge, spanning voltage, electromagnetic and laser fault injection, targeting CPU core execution, debug-port access, boot signature verification, unsigned-firmware loading and OTP antifuse readout respectively. The paper compares each route's cost, reproducibility and equipment requirements — the first systematic public evaluation of the chip's security design.<br><a href='https://www.usenix.org/system/files/woot25-muench.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Three Glitches to Rule One Car：特斯拉车载计算平台研究",
+      "text": "ACM AsiaCCS 2025。TU Berlin SecT 团队在 Tesla HW3/HW4 车载计算平台上测试三类目标——AMD x86 信息娱乐 SoC、Tesla FSD 自动驾驶处理器和 NXP/ST 网关微控制器——的电压毛刺或 EMFI 路径，评估真实量产汽车计算平台的故障注入可达性与防护强度；论文未列出这些芯片的具体料号，并讨论了车厂在供应链各层部署抗毛刺设计的现状。<br><a href='https://doi.org/10.1145/3708821.3710820' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Three Glitches to Rule One Car (Tesla)",
+      "text": "ACM AsiaCCS 2025. The TU Berlin SecT team tested voltage-glitch or EMFI paths against three target classes on Tesla HW3/HW4 vehicle computing platforms — the AMD x86 infotainment SoC, the Tesla FSD self-driving processor, and NXP/ST gateway microcontrollers — assessing fault-injection reachability and protection strength on real production automotive computers; the paper does not list specific part numbers for these chips and discusses the state of glitch-resistant design deployment across automakers' supply chains.<br><a href='https://doi.org/10.1145/3708821.3710820' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 8
+    },
+    "zh": {
+      "headline": "Watch Your (Lock)Step：AURIX 调试接口故障注入",
+      "text": "Black Hat USA 2025。Thomas Roth（stacksmashing）以英飞凌 AURIX TriCore 系列汽车微控制器为研究对象演示故障注入，议题覆盖了包括 TC275 在内的多个芯片，并对其中的 TC275 同时使用了电压毛刺和 EMFI 两种手段，研究复位/调试握手阶段的攻击窗口。需要说明的是：虽然从议题细节可以推断调试密码保护似乎被绕过，但议题本身并未明确宣称绕过了 TC275 的保护机制，这一点在 icanhack.nl 等第三方整理中也被特别标注。<br><a href='https://blackhat.com/archive/usa/2025/briefings/schedule/index.html' target='_blank'>参考链接</a> · <a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>第三方整理</a>"
+    },
+    "en": {
+      "headline": "Watch Your (Lock)Step: Glitching Infineon AURIX",
+      "text": "Black Hat USA 2025. Thomas Roth (stacksmashing) demonstrated fault injection against Infineon AURIX TriCore automotive microcontrollers; the research covered several chips including the TC275, on which he applied both voltage glitching and EMFI, probing the reset/debug handshake window. Note: while the talk's details suggest the debug-password protection was apparently bypassed, the talk does not explicitly claim to have defeated the TC275's protection mechanisms — a caveat also flagged by third-party summaries such as icanhack.nl.<br><a href='https://blackhat.com/archive/usa/2025/briefings/schedule/index.html' target='_blank'>Reference</a> · <a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>Third-party summary</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 9
+    },
+    "zh": {
+      "headline": "AutoPulse：可复现的 EMFI 自动发现平台",
+      "text": "FDTC 2025。AutoPulse 用商用 3D 打印机机构、开源软件和自制脉冲硬件搭建低成本 EMFI 平台，显著降低电磁故障注入的设备门槛；论文在 Espressif ESP32 上完成参数表征并复现执行流水线故障，同时强调工艺参数（线圈、脉冲形状、移动精度）对故障图谱的影响，并开源了完整设计，使 EMFI 实验可在桌面级预算内复现。<br><a href='https://doi.org/10.1109/FDTC68360.2025.00009' target='_blank'>论文</a>"
+    },
+    "en": {
+      "headline": "AutoPulse: Reproducible EMFI Vulnerability Discovery",
+      "text": "FDTC 2025. AutoPulse built a low-cost EMFI platform from a commercial 3D-printer motion system, open-source software and self-made pulse hardware, sharply lowering the equipment barrier for electromagnetic fault injection; the paper characterizes parameters and reproduces execution-pipeline faults on an Espressif ESP32, highlights how fabrication parameters (coil, pulse shape, motion precision) shape the fault map, and open-sources the full design so EMFI experiments can be reproduced on a desktop budget.<br><a href='https://doi.org/10.1109/FDTC68360.2025.00009' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Of Boot Vectors and Double Glitches：RP2350",
+      "text": "39C3 2025。stacksmashing 与 nsr 总结 Raspberry Pi RP2350 Hacking Challenge 的五条攻击路线，重点展示故障注入强制未验证向量启动、双重毛刺读取 OTP，以及激光故障注入和复位毛刺；对象为 Raspberry Pi RP2350。<br><a href='https://media.ccc.de/v/39c3-of-boot-vectors-and-double-glitches-bypassing-rp2350-s-secure-boot' target='_blank'>议题录像</a>"
+    },
+    "en": {
+      "headline": "Of Boot Vectors and Double Glitches: RP2350",
+      "text": "39C3 2025. stacksmashing and nsr summarized five Raspberry Pi RP2350 Hacking Challenge attack paths, including fault-injected unverified-vector boot, double-glitch OTP readout, laser fault injection and reset glitches against the RP2350 secure boot.<br><a href='https://media.ccc.de/v/39c3-of-boot-vectors-and-double-glitches-bypassing-rp2350-s-secure-boot' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 3
+    },
+    "zh": {
+      "headline": "Quarkslab：链式触发 RH850 调试密码",
+      "text": "2026。Philippe Azalbert（Quarkslab）在 Renesas RH850/F1KM-S4 上串联 UART 输出、ADC 采样和功耗侧信道三种手段，定位 16 字节调试密码比较指令的精确窗口，再对 ISOVCL 引脚实施电压毛刺绕过密码校验；报告记录约 88 次尝试即成功，单次测试耗时不到一分钟。该工作把 RH850 调试密码攻击的触发定位从“盲扫”推进到侧信道辅助的精确制导。<br><a href='https://blog.quarkslab.com/bypassing-debug-password-protection-on-the-rh850-family-using-fault-injection.html' target='_blank'>参考链接</a>"
+    },
+    "en": {
+      "headline": "Quarkslab: Chained Triggers for the RH850 Debug Password",
+      "text": "2026. Philippe Azalbert (Quarkslab) chained three techniques — UART output, ADC sampling and a power side channel — on the Renesas RH850/F1KM-S4 to pinpoint the exact window of the 16-byte debug-password comparison instruction, then voltage-glitched the ISOVCL pin to bypass the password check; the write-up records success within about 88 attempts and under a minute per test run. The work moves RH850 debug-password attacks from blind scanning to side-channel-guided precision triggering.<br><a href='https://blog.quarkslab.com/bypassing-debug-password-protection-on-the-rh850-family-using-fault-injection.html' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 9
+    },
+    "zh": {
+      "headline": "GlitchLab：硬件在环故障注入自动搜索",
+      "text": "arXiv 2609.00502（2026-09-01）。Hossain、Mahadevan、Van Woudenberg、Velegalati 与 Bhattacharyya 提出 GlitchLab，将故障注入参数搜索建模为硬件在环优化：RL-Q 用 Q-learning 探索，结构化 bandit 负责发现，SOBAS 根据结构化结果复现故障。在 AES、密码与控制流实验中，方法相较基线减少 2–85 倍尝试次数、26–1,237 倍时间，并显著提高复现率，展示了硬件在环条件下的自动化参数搜索效果。<br><a href='https://arxiv.org/abs/2609.00502' target='_blank'>论文预印本</a>"
+    },
+    "en": {
+      "headline": "GlitchLab: Hardware-in-the-Loop Fault-Injection Optimization",
+      "text": "arXiv 2609.00502 (1 September 2026). Hossain, Mahadevan, Van Woudenberg, Velegalati and Bhattacharyya formulate glitch-parameter search as hardware-in-the-loop optimization: RL-Q explores with Q-learning, a structured bandit discovers candidates, and SOBAS reproduces faults from structured outcomes. Across AES, password and control-flow campaigns, the methods cut attempts by 2–85× and time by 26–1,237× versus baselines, while improving reproduction rates. The results quantify hardware-in-the-loop automated parameter search.<br><a href='https://arxiv.org/abs/2609.00502' target='_blank'>Preprint</a>"
+    }
+  }
 ];
 
 
