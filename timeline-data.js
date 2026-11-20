@@ -5,11 +5,11 @@
 const TIMELINE_TITLE = {
   "zh": {
     "headline": "⚡ 芯片故障注入攻击简史",
-    "text": "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 199 个公开案例：从 Bellcore 故障密码分析的早期理论工作，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p><p>本站案例内容由 AI 总结生成，可能存在错误或遗漏，欢迎大家一起补充、纠错和维护。</p>"
+    "text": "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 196 个公开案例：从 Bellcore 故障密码分析的早期理论工作，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p><p>本站案例内容由 AI 总结生成，可能存在错误或遗漏，欢迎大家一起补充、纠错和维护。</p>"
   },
   "en": {
     "headline": "⚡ A Brief History of Fault Injection Attacks",
-    "text": "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 199 publicly documented cases from 1996 to 2026: from early Bellcore fault-cryptanalysis research to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p><p>Entries on this site are AI-generated summaries and may contain errors or omissions — corrections and contributions are welcome.</p>"
+    "text": "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 196 publicly documented cases from 1996 to 2026: from early Bellcore fault-cryptanalysis research to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p><p>Entries on this site are AI-generated summaries and may contain errors or omissions — corrections and contributions are welcome.</p>"
   }
 };
 
@@ -2328,21 +2328,6 @@ const TIMELINE_EVENTS = [
   {
     "start": {
       "year": 2024,
-      "month": 9,
-      "day": 13
-    },
-    "zh": {
-      "headline": "PicoGlitcher：专用电压故障注入板",
-      "text": "Matthias Kesenheimer 公开 PicoGlitcher 电路板设计及构建过程，以 Raspberry Pi Pico 配合故障注入电路开展微控制器电压毛刺实验；文章持续记录了板卡制作与改进。<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-pcb.html' target='_blank'>作者文章</a>"
-    },
-    "en": {
-      "headline": "PicoGlitcher: A Dedicated Voltage-Fault Board",
-      "text": "Matthias Kesenheimer documented the design and construction of a PicoGlitcher board, combining a Raspberry Pi Pico with fault-injection circuitry for microcontroller voltage-glitch experiments. The article records subsequent board refinements.<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-pcb.html' target='_blank'>Author’s article</a>"
-    }
-  },
-  {
-    "start": {
-      "year": 2024,
       "month": 10
     },
     "zh": {
@@ -2394,21 +2379,6 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "STM32F4: Reproducible RDP Dumping with PicoGlitcher",
       "text": "Late 2024. Matthias Kesenheimer injected VCAP glitches into the USART Bootloader Read Memory (0x11) path on an STM32F401 Black Pill, bypassed RDP1 and read Flash in blocks; related projects document parameter searches for STM32F40x/F412/F42x.<br><a href='https://fault-injection-library.readthedocs.io/en/latest/examples/' target='_blank'>Reference</a> · <a href='https://mkesenheimer.github.io/blog/glitching-the-stm32f4.html' target='_blank'>Author’s article</a>"
-    }
-  },
-  {
-    "start": {
-      "year": 2025,
-      "month": 1,
-      "day": 1
-    },
-    "zh": {
-      "headline": "PicoGlitcher v2：电压毛刺平台",
-      "text": "Matthias Kesenheimer 介绍 PicoGlitcher v2 及配套 findus 软件，为电压故障实验提供触发、毛刺生成与电压切换等功能。<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v2.html' target='_blank'>作者文章</a>"
-    },
-    "en": {
-      "headline": "PicoGlitcher v2: A Voltage-Fault Platform",
-      "text": "Matthias Kesenheimer introduced PicoGlitcher v2 and its findus software, providing triggering, glitch generation and voltage switching for voltage-fault experiments.<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v2.html' target='_blank'>Author’s article</a>"
     }
   },
   {
@@ -2637,21 +2607,6 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "Of Boot Vectors and Double Glitches: RP2350",
       "text": "39C3 2025. stacksmashing and nsr summarized five Raspberry Pi RP2350 Hacking Challenge attack paths, including fault-injected unverified-vector boot, double-glitch OTP readout, laser fault injection and reset glitches against the RP2350 secure boot.<br><a href='https://media.ccc.de/v/39c3-of-boot-vectors-and-double-glitches-bypassing-rp2350-s-secure-boot' target='_blank'>Talk video</a>"
-    }
-  },
-  {
-    "start": {
-      "year": 2026,
-      "month": 1,
-      "day": 25
-    },
-    "zh": {
-      "headline": "PicoGlitcher v3：基于 Pico 2 的电压故障平台",
-      "text": "Matthias Kesenheimer 介绍基于 Raspberry Pi Pico 2 的 PicoGlitcher v3，包括可选接口电压、改进的触发输入和电压切换功能，并兼容 v2 软件。<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v3.html' target='_blank'>作者文章</a>"
-    },
-    "en": {
-      "headline": "PicoGlitcher v3: A Pico 2-Based Voltage-Fault Platform",
-      "text": "Matthias Kesenheimer introduced PicoGlitcher v3 based on Raspberry Pi Pico 2, with selectable interface voltages, improved trigger inputs and voltage switching while retaining compatibility with v2 software.<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v3.html' target='_blank'>Author’s article</a>"
     }
   },
   {
