@@ -5,11 +5,11 @@
 const TIMELINE_TITLE = {
   "zh": {
     "headline": "⚡ 芯片故障注入攻击简史",
-    "text": "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 168 个公开案例：从 Bellcore 故障密码分析的早期理论工作，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p><p>本站案例内容由 AI 总结生成，可能存在错误或遗漏，欢迎大家一起补充、纠错和维护。</p>"
+    "text": "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 199 个公开案例：从 Bellcore 故障密码分析的早期理论工作，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p><p>本站案例内容由 AI 总结生成，可能存在错误或遗漏，欢迎大家一起补充、纠错和维护。</p>"
   },
   "en": {
     "headline": "⚡ A Brief History of Fault Injection Attacks",
-    "text": "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 168 publicly documented cases from 1996 to 2026: from early Bellcore fault-cryptanalysis research to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p><p>Entries on this site are AI-generated summaries and may contain errors or omissions — corrections and contributions are welcome.</p>"
+    "text": "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 199 publicly documented cases from 1996 to 2026: from early Bellcore fault-cryptanalysis research to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p><p>Entries on this site are AI-generated summaries and may contain errors or omissions — corrections and contributions are welcome.</p>"
   }
 };
 
@@ -731,6 +731,20 @@ const TIMELINE_EVENTS = [
   {
     "start": {
       "year": 2014,
+      "month": 7
+    },
+    "zh": {
+      "headline": "电磁故障测试指令级冗余防护",
+      "text": "Moro 等人对 32 位微控制器进行脉冲电磁注入，实验评估两种通过重复指令抵抗故障的软件方案，分析实现条件和防护局限。<br><a href='https://arxiv.org/abs/1407.6019' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "EMFI Tests Instruction-Level Software Countermeasures",
+      "text": "Moro and colleagues experimentally evaluated two instruction-redundancy countermeasures using pulsed electromagnetic faults on a 32-bit microcontroller, identifying implementation conditions and limitations.<br><a href='https://arxiv.org/abs/1407.6019' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2014,
       "month": 8
     },
     "zh": {
@@ -1319,6 +1333,20 @@ const TIMELINE_EVENTS = [
   {
     "start": {
       "year": 2019,
+      "month": 2
+    },
+    "zh": {
+      "headline": "STM32F417：背面激光改变指令与认证结果",
+      "text": "阿姆斯特丹大学研究人员在 STM32F417IG 上进行背面激光实验，观察到指令及其参数被改变，并在测试认证程序中演示绕过；报告指出，直接修改寄存器值的实验未成功。<br><a href='https://rp.os3.nl/2018-2019/p62/report.pdf' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "STM32F417: Backside Laser Faults Affect Instructions and Authentication",
+      "text": "University of Amsterdam researchers used backside laser pulses on an STM32F417IG to modify instructions and operands and bypass authentication in a test program. Their attempts to directly modify register values did not succeed.<br><a href='https://rp.os3.nl/2018-2019/p62/report.pdf' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
       "month": 3
     },
     "zh": {
@@ -1417,6 +1445,20 @@ const TIMELINE_EVENTS = [
   {
     "start": {
       "year": 2019,
+      "month": 11
+    },
+    "zh": {
+      "headline": "chip.fail：低成本 STM32F2 固件保护研究",
+      "text": "Josh Datko 与 Thomas Roth 在 ToorCon 介绍低成本故障注入工具和芯片保护研究，包括 STM32F2 读保护降级案例以及 ESP32 的分析。该条记录会议报告，不将其中各芯片重复拆成独立发现。<br><a href='https://infocondb.org/con/toorcon/toorcon-san-diego-twentyone/chipfail' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "chip.fail: Low-Cost STM32F2 Readout-Protection Research",
+      "text": "At ToorCon, Josh Datko and Thomas Roth presented low-cost glitching equipment and chip-security research, including an STM32F2 read-protection downgrade case study and ESP32 analysis. This entry records the talk rather than counting each target as a separate discovery.<br><a href='https://infocondb.org/con/toorcon/toorcon-san-diego-twentyone/chipfail' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2019,
       "month": 12
     },
     "zh": {
@@ -1510,6 +1552,34 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "Single-Bit Laser Faults in NOR Flash",
       "text": "FDTC 2020. Menu, Dutertre, Colombier, Rigaud, Moëllic and Danger compared laser injection on two embedded NOR-Flash microcontrollers from different manufacturers: a Cortex-M0+ device with 256 kB Flash and 32 kB SRAM, and a Cortex-M3 device with 128 kB Flash and 8 kB SRAM. Single-bit bit-set faults left stored contents unchanged and enabled an AES safe-error attack; commercial part numbers are not given.<br><a href='https://doi.org/10.1109/FDTC51366.2020.00013' target='_blank'>Paper</a> · <a href='https://telecom-paris.hal.science/hal-03034855' target='_blank'>HAL record</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 10
+    },
+    "zh": {
+      "headline": "MediaTek MT8163V：电压毛刺绕过 BootROM 验签",
+      "text": "NCC Group 在搭载 MT8163V 的平板上通过电压故障干扰 BootROM，绕过 preloader 签名验证并执行未签名的启动代码。研究者未验证其他联发科型号。<br><a href='https://www.nccgroup.com/research/there-s-a-hole-in-your-soc-glitching-the-mediatek-bootrom/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "MediaTek MT8163V: Voltage Glitch Bypasses BootROM Verification",
+      "text": "NCC Group glitched the BootROM of an MT8163V-based tablet, bypassing preloader signature verification and executing an unsigned preloader. Other MediaTek variants were not tested.<br><a href='https://www.nccgroup.com/research/there-s-a-hole-in-your-soc-glitching-the-mediatek-bootrom/' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2020,
+      "month": 10
+    },
+    "zh": {
+      "headline": "D-Link DAP-1650：干扰 SPI 闪存进入启动控制台",
+      "text": "River Loop Security 在 D-Link DAP-1650 上短暂干扰 SPI 闪存数据线，诱发启动读取失败并进入特权启动控制台。这是总线数据故障案例，攻击点是闪存通信而非 CPU 电源。<br><a href='https://riverloopsecurity.com/blog/2020/10/hw-101-glitching/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "D-Link DAP-1650: SPI Flash Fault Opens Boot Console",
+      "text": "River Loop Security disrupted an SPI flash data line on a D-Link DAP-1650, causing a boot read failure and entry into a privileged boot console. This bus-fault example targets flash communication rather than the CPU power rail.<br><a href='https://riverloopsecurity.com/blog/2020/10/hw-101-glitching/' target='_blank'>Source</a>"
     }
   },
   {
@@ -1622,6 +1692,21 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "TRAITOR: A Low-Cost Multifault-Injection Platform",
       "text": "ASSS 2021 (May 24, 2021). Ludovic Claudepierre, Pierre-Yves Péneau, Damien Hardy and Erven Rohou designed TRAITOR, a low-cost clock-glitch platform that generates precisely controlled multiple-fault pulses on commodity hardware, and evaluated multi-fault software countermeasures on an STM32F100RB (ARM Cortex-M3). Experiments show some defenses designed for single faults fail under multiple glitches, at a platform cost far below commercial multi-fault equipment.<br><a href='https://doi.org/10.1145/3457340.3458303' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2021,
+      "month": 5,
+      "day": 28
+    },
+    "zh": {
+      "headline": "PicoGlitcher：用 Raspberry Pi Pico 完成故障注入挑战",
+      "text": "Matthias Kesenheimer 使用 Raspberry Pi Pico 控制电压毛刺，攻击 RHME2 挑战中的 ATmega328P 开发板，并报告成功取得挑战标志。这是 PicoGlitcher 项目的早期实验。<br><a href='https://mkesenheimer.github.io/blog/raspberry-pico-voltage-glitcher.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "PicoGlitcher: A Raspberry Pi Pico Fault-Injection Challenge",
+      "text": "Matthias Kesenheimer used a Raspberry Pi Pico to generate voltage glitches against an ATmega328P development board in the RHME2 challenge and reported recovering the challenge flag. This was an early PicoGlitcher experiment.<br><a href='https://mkesenheimer.github.io/blog/raspberry-pico-voltage-glitcher.html' target='_blank'>Author’s article</a>"
     }
   },
   {
@@ -1766,6 +1851,34 @@ const TIMELINE_EVENTS = [
   },
   {
     "start": {
+      "year": 2021,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Renesas RX65N：电压毛刺读取受保护的 ID",
+      "text": "Franck Jullien 逆向瑞萨 RX65 的 FINE 接口，并用电压毛刺干扰 ID 校验，读取受保护配置中的 ID，再访问受保护闪存；漏洞编号 CVE-2021-43327。<br><a href='https://www.collshade.fr/articles/reneshack/rx_glitch_article.html' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Renesas RX65N: Voltage Glitch Exposes Protected ID",
+      "text": "Franck Jullien reverse engineered the Renesas RX65 FINE interface and glitched its ID check to read a protected ID from configuration memory and access protected flash. The issue is CVE-2021-43327.<br><a href='https://www.collshade.fr/articles/reneshack/rx_glitch_article.html' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2022,
+      "month": 1
+    },
+    "zh": {
+      "headline": "恶意可更换部件：低成本电磁故障恢复签名密钥",
+      "text": "研究人员设计可放进可更换部件的低成本电磁故障设备，在实验中结合普通权限代码和故障签名，从 Linux 特权签名服务恢复私钥。论文展示的是实验性攻击场景。<br><a href='https://www.mdpi.com/2076-3417/12/1/417' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Malicious Replaceable Component: Low-Cost EM Fault Key Recovery",
+      "text": "Researchers built a low-cost electromagnetic fault injector for a replaceable-component attack scenario. In a proof of concept, regular-user code and faulty signatures recovered a private key from a privileged Linux signing service.<br><a href='https://www.mdpi.com/2076-3417/12/1/417' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
       "year": 2022,
       "month": 3
     },
@@ -1878,6 +1991,20 @@ const TIMELINE_EVENTS = [
   },
   {
     "start": {
+      "year": 2022,
+      "month": 11
+    },
+    "zh": {
+      "headline": "Raspberry Pi 3 / OP-TEE：电磁故障绕过可信应用验签",
+      "text": "OP-TEE 公告记载，SEAL 在 Raspberry Pi 3 上通过电磁故障将寄存器清零，使验签结果被误认为成功；OP-TEE 3.20 加入缓解措施，研究者未能在修补后复现该绕过。<br><a href='https://github.com/OP-TEE/optee_os/security/advisories/GHSA-r64m-h886-hw6g' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Raspberry Pi 3 / OP-TEE: EM Fault Bypasses Signature Check",
+      "text": "An OP-TEE advisory reports that SEAL used electromagnetic fault injection on Raspberry Pi 3 to clear a register and make signature verification appear successful. OP-TEE 3.20 introduced mitigations that the researchers could not bypass in their follow-up tests.<br><a href='https://github.com/OP-TEE/optee_os/security/advisories/GHSA-r64m-h886-hw6g' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
       "year": 2023,
       "month": 1
     },
@@ -1902,6 +2029,20 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "Evolutionary Fault-Parameter Search for Automotive Secure Boot",
       "text": "Neural Network World 2023. Pozzobon, Weiß, Mottok and Matoušek targeted the NXP MPC5748G automotive microcontroller, using a genetic algorithm to search EMFI parameters (position, strength, timing) against a secure-boot update flow of an automotive ECU, compressing weeks of manual search into an automated process; the paper reports roughly two orders of magnitude fewer trials than baseline, and the discovered exploitable faults skip firmware signature verification.<br><a href='https://doi.org/10.14311/nnw.2023.33.020' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2023,
+      "month": 6
+    },
+    "zh": {
+      "headline": "DJI Mavic Pro：固件更新过程中的电磁故障",
+      "text": "IOActive 在 DJI Mavic Pro 固件更新处理过程中使用电磁故障，观察到内存损坏与可控数据进入寄存器。研究者说明下一步仍需设计有效载荷，因此这一实验展示了利用可能性，而非完整代码执行链。<br><a href='https://www.ioactive.com/applying-fault-injection-to-the-firmware-update-process-of-a-drone/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "DJI Mavic Pro: EM Fault During Firmware Update",
+      "text": "IOActive injected electromagnetic faults during firmware update processing on a DJI Mavic Pro and observed memory corruption and attacker-controlled data in registers. The researchers stated that a working code-execution payload remained future work.<br><a href='https://www.ioactive.com/applying-fault-injection-to-the-firmware-update-process-of-a-drone/' target='_blank'>Source</a>"
     }
   },
   {
@@ -2032,6 +2173,20 @@ const TIMELINE_EVENTS = [
   },
   {
     "start": {
+      "year": 2023,
+      "month": 12
+    },
+    "zh": {
+      "headline": "Chromecast with Google TV：eMMC 故障与安全启动绕过",
+      "text": "研究者 Nolen Johnson 等披露针对 1080p Chromecast with Google TV 的攻击链：利用 eMMC 故障影响启动流程，再结合 U-Boot 等软件漏洞实现持久化安全启动绕过。Google 已发布更新；eMMC 故障对应 CVE-2023-48424。<br><a href='https://oddsolutions.github.io/Chromecast-with-Google-TV-1080P-Secure-Boot-Bypass/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Chromecast with Google TV: eMMC Fault and Secure-Boot Bypass",
+      "text": "Nolen Johnson and colleagues disclosed a chain against the 1080p Chromecast with Google TV: eMMC fault injection disrupts the boot flow, followed by software vulnerabilities including U-Boot bugs to obtain a persistent secure-boot bypass. Google issued an update; the eMMC issue is CVE-2023-48424.<br><a href='https://oddsolutions.github.io/Chromecast-with-Google-TV-1080P-Secure-Boot-Bypass/' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
       "year": 2024,
       "month": 1
     },
@@ -2084,6 +2239,20 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "Characterizing Synchronous Clock-Glitch Faults",
       "text": "CARDIS 2024. The researchers combined experiments with circuit-level simulation to analyze failure modes of synchronous clock glitching (SCG) in D flip-flops, testing how well the timing-fault model (setup/hold violations) and the sampling-fault model explain EMFI-induced clock disturbances, systematically comparing each model's predictions against measured faults to provide device-level evidence for glitch-detector and protection-circuit design; the study used controllable test structures rather than a specific commercial chip.<br><a href='https://doi.org/10.1007/978-3-031-57543-3_1' target='_blank'>Paper</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
+      "month": 5
+    },
+    "zh": {
+      "headline": "nRF52840：攻击主控绕过安全元件验签",
+      "text": "苏黎世应用科学大学研究者使用低成本电压故障注入工具，攻击 Nordic nRF52840 上 MCUboot 与安全元件库之间的连接代码，使固件签名验证被绕过；他们还在商用家居传感器的 Cortex-M 主控上绕过读保护。这表明安全元件的验证结果仍依赖主控正确执行。<br><a href='https://digitalcollection.zhaw.ch/entities/publication/2999ae57-5bc2-4da4-acc6-565bb9d56a2d' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "nRF52840: Faulting the Host to Bypass Secure-Element Verification",
+      "text": "Researchers at ZHAW used a low-cost voltage glitcher against glue code between MCUboot and a secure-element library on a Nordic nRF52840, bypassing firmware signature verification. They also bypassed readout protection on the Cortex-M host of a commercial home-automation sensor.<br><a href='https://digitalcollection.zhaw.ch/entities/publication/2999ae57-5bc2-4da4-acc6-565bb9d56a2d' target='_blank'>Source</a>"
     }
   },
   {
@@ -2159,6 +2328,21 @@ const TIMELINE_EVENTS = [
   {
     "start": {
       "year": 2024,
+      "month": 9,
+      "day": 13
+    },
+    "zh": {
+      "headline": "PicoGlitcher：专用电压故障注入板",
+      "text": "Matthias Kesenheimer 公开 PicoGlitcher 电路板设计及构建过程，以 Raspberry Pi Pico 配合故障注入电路开展微控制器电压毛刺实验；文章持续记录了板卡制作与改进。<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-pcb.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "PicoGlitcher: A Dedicated Voltage-Fault Board",
+      "text": "Matthias Kesenheimer documented the design and construction of a PicoGlitcher board, combining a Raspberry Pi Pico with fault-injection circuitry for microcontroller voltage-glitch experiments. The article records subsequent board refinements.<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-pcb.html' target='_blank'>Author’s article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2024,
       "month": 10
     },
     "zh": {
@@ -2205,11 +2389,84 @@ const TIMELINE_EVENTS = [
     },
     "zh": {
       "headline": "STM32F4：PicoGlitcher 复现 RDP 固件读取",
-      "text": "2024 年末。Matthias Kesenheimer 在 STM32F401 Black Pill 的 USART Bootloader Read Memory（0x11）路径注入 VCAP 毛刺，绕过 RDP1 并分块读取 Flash；相关项目记录了 STM32F40x/F412/F42x 的参数搜索。<br><a href='https://fault-injection-library.readthedocs.io/en/latest/examples/' target='_blank'>参考链接</a>"
+      "text": "2024 年末。Matthias Kesenheimer 在 STM32F401 Black Pill 的 USART Bootloader Read Memory（0x11）路径注入 VCAP 毛刺，绕过 RDP1 并分块读取 Flash；相关项目记录了 STM32F40x/F412/F42x 的参数搜索。<br><a href='https://fault-injection-library.readthedocs.io/en/latest/examples/' target='_blank'>参考链接</a> · <a href='https://mkesenheimer.github.io/blog/glitching-the-stm32f4.html' target='_blank'>作者文章</a>"
     },
     "en": {
       "headline": "STM32F4: Reproducible RDP Dumping with PicoGlitcher",
-      "text": "Late 2024. Matthias Kesenheimer injected VCAP glitches into the USART Bootloader Read Memory (0x11) path on an STM32F401 Black Pill, bypassed RDP1 and read Flash in blocks; related projects document parameter searches for STM32F40x/F412/F42x.<br><a href='https://fault-injection-library.readthedocs.io/en/latest/examples/' target='_blank'>Reference</a>"
+      "text": "Late 2024. Matthias Kesenheimer injected VCAP glitches into the USART Bootloader Read Memory (0x11) path on an STM32F401 Black Pill, bypassed RDP1 and read Flash in blocks; related projects document parameter searches for STM32F40x/F412/F42x.<br><a href='https://fault-injection-library.readthedocs.io/en/latest/examples/' target='_blank'>Reference</a> · <a href='https://mkesenheimer.github.io/blog/glitching-the-stm32f4.html' target='_blank'>Author’s article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 1,
+      "day": 1
+    },
+    "zh": {
+      "headline": "PicoGlitcher v2：电压毛刺平台",
+      "text": "Matthias Kesenheimer 介绍 PicoGlitcher v2 及配套 findus 软件，为电压故障实验提供触发、毛刺生成与电压切换等功能。<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v2.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "PicoGlitcher v2: A Voltage-Fault Platform",
+      "text": "Matthias Kesenheimer introduced PicoGlitcher v2 and its findus software, providing triggering, glitch generation and voltage switching for voltage-fault experiments.<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v2.html' target='_blank'>Author’s article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 1,
+      "day": 6
+    },
+    "zh": {
+      "headline": "ESP32：多级电压波形与故障参数搜索",
+      "text": "Matthias Kesenheimer 在 ESP32 v1.3 的测试程序上演示电压多路切换与遗传算法参数搜索，通过故障改变循环计数结果；该实验针对自编测试程序。<br><a href='https://mkesenheimer.github.io/blog/esp32-glitching.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "ESP32: Voltage Profiles and Fault-Parameter Optimization",
+      "text": "Matthias Kesenheimer demonstrated voltage multiplexing and genetic-algorithm parameter search on an ESP32 v1.3 test program, inducing incorrect loop-counter results. The experiment targets a custom test program.<br><a href='https://mkesenheimer.github.io/blog/esp32-glitching.html' target='_blank'>Author’s article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 2,
+      "day": 9
+    },
+    "zh": {
+      "headline": "RP2350：PicoGlitcher 电压故障读取 OTP",
+      "text": "Matthias Kesenheimer 使用 PicoGlitcher 复现 Aedan Cullen 的 RP2350 攻击：干扰 USB_OTP_VDD 供电，在实验中读取预先写入 OTP 的测试数据，并给出了参数搜索结果。<br><a href='https://mkesenheimer.github.io/blog/glitching-the-rp2350.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "RP2350: Reading OTP with PicoGlitcher Voltage Faults",
+      "text": "Matthias Kesenheimer used PicoGlitcher to reproduce Aedan Cullen’s RP2350 attack, disturbing USB_OTP_VDD and reading test data previously programmed into OTP. The article reports the parameter search.<br><a href='https://mkesenheimer.github.io/blog/glitching-the-rp2350.html' target='_blank'>Author’s article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 4
+    },
+    "zh": {
+      "headline": "智能电表 SAM4C32：电压毛刺恢复调试访问",
+      "text": "Hash Salehi 研究智能电表使用的 Microchip SAM4C32，利用复位信号辅助确定注入时机，以电压毛刺绕过安全位，重新获得 JTAG 调试访问。作者指出该方法与此前针对其他 SAM 芯片的攻击有关。<br><a href='https://wiki.recessim.com/view/ATSAM4C32' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Smart Meter SAM4C32: Restoring Debug Access with Voltage Glitches",
+      "text": "Hash Salehi studied the Microchip SAM4C32 used in a smart meter, using the reset signal to help time voltage glitches that bypass the security bit and restore JTAG access. The author relates the method to earlier attacks on other SAM devices.<br><a href='https://wiki.recessim.com/view/ATSAM4C32' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 4
+    },
+    "zh": {
+      "headline": "STM32F401CC：电压故障绕过 RDP1",
+      "text": "Anvil Secure 展示针对 STM32F401CC 的电压故障注入过程，通过干扰系统引导程序处理读命令时的保护检查，读取受 RDP1 保护的固件。作者明确指出，实验结论限于所测试的型号。<br><a href='https://www.anvilsecure.com/blog/glitching-stm32-read-out-protection-with-voltage-fault-injection.html' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "STM32F401CC: Voltage Fault Bypasses RDP1",
+      "text": "Anvil Secure demonstrated voltage fault injection against an STM32F401CC to bypass RDP level 1 and read protected firmware. The authors explicitly limit their conclusions to the tested model.<br><a href='https://www.anvilsecure.com/blog/glitching-stm32-read-out-protection-with-voltage-fault-injection.html' target='_blank'>Source</a>"
     }
   },
   {
@@ -2233,11 +2490,11 @@ const TIMELINE_EVENTS = [
     },
     "zh": {
       "headline": "nRF54L15：EMFI 影响硬件毛刺检测器",
-      "text": "SySS 公告 SYSS-2025-022（2025-05-23）。在 Nordic nRF54L15 上，即使启用了其 TAMPC/Glitch Detector 硬件毛刺检测器，ChipSHOUTER 电磁脉冲仍能扰动 256 字节 CRC 校验计算，扫描点中最高约 2.4% 产生错误结果。研究说明新一代 MCU 内置的故障检测机制并非不可绕过，同时也表明芯片厂商已开始把抗毛刺设计作为产品特性。<br><a href='https://www.syss.de/pentest-blog/fault-injection-angriffe-auf-die-mikrocontroller-nrf54l15-und-stm32l051-syss-2025-022/-033' target='_blank'>参考链接</a>"
+      "text": "SySS 公告 SYSS-2025-022（2025-05-23）。在 Nordic nRF54L15 上，即使启用了其 TAMPC/Glitch Detector 硬件毛刺检测器，ChipSHOUTER 电磁脉冲仍能扰动 256 字节 CRC 校验计算，扫描点中最高约 2.4% 产生错误结果。研究说明新一代 MCU 内置的故障检测机制并非不可绕过，同时也表明芯片厂商已开始把抗毛刺设计作为产品特性。<br><a href='https://www.syss.de/pentest-blog/fault-injection-angriffe-auf-die-mikrocontroller-nrf54l15-und-stm32l051-syss-2025-022/-033' target='_blank'>参考链接</a> · <a href='https://blog.syss.com/posts/nrf54-emfi/' target='_blank'>实验文章</a>"
     },
     "en": {
       "headline": "nRF54L15: EMFI Tests of the Glitch Detector",
-      "text": "SySS advisory SYSS-2025-022 (2025-05-23). On the Nordic nRF54L15, even with its TAMPC/Glitch Detector hardware enabled, ChipSHOUTER electromagnetic pulses could still disturb a 256-byte CRC computation, with up to ~2.4% of scanned points producing wrong results. The study shows the fault-detection mechanisms built into new-generation MCUs are not unbypassable, while also indicating that vendors have started treating glitch resistance as a product feature.<br><a href='https://www.syss.de/pentest-blog/fault-injection-angriffe-auf-die-mikrocontroller-nrf54l15-und-stm32l051-syss-2025-022/-033' target='_blank'>Reference</a>"
+      "text": "SySS advisory SYSS-2025-022 (2025-05-23). On the Nordic nRF54L15, even with its TAMPC/Glitch Detector hardware enabled, ChipSHOUTER electromagnetic pulses could still disturb a 256-byte CRC computation, with up to ~2.4% of scanned points producing wrong results. The study shows the fault-detection mechanisms built into new-generation MCUs are not unbypassable, while also indicating that vendors have started treating glitch resistance as a product feature.<br><a href='https://www.syss.de/pentest-blog/fault-injection-angriffe-auf-die-mikrocontroller-nrf54l15-und-stm32l051-syss-2025-022/-033' target='_blank'>Reference</a> · <a href='https://blog.syss.com/posts/nrf54-emfi/' target='_blank'>Experimental write-up</a>"
     }
   },
   {
@@ -2266,6 +2523,20 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "EL3vated Privileges: Root to EL3 by Glitching",
       "text": "hardwear.io USA 2025. Raelize fired precisely timed voltage glitches at the SMC (Secure Monitor Call) path issued by the Linux kernel on the Google Nest WiFi Pro's Qualcomm router platform (no specific SoC part number in public material), escalating from an already-obtained Linux root to code execution at ARM EL3 secure-monitor level. The research shows the TrustZone secure-monitor boundary can likewise be crossed with fault injection.<br><a href='https://raelize.com/upload/research/2025/Hw_io-USA-2025_EL3vated-Privileges-Glitching-Google-Wifi-Pro-from-Root-to-EL3_v1.0.pdf' target='_blank'>Reference</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 6
+    },
+    "zh": {
+      "headline": "ESP32：用电压毛刺复现加密安全启动绕过",
+      "text": "Raelize 报告针对早期 ESP32 修订版的短路式电压毛刺攻击，绕过同时启用的安全启动与闪存加密。该文章将其与此前的电磁故障攻击联系起来；作者明确指出相关旧攻击不适用于 ESP32 V3。<br><a href='https://raelize.com/blog/espressif-systems-esp32-using-a-crowbar-glitch-to-bypass-encrypted-secure-boot/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "ESP32: Crowbar Glitching Against Encrypted Secure Boot",
+      "text": "Raelize demonstrated crowbar voltage glitching against early ESP32 revisions to bypass Secure Boot and Flash Encryption together. The work builds on the team’s earlier electromagnetic fault attack; the authors distinguish that older attack from ESP32 V3.<br><a href='https://raelize.com/blog/espressif-systems-esp32-using-a-crowbar-glitch-to-bypass-encrypted-secure-boot/' target='_blank'>Source</a>"
     }
   },
   {
@@ -2303,11 +2574,11 @@ const TIMELINE_EVENTS = [
     },
     "zh": {
       "headline": "Watch Your (Lock)Step：AURIX 调试接口故障注入",
-      "text": "Black Hat USA 2025。Thomas Roth（stacksmashing）以英飞凌 AURIX TriCore 系列汽车微控制器为研究对象演示故障注入，议题覆盖了包括 TC275 在内的多个芯片，并对其中的 TC275 同时使用了电压毛刺和 EMFI 两种手段，研究复位/调试握手阶段的攻击窗口。需要说明的是：虽然从议题细节可以推断调试密码保护似乎被绕过，但议题本身并未明确宣称绕过了 TC275 的保护机制，这一点在 icanhack.nl 等第三方整理中也被特别标注。<br><a href='https://blackhat.com/archive/usa/2025/briefings/schedule/index.html' target='_blank'>参考链接</a> · <a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>第三方整理</a>"
+      "text": "Black Hat USA 2025。Thomas Roth（stacksmashing）以英飞凌 AURIX TriCore 系列汽车微控制器为研究对象演示故障注入，议题覆盖了包括 TC275 在内的多个芯片，并对其中的 TC275 同时使用了电压毛刺和 EMFI 两种手段，研究复位/调试握手阶段的攻击窗口。<br><a href='https://blackhat.com/archive/usa/2025/briefings/schedule/index.html' target='_blank'>参考链接</a> · <a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>第三方整理</a>"
     },
     "en": {
       "headline": "Watch Your (Lock)Step: Glitching Infineon AURIX",
-      "text": "Black Hat USA 2025. Thomas Roth (stacksmashing) demonstrated fault injection against Infineon AURIX TriCore automotive microcontrollers; the research covered several chips including the TC275, on which he applied both voltage glitching and EMFI, probing the reset/debug handshake window. Note: while the talk's details suggest the debug-password protection was apparently bypassed, the talk does not explicitly claim to have defeated the TC275's protection mechanisms — a caveat also flagged by third-party summaries such as icanhack.nl.<br><a href='https://blackhat.com/archive/usa/2025/briefings/schedule/index.html' target='_blank'>Reference</a> · <a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>Third-party summary</a>"
+      "text": "Black Hat USA 2025. Thomas Roth (stacksmashing) demonstrated fault injection against Infineon AURIX TriCore automotive microcontrollers; the research covered several chips including the TC275, on which he applied both voltage glitching and EMFI, probing the reset/debug handshake window.<br><a href='https://blackhat.com/archive/usa/2025/briefings/schedule/index.html' target='_blank'>Reference</a> · <a href='https://icanhack.nl/knowledge-base/existing-research/fault-injection/' target='_blank'>Third-party summary</a>"
     }
   },
   {
@@ -2327,6 +2598,36 @@ const TIMELINE_EVENTS = [
   {
     "start": {
       "year": 2025,
+      "month": 10,
+      "day": 28
+    },
+    "zh": {
+      "headline": "Trezor One：旧固件的电压故障与 SRAM 读取",
+      "text": "Matthias Kesenheimer 使用 PicoGlitcher 对运行 v1.6.0 及以前固件的 Trezor One 注入电压故障，获得调试访问并读取 SRAM 中的恢复助记词；文章记录了故障参数搜索和实验环境。<br><a href='https://mkesenheimer.github.io/blog/trezor-wallet-hack.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "Trezor One: Voltage Glitching and SRAM Readout on Older Firmware",
+      "text": "Matthias Kesenheimer used PicoGlitcher against Trezor One firmware v1.6.0 and earlier, obtaining debug access and reading a recovery mnemonic from SRAM. The article documents the setup and fault-parameter search.<br><a href='https://mkesenheimer.github.io/blog/trezor-wallet-hack.html' target='_blank'>Author’s article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
+      "month": 10,
+      "day": 29
+    },
+    "zh": {
+      "headline": "Trezor One：双阶段电压故障读取 Flash",
+      "text": "Matthias Kesenheimer 描述针对 Trezor One v1.6.1 及更新固件的双阶段故障方法：先干扰启动获取访问，再干扰系统引导程序的读取检查以访问 Flash。文章还给出不同固件布局的参考偏移。<br><a href='https://mkesenheimer.github.io/blog/trezor-wallet-hack-v161.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "Trezor One: Two-Stage Voltage Faults for Flash Readout",
+      "text": "Matthias Kesenheimer described a two-stage fault method for Trezor One firmware v1.6.1 and later: first faulting startup to obtain access, then faulting the system bootloader read check to access flash. The article also gives reference offsets for different firmware layouts.<br><a href='https://mkesenheimer.github.io/blog/trezor-wallet-hack-v161.html' target='_blank'>Author’s article</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2025,
       "month": 12
     },
     "zh": {
@@ -2336,6 +2637,21 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "Of Boot Vectors and Double Glitches: RP2350",
       "text": "39C3 2025. stacksmashing and nsr summarized five Raspberry Pi RP2350 Hacking Challenge attack paths, including fault-injected unverified-vector boot, double-glitch OTP readout, laser fault injection and reset glitches against the RP2350 secure boot.<br><a href='https://media.ccc.de/v/39c3-of-boot-vectors-and-double-glitches-bypassing-rp2350-s-secure-boot' target='_blank'>Talk video</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 1,
+      "day": 25
+    },
+    "zh": {
+      "headline": "PicoGlitcher v3：基于 Pico 2 的电压故障平台",
+      "text": "Matthias Kesenheimer 介绍基于 Raspberry Pi Pico 2 的 PicoGlitcher v3，包括可选接口电压、改进的触发输入和电压切换功能，并兼容 v2 软件。<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v3.html' target='_blank'>作者文章</a>"
+    },
+    "en": {
+      "headline": "PicoGlitcher v3: A Pico 2-Based Voltage-Fault Platform",
+      "text": "Matthias Kesenheimer introduced PicoGlitcher v3 based on Raspberry Pi Pico 2, with selectable interface voltages, improved trigger inputs and voltage switching while retaining compatibility with v2 software.<br><a href='https://mkesenheimer.github.io/blog/pico-glitcher-v3.html' target='_blank'>Author’s article</a>"
     }
   },
   {
@@ -2355,6 +2671,121 @@ const TIMELINE_EVENTS = [
   {
     "start": {
       "year": 2026,
+      "month": 3
+    },
+    "zh": {
+      "headline": "Xbox One Bliss：双重电压毛刺攻击启动链",
+      "text": "Markus Gaasedelen 在 RE//verse 2026 展示针对初代 Xbox One 的 Bliss 攻击，使用多次电压故障取得对安全处理器启动过程的控制，并演示代码执行及解密。公开演示针对初代机型，不能推断所有后续型号同样受影响。<br><a href='https://www.youtube.com/watch?v=FTFn4UZsA5U' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Xbox One Bliss: Double Voltage Glitch Against the Boot Chain",
+      "text": "At RE//verse 2026, Markus Gaasedelen presented Bliss, a multi-glitch attack on the original Xbox One boot process, demonstrating security-processor code execution and decryption. The public demonstration targeted the original model and does not establish that later models are affected.<br><a href='https://www.youtube.com/watch?v=FTFn4UZsA5U' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 4
+    },
+    "zh": {
+      "headline": "Glitch in the Sky：无人机失效保护逻辑",
+      "text": "加州大学欧文分校技术报告结合 ARMORY 仿真与 STM32F407-Discovery 开发板上的电压毛刺实验，评估从 PX4 提取的失效保护逻辑，观察到安全响应被改变或抑制。实验使用简化的测试环境，不能等同于已在飞行中的无人机上完成劫持。<br><a href='https://cecs.uci.edu/files/2026/04/CECS-TR-26-01.pdf' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Glitch in the Sky: UAV Failsafe Logic",
+      "text": "A University of California, Irvine technical report combined ARMORY simulation with voltage-glitch experiments on an STM32F407-Discovery board running extracted PX4 failsafe logic. The authors observed altered or suppressed safety responses in a simplified test environment, not a demonstrated in-flight hijacking.<br><a href='https://cecs.uci.edu/files/2026/04/CECS-TR-26-01.pdf' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 5
+    },
+    "zh": {
+      "headline": "AI 辅助复现 ESP32 故障注入",
+      "text": "Raelize 报告在人工监督下使用 Claude Code 配置仪器、编写脚本并调整参数，复现针对 ESP32 Secure Boot V1 的电压毛刺绕过。<br><a href='https://raelize.com/blog/ai-fi-giving-claude-code-glitch-skills-for-bypassing-secure-boot/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "AI-Assisted Reproduction of an ESP32 Glitch Attack",
+      "text": "Raelize reported using Claude Code under human supervision to configure instruments, write scripts and tune parameters while reproducing a voltage-glitch bypass of ESP32 Secure Boot V1.<br><a href='https://raelize.com/blog/ai-fi-giving-claude-code-glitch-skills-for-bypassing-secure-boot/' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 5,
+      "day": 19
+    },
+    "zh": {
+      "headline": "AI 辅助复现 RP2350 电压故障",
+      "text": "OSR Lab 复现 Aedan Cullen 针对 RP2350 A0A2 的电压故障方法：干扰 USB_OTP_VDD 供电以影响 OTP 读取并恢复 SWD 调试。作者使用 OpenClaw 辅助编写脚本和检查参数，并通过示波器排查供电时序后报告成功故障。<br><a href='https://lab.osr-tech.com/news/31' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "AI-Assisted Reproduction of RP2350 Voltage Glitching",
+      "text": "OSR Lab reproduced Aedan Cullen’s voltage fault method on the RP2350 A0A2, disrupting USB_OTP_VDD to affect OTP reads and restore SWD debug. The author used OpenClaw to help write scripts and check parameters, then diagnosed power sequencing with an oscilloscope before reporting a successful fault.<br><a href='https://lab.osr-tech.com/news/31' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 6
+    },
+    "zh": {
+      "headline": "TROPIC01：激光绕过安全元件固件验签",
+      "text": "Ledger Donjon 在运行 bootloader v2.0.1 的 TROPIC01 样品上，分别对固件更新和启动过程注入激光故障，绕过 Ed25519 验签并执行修改后的固件；实验也在开启激光检测器的样品上成功。研究者没有因此取得受 MAC-and-Destroy 硬件保护的用户秘密。<br><a href='https://donjon.ledger.com/blog/tropic01-laser-fault-injection/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "TROPIC01: Laser Faults Bypass Firmware Verification",
+      "text": "Ledger Donjon used separate laser faults during firmware update and boot to bypass Ed25519 verification and execute modified firmware on TROPIC01 samples running bootloader v2.0.1. The attack also worked on a sample with laser detectors enabled. The researchers did not recover user secrets protected by the MAC-and-Destroy hardware.<br><a href='https://donjon.ledger.com/blog/tropic01-laser-fault-injection/' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 6
+    },
+    "zh": {
+      "headline": "ESP32-S3：电压故障结合 DFA 恢复 AES 密钥",
+      "text": "乐鑫 2026 年 6 月 10 日公告称，研究者对 ESP32-S3 通用 AES 硬件加速器注入电压故障，再对错误密文进行差分故障分析，恢复 AES-128 密钥。公告明确区分该加速器与用于闪存加密的 XTS-AES 模块；已确认的对象是 ESP32-S3。<br><a href='https://documentation.espressif.com/AR2026-005_Security_Advisory_Concerning_AES_Key_Recovery_Using_Voltage_Fault_Injection_on%20ESP32-S3_EN.html' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "ESP32-S3: Voltage Faults and DFA Recover an AES Key",
+      "text": "Espressif’s June 10, 2026 advisory describes voltage faults in the ESP32-S3 general-purpose AES accelerator followed by differential fault analysis of faulty ciphertexts to recover an AES-128 key. The advisory distinguishes this peripheral from the XTS-AES engine used for flash encryption; ESP32-S3 is the confirmed target.<br><a href='https://documentation.espressif.com/AR2026-005_Security_Advisory_Concerning_AES_Key_Recovery_Using_Voltage_Fault_Injection_on%20ESP32-S3_EN.html' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 7,
+      "day": 9
+    },
+    "zh": {
+      "headline": "Tangem 钱包卡：激光故障绕过密码恢复检查",
+      "text": "Ledger Donjon 在 Tangem 钱包卡的安全芯片上使用激光故障，绕过固件中的恢复状态检查，将访问密码重置为攻击者指定值。研究者报告该攻击仅需一张实体卡，无需原密码或备份卡，禁用密码恢复功能也无法阻止；实验需要专业实验室设备。<br><a href='https://donjon.ledger.com/blog/bypassing-tangem-card-security-with-laser-attack/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "Tangem Wallet Card: Laser Fault Bypasses Password-Recovery Check",
+      "text": "Ledger Donjon used laser fault injection against a Tangem wallet card’s secure element to bypass a firmware recovery-state check and set an attacker-chosen access password. The researchers report that the attack requires one physical card, neither the existing password nor a backup card, and remains possible with password recovery disabled; it requires specialized laboratory equipment.<br><a href='https://donjon.ledger.com/blog/bypassing-tangem-card-security-with-laser-attack/' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 7,
+      "day": 23
+    },
+    "zh": {
+      "headline": "RP2350：激光故障与双 Flash 安全启动绕过复现",
+      "text": "OSR Lab 复现 Courk 的 RP2350 攻击，结合激光故障、两片 Flash 切换与 Glasgow 触发和控制，绕过安全启动并通过串口输出 OTP 数据。文章记录了从较大范围扫描到更高倍率定位的实验过程。<br><a href='https://lab.osr-tech.com/news/34' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "RP2350: Reproducing a Laser and Dual-Flash Secure-Boot Bypass",
+      "text": "OSR Lab reproduced Courk’s RP2350 attack using laser fault injection, switching between two flash chips and Glasgow-based triggering and control. The team reported bypassing secure boot and printing OTP data over serial, documenting the scan and higher-magnification localization.<br><a href='https://lab.osr-tech.com/news/34' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
       "month": 9
     },
     "zh": {
@@ -2364,6 +2795,21 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "GlitchLab: Hardware-in-the-Loop Fault-Injection Optimization",
       "text": "arXiv 2609.00502 (1 September 2026). Hossain, Mahadevan, Van Woudenberg, Velegalati and Bhattacharyya formulate glitch-parameter search as hardware-in-the-loop optimization: RL-Q explores with Q-learning, a structured bandit discovers candidates, and SOBAS reproduces faults from structured outcomes. Across AES, password and control-flow campaigns, the methods cut attempts by 2–85× and time by 26–1,237× versus baselines, while improving reproduction rates. The results quantify hardware-in-the-loop automated parameter search.<br><a href='https://arxiv.org/abs/2609.00502' target='_blank'>Preprint</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 9,
+      "day": 18
+    },
+    "zh": {
+      "headline": "RP2350 A4：光子发射定位与激光恢复安全调试",
+      "text": "Ledger Donjon 利用差分光子发射显微成像定位调试使能寄存器活动，再通过激光故障恢复已永久禁用的 Secure 调试访问。在自建的 Hacking Challenge 配置中，研究者借助复位后、固件设置运行时锁之前的访问读取 OTP 秘密；攻击需要实体接触和专业设备。<br><a href='https://donjon.ledger.com/blog/rp2350-secure-debug-laser-fault-injection/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "RP2350 A4: Photon Emission Guides Laser Faults to Secure Debug",
+      "text": "Ledger Donjon used differential photon-emission microscopy to locate debug-enable register activity, then applied laser faults to restore permanently disabled Secure debug on an RP2350 A4. In their own Hacking Challenge configuration, they recovered an OTP secret after reset before firmware applied its runtime lock. The attack requires physical access and specialized equipment.<br><a href='https://donjon.ledger.com/blog/rp2350-secure-debug-laser-fault-injection/' target='_blank'>Source</a>"
     }
   }
 ];
