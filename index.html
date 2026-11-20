@@ -175,7 +175,8 @@
       }
     };
 
-    let lang = "zh";
+    const initialLanguage = /^zh(?:-|$)/i.test(navigator.language || "") ? "zh" : "en";
+    let lang;
     let timeline;
     const heading = document.getElementById("page-heading");
     const footer = document.getElementById("ftr");
@@ -284,6 +285,7 @@
       lang = nextLanguage;
       const ui = UI[lang];
       document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = ui.heading;
       heading.textContent = ui.heading;
       footer.textContent = ui.ftr;
       langToggle.setAttribute("aria-label", ui.aria);
@@ -302,7 +304,7 @@
       option.addEventListener("click", () => setLanguage(option.dataset.lang));
     });
 
-    renderTimeline();
+    setLanguage(initialLanguage);
   </script>
 </body>
 </html>
