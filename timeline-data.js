@@ -5,11 +5,11 @@
 const TIMELINE_TITLE = {
   "zh": {
     "headline": "⚡ 芯片故障注入攻击简史",
-    "text": "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 196 个公开案例：从 Bellcore 故障密码分析的早期理论工作，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p><p>本站案例内容由 AI 总结生成，可能存在错误或遗漏，欢迎大家一起补充、纠错和维护。</p>"
+    "text": "<p>故障注入（Fault Injection）通过电压毛刺、时钟毛刺、电磁脉冲（EMFI）、激光/光照、衬底偏压乃至纯软件欠压等手段，在芯片执行的精确瞬间诱发错误，从而绕过签名校验、读保护与安全启动，或直接恢复密钥。本时间轴收录 1996–2026 年间 197 个公开案例：从 Bellcore 故障密码分析的早期理论工作，到 Xbox 360、硬件钱包、特斯拉与汽车 ECU 的实战破解。</p><p>拖动下方时间轴浏览，右上角可切换语言，点击事件可展开详情与原文链接。</p><p>本站案例内容由 AI 总结生成，可能存在错误或遗漏，欢迎大家一起补充、纠错和维护。</p>"
   },
   "en": {
     "headline": "⚡ A Brief History of Fault Injection Attacks",
-    "text": "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 196 publicly documented cases from 1996 to 2026: from early Bellcore fault-cryptanalysis research to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p><p>Entries on this site are AI-generated summaries and may contain errors or omissions — corrections and contributions are welcome.</p>"
+    "text": "<p>Fault injection induces errors at the precise moment of chip execution — via voltage or clock glitches, electromagnetic pulses (EMFI), laser/light, body-bias injection, or even pure software undervolting — to bypass signature checks, readout protection and secure boot, or to recover cryptographic keys outright. This timeline collects 197 publicly documented cases from 1996 to 2026: from early Bellcore fault-cryptanalysis research to real-world hacks of the Xbox 360, crypto wallets, Tesla and automotive ECUs.</p><p>Drag the time navigator to explore; toggle language at top right; click an event for details and source links.</p><p>Entries on this site are AI-generated summaries and may contain errors or omissions — corrections and contributions are welcome.</p>"
   }
 };
 
@@ -2765,6 +2765,21 @@ const TIMELINE_EVENTS = [
     "en": {
       "headline": "RP2350 A4: Photon Emission Guides Laser Faults to Secure Debug",
       "text": "Ledger Donjon used differential photon-emission microscopy to locate debug-enable register activity, then applied laser faults to restore permanently disabled Secure debug on an RP2350 A4. In their own Hacking Challenge configuration, they recovered an OTP secret after reset before firmware applied its runtime lock. The attack requires physical access and specialized equipment.<br><a href='https://donjon.ledger.com/blog/rp2350-secure-debug-laser-fault-injection/' target='_blank'>Source</a>"
+    }
+  },
+  {
+    "start": {
+      "year": 2026,
+      "month": 11,
+      "day": 10
+    },
+    "zh": {
+      "headline": "NVIDIA GA100：电压故障注入解锁 CMP 170HX",
+      "text": "Kate Land 报告在 GA100 芯片上发现电压故障注入漏洞，并称已将 CMP 170HX 挖矿卡解锁至接近 A100 的功能，包括更多计算单元、显存容量与 PCIe/NVLink 能力。作者称已在发布前向 NVIDIA 产品安全团队披露；文中结果为作者对特定卡片的实验报告。<br><a href='https://blog.kate.land/posts/using-voltage-glitching-to-unlock-the-a100/' target='_blank'>原始资料</a>"
+    },
+    "en": {
+      "headline": "NVIDIA GA100: Voltage Fault Injection Unlocks CMP 170HX",
+      "text": "Kate Land reported a voltage fault-injection vulnerability on the GA100, claiming to unlock a CMP 170HX mining card to near-A100 functionality, including more compute units, memory capacity and PCIe/NVLink capabilities. The author says the findings were disclosed to NVIDIA’s product security team before publication; the results are the author’s experiments on specific cards.<br><a href='https://blog.kate.land/posts/using-voltage-glitching-to-unlock-the-a100/' target='_blank'>Source</a>"
     }
   }
 ];
